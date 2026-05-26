@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>60天「可持續性」生活化減重工具</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --success: #10b981;
+            --success-light: #f0fdf4;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px; /* 幫底部導覽列留空間 */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        header {
+            text-align: center;
+            padding: 10px 0 20px 0;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            color: #1e3a8a;
+            margin: 0 0 5px 0;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* 底部導覽列 (Bottom Navigation) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+
+        .nav-item .icon {
+            font-size: 1.4rem;
+            margin-bottom: 2px;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* 主內容分頁控制 */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 共通卡片樣式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        /* 看板元件 */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .metric-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .metric-card input {
+            width: 80%;
+            padding: 6px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text);
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* 進度條 */
+        .progress-title {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .progress-bg {
+            background: #e2e8f0;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            width: 0%;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        /* 原則清單 */
+        .principle-item {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .principle-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .principle-title {
+            font-weight: bold;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
+        }
+        .principle-desc {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 4px;
+            padding-left: 22px;
+        }
+
+        /* 行動表 Phase 子分頁 */
+        .phase-selector {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .phase-selector::-webkit-scrollbar { display: none; } /* Chrome */
+
+        .phase-btn {
+            padding: 8px 14px;
+            background: #e2e8f0;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            color: #475569;
+        }
+        .phase-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* 手機最佳化卡片清單 (取代大表格) */
+        .day-card {
+            display: flex;
+            gap: 12px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .day-card.completed {
+            background-color: var(--success-light);
+            border-color: #bbf7d0;
+        }
+
+        .day-checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            padding-top: 2px;
+        }
+
+        .day-checkbox-wrapper input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .day-content {
+            flex: 1;
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .day-label {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .day-card.completed .day-label, 
+        .day-card.completed .task-text {
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+
+        .task-box {
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .task-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 4px;
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .tag-diet { background: #ffe4e6; color: #b91c1c; }
+        .tag-treat { background: #fef3c7; color: #b45309; }
+        .tag-sport { background: #dcfce7; color: #15803d; }
+        .tag-note { background: #e0f2fe; color: #0369a1; }
+
+        /* 紅綠燈樣式 */
+        .light-section {
+            border-left: 5px solid;
+            padding-left: 12px;
+            margin-bottom: 16px;
+        }
+        .light-red { border-color: #ef4444; background: #fef2f2; }
+        .light-yellow { border-color: #f59e0b; background: #fffbeb; }
+        .light-green { border-color: #10b981; background: #f0fdf4; }
+        
+        .light-title {
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .light-red .light-title { color: #b91c1c; }
+        .light-yellow .light-title { color: #b45309; }
+        .light-green .light-title { color: #15803d; }
+
+        .light-content {
+            font-size: 0.85rem;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- 分頁一：Dashboard 看板 -->
+    <div id="tab-dash" class="tab-content active">
+        <header>
+            <h1>🎯 60天生活化減重看板</h1>
+            <p>目標：2 個月穩健減重 2.5 kg</p>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="metric-card">
+                <h3>起始體重 (kg)</h3>
+                <input type="number" id="start-weight" value="75" step="0.1" onchange="saveMetrics()">
+            </div>
+            <div class="metric-card">
+                <h3>目前體重 (kg)</h3>
+                <input type="number" id="current-weight" value="74" step="0.1" onchange="saveMetrics()">
+            </div>
+            <div class="metric-card">
+                <h3>目標減重</h3>
+                <div class="metric-value" style="color: var(--success);">-2.5 kg</div>
+            </div>
+            <div class="metric-card">
+                <h3>已完成進度</h3>
+                <div class="metric-value" id="days-count" style="color: var(--primary);">0 / 60 天</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="progress-title">
+                <span>總執行進度</span>
+                <span id="progress-text">0%</span>
+            </div>
+            <div class="progress-bg">
+                <div class="progress-fill" id="main-progress"></div>
+            </div>
+        </div>
+
+        <h2>🥗 營養師的四大核心執行原則</h2>
+        <div class="card">
+            <div class="principle-item">
+                <div class="principle-title">⚖️ 彈性熱量赤字與食物平反</div>
+                <div class="principle-desc">沒有絕對不能吃的食物，只有不會調配的份量。平日維持 300~400 大卡溫和赤字，保留心靈慰藉才走得遠。</div>
+            </div>
+            <div class="principle-item">
+                <div class="principle-title">🍰 甜點的「時機防禦」規則</div>
+                <div class="principle-desc">單次上限 300 大卡以內。優先放在重訓日（運動後肌肉易儲存）或高壓工作日（調節壓力，預防深夜暴食）。</div>
+            </div>
+            <div class="principle-item">
+                <div class="principle-title">🍷 酒精的「當量與防禦」規則</div>
+                <div class="principle-desc">女性每日上限 1 個酒精當量（如啤酒330ml/紅酒120ml）。絕不空腹喝，飲酒前必先補充高蛋白質與蔬菜定錨血糖。</div>
+            </div>
+            <div class="principle-item">
+                <div class="principle-title">🔍 外食的「定錨效應」流程</div>
+                <div class="principle-desc">點餐時眼睛先看「蛋白質」與「蔬菜」。當這兩者分量足夠帶來飽足感，大腦才有理性去分配剩下的甜點或酒額度。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分頁二：60天每日行動表 -->
+    <div id="tab-plan" class="tab-content">
+        <header>
+            <h1>📅 60天階梯式行動表</h1>
+            <p>點擊上方切換階段，勾選每日任務</p>
+        </header>
+
+        <div class="phase-selector">
+            <button class="phase-btn active" onclick="switchPhase(1)">Phase 1 習慣建立 (D1-15)</button>
+            <button class="phase-btn" onclick="switchPhase(2)">Phase 2 赤字穩定 (D16-30)</button>
+            <button class="phase-btn" onclick="switchPhase(3)">Phase 3 體態精雕 (D31-45)</button>
+            <button class="phase-btn" onclick="switchPhase(4)">Phase 4 最後衝刺 (D46-60)</button>
+        </div>
+
+        <div id="cards-container">
+            <!-- JavaScript 會在這裡動態生成手機專用卡片 -->
+        </div>
+    </div>
+
+    <!-- 分頁三：應變紅綠燈 -->
+    <div id="tab-rules" class="tab-content">
+        <header>
+            <h1>🚦 突發狀況應變紅綠燈</h1>
+            <p>遇到日常考驗時的行為防禦指南</p>
+        </header>
+
+        <div class="card">
+            <h3>情境一：突發的外食社交聚餐</h3>
+            <div class="light-section light-red">
+                <div class="light-title">🔴 紅燈 (禁止行為)</div>
+                <div class="light-content">大點炸物 + 酒精大混喝 + 精緻甜點全部疊加。</div>
+            </div>
+            <div class="light-section light-yellow">
+                <div class="light-title">🟡 黃燈 (替代方案)</div>
+                <div class="light-content">主餐選蒸烤海鮮或雞肉，酒類限 1 杯紅白酒。</div>
+            </div>
+            <div class="light-section light-green">
+                <div class="light-title">🟢 綠燈 (首選定錨)</div>
+                <div class="light-content">先吃大盤原型蔬菜與優質瘦肉，隨後才決定是否留下小額度給甜點。</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>情境二：工作太累、開會爆滿沒體力</h3>
+            <div class="light-section light-red">
+                <div class="light-title">🔴 紅燈 (禁止行為)</div>
+                <div class="light-content">回家躺平並叫外送炸雞或宵夜進行代償性心理補償。</div>
+            </div>
+            <div class="light-section light-yellow">
+                <div class="light-title">🟡 黃燈 (替代方案)</div>
+                <div class="light-content">取消原訂的高強度重訓，改為在客廳輕鬆拉伸或散步 20 分鐘。</div>
+            </div>
+            <div class="light-section light-green">
+                <div class="light-title">🟢 綠燈 (首選定錨)</div>
+                <div class="light-content">晚餐吃清淡原型食物，提早 1 小時就寢，用高質量睡眠修復內分泌。</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>情境三：下午茶時間極度想吃甜點</h3>
+            <div class="light-section light-red">
+                <div class="light-title">🔴 紅燈 (禁止行為)</div>
+                <div class="light-content">吃完辦公室分享的蛋糕，順便又點了一杯含糖手搖飲。</div>
+            </div>
+            <div class="light-section light-yellow">
+                <div class="light-title">🟡 黃燈 (替代方案)</div>
+                <div class="light-content">改吃 75% 以上黑巧克力兩片，或將本週的「酒精額度」挪來換甜點。</div>
+            </div>
+            <div class="light-section light-green">
+                <div class="light-title">🟢 綠燈 (首選定錨)</div>
+                <div class="light-content">控制在 300 大卡內並在「重訓運動後」吃，或搭配無糖黑咖啡享用。</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 底部導覽列 -->
+<div class="bottom-nav">
+    <button class="nav-item active" onclick="switchTab('dash', this)">
+        <span class="icon">📊</span>
+        <span>看板</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('plan', this)">
+        <span class="icon">📅</span>
+        <span>行動表</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('rules', this)">
+        <span class="icon">🚦</span>
+        <span>紅綠燈</span>
+    </button>
+</div>
+
+<script>
+    // 60天營養學重組數據
+    const rawData = [
+        ["1", "調整定錨：如實記錄三餐內容與份量", "暫不安排，觀察無意識進食", "步行 6,000 步", "建立基準：記錄起始體重與圍度。"],
+        ["2", "早餐加入優質蛋白質（如蛋、豆漿）", "暫不安排", "快走 20 分鐘", "觀察中午前的飢餓感延緩變化。"],
+        ["3", "午餐碳水化合物（飯/麵）減少 1/4", "暫不安排", "累積 8,000 步", "評估下午 3-4 點是否出現嘴饞。"],
+        ["4", "晚餐精緻主食（澱粉類）減半", "時機防禦：甜點 1 份 (<300卡)", "重訓 20 分鐘", "重訓日後吃甜點，觀察隔天精神。"],
+        ["5", "將含糖飲料嚴格調整為無糖茶/水", "暫不安排", "步行 8,000 步", "記錄一整天想吃甜食的特定時段。"],
+        ["6", "每餐高纖定錨：蔬菜達 2 個拳頭大", "防禦微醺：酒 1 杯 (絕不空腹)", "散步 30 分鐘", "飲酒前先吃肉菜，酒後補水 500ml。"],
+        ["7", "正常三餐，嚴格執行睡前 3 小時禁食", "甜點或酒精擇一（不可並存）", "充分休息＋伸展", "【週結算】評估與記錄第一週體重。"],
+        ["8", "早餐固定攝取優質蛋白質定錨", "暫不安排", "重訓 20 分鐘", "外食族開始注意午餐便當烹調（少炸）。"],
+        ["9", "外食午餐調整進食順序：先菜再肉", "暫不安排", "累積 8,000 步", "觀察順序對餐後精神（血糖）的影響。"],
+        ["10", "晚餐拒絕高油醬汁（如咖哩/勾芡）", "高壓調節：甜點 1 份 (<300卡)", "快走 20 分鐘", "練習正念飲食，細品甜點不帶罪惡感。"],
+        ["11", "下午茶改為無糖優格或一小把堅果", "暫不安排", "步行 8,000 步", "區分是真飢餓還是壓力嘴饞。"],
+        ["12", "午餐避開油炸主菜，改選蒸滷烤", "防禦微醺：酒 1 杯", "重訓 20 分鐘", "遵守一口酒、一口水原則。"],
+        ["13", "確保每日飲水量達到體重 x 35 ml", "暫不安排", "累積 9,000 步", "水分充足利於代謝，觀察體重波動。"],
+        ["14", "三餐定時定量，維持穩定新陳代謝", "甜點或酒精擇一", "輕鬆散步", "【週結算】測量並記錄本週腰圍。"],
+        ["15", "早餐加入 1 份低 GI 水果（如蘋果）", "暫不安排", "重訓 25 分鐘", "回顧兩週：甜點與酒是否有依規控量。"],
+        ["16", "午餐精緻澱粉減半，改吃粗糙澱粉", "暫不安排", "步行 8,000 步", "評估改吃粗糙澱粉後的下午精神。"],
+        ["17", "晚餐選擇清蒸魚或烤雞胸（低脂）", "心靈充電：甜點 1 份 (<300卡)", "快走 25 分鐘", "吃完甜點後，當晚絕不延伸出宵夜。"],
+        ["18", "液體熱量歸零（不喝任何含糖手搖飲）", "暫不安排", "累積 8,000 步", "嘴饞時先喝水 300ml，排除偽飢餓。"],
+        ["19", "外食聚餐時，先吃完一盤蔬菜再吃主食", "社交微醺：酒 1 杯", "重訓 20 分鐘", "喝酒當晚澱粉量自動減半，平衡熱量。"],
+        ["20", "增加深綠色蔬菜（補充足夠微量元素）", "暫不安排", "累積 9,000 步", "提高纖維質有助於優化腸道排毒。"],
+        ["21", "規律三餐，每餐食量維持七至八分飽", "甜點或酒精擇一", "充分休息", "【週結算】記錄體重，保持平穩心態。"],
+        ["22", "早餐選擇原型食物（如燕麥配蛋）", "暫不安排", "重訓 25 分鐘", "觀察高壓工作日下，控糖是否變容易。"],
+        ["23", "午餐主菜去皮（如炸雞腿去皮）", "暫不安排", "累積 8,000 步", "簡單去皮即可減少 100卡隱形脂肪。"],
+        ["24", "晚餐以大量蔬菜搭配雙份豆腐/蛋", "週末前哨：甜點 1 份 (<300卡)", "快走 25 分鐘", "甜點安排在晚餐後立即吃，不單獨當午茶。"],
+        ["25", "下午嘴饞時改選高純度黑巧克力(>75%)", "暫不安排", "步行 8,000 步", "利用微苦味抑制對極甜食物的依賴。"],
+        ["26", "拒絕所有含高油醬汁的沙拉（如胡麻）", "聚會微醺：酒 1 杯", "重訓 20 分鐘", "外食沙拉改選和風醬或油醋汁。"],
+        ["27", "持續拉高飲水量，加速酒精毒素代謝", "暫不安排", "累積 9,000 步", "記錄並觀察飲酒隔天的水腫狀況。"],
+        ["28", "飲食保持清淡，減少鹽分與鈉攝取", "甜點或酒精擇一", "輕鬆散步", "【週結算】記錄腰圍，檢視體態精雕。"],
+        ["29", "早餐補充足夠的無糖豆漿或低脂乳品", "暫不安排", "重訓 25 分鐘", "觀察高蛋白飲食對運動修復的幫助。"],
+        ["30", "嘗試整天完全不吃任何加工食品", "暫不安排", "累積 8,000 步", "【半月檢視】體重應穩定下降達 1.2kg。"],
+    ];
+
+    // 自動補完 Day 31-60 的數據庫，維持相同結構
+    for (let i = 31; i <= 60; i++) {
+        const templateRow = rawData[(i - 1) % 30];
+        let note = templateRow[4];
+        if (i === 60) note = "【最終結算】恭喜完成！檢視體重與腰圍成果！";
+        else if (i % 7 === 0) note = `【週結算】測量並記錄本週體重與體態。`;
+        
+        rawData.push([
+            i.toString(),
+            templateRow[1],
+            templateRow[2],
+            templateRow[3],
+            note
+        ]);
+    }
+
+    let currentPhase = 1;
+    let checkedDays = JSON.parse(localStorage.getItem('phone_diet_checked_days')) || [];
+
+    // 分頁切換 (Bottom Nav)
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        btn.classList.add('active');
+        
+        window.scrollTo(0, 0);
+    }
+
+    // 行動表階段切換 (Phase Tabs)
+    function switchPhase(phaseNum) {
+        currentPhase = phaseNum;
+        document.querySelectorAll('.phase-btn').forEach((btn, idx) => {
+            if (idx + 1 === phaseNum) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+        renderCards();
+    }
+
+    // 渲染手機卡片清單
+    function renderCards() {
+        const container = document.getElementById('cards-container');
+        container.innerHTML = '';
+
+        const startIdx = (currentPhase - 1) * 15;
+        const endIdx = startIdx + 15;
+        const phaseDays = rawData.slice(startIdx, endIdx);
+
+        phaseDays.forEach(row => {
+            const dayNum = parseInt(row[0]);
+            const isChecked = checkedDays.includes(dayNum);
+
+            const card = document.createElement('div');
+            card.className = `day-card ${isChecked ? 'completed' : ''}`;
+            card.innerHTML = `
+                <div class="day-checkbox-wrapper">
+                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleDayCard(${dayNum}, this)">
+                </div>
+                <div class="day-content">
+                    <div class="day-header">
+                        <span class="day-label">Day ${row[0]}</span>
+                    </div>
+                    <div class="task-box"><span class="task-tag tag-diet">飲食</span><span class="task-text">${row[1]}</span></div>
+                    <div class="task-box"><span class="task-tag tag-treat">心靈</span><span class="task-text">${row[2]}</span></div>
+                    <div class="task-box"><span class="task-tag tag-sport">動態</span><span class="task-text">${row[3]}</span></div>
+                    <div class="task-box"><span class="task-tag tag-note">筆記</span><span class="task-text" style="color:var(--text-light); font-style:italic;">${row[4]}</span></div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function toggleDayCard(dayNum, checkbox) {
+        const card = checkbox.closest('.day-card');
+        if (checkbox.checked) {
+            if (!checkedDays.includes(dayNum)) checkedDays.push(dayNum);
+            card.classList.add('completed');
+        } else {
+            checkedDays = checkedDays.filter(d => d !== dayNum);
+            card.classList.remove('completed');
+        }
+        localStorage.setItem('phone_diet_checked_days', JSON.stringify(checkedDays));
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const totalDays = 60;
+        const checkedCount = checkedDays.length;
+        const percentage = Math.round((checkedCount / totalDays) * 100);
+
+        document.getElementById('days-count').innerText = `${checkedCount} / ${totalDays} 天`;
+        document.getElementById('progress-text').innerText = `${percentage}%`;
+        document.getElementById('main-progress').style.width = `${percentage}%`;
+    }
+
+    function saveMetrics() {
+        localStorage.setItem('phone_diet_start_w', document.getElementById('start-weight').value);
+        localStorage.setItem('phone_diet_curr_w', document.getElementById('current-weight').value);
+    }
+
+    // 載入緩存體重
+    if(localStorage.getItem('phone_diet_start_w')) document.getElementById('start-weight').value = localStorage.getItem('phone_diet_start_w');
+    if(localStorage.getItem('phone_diet_curr_w')) document.getElementById('current-weight').value = localStorage.getItem('phone_diet_curr_w');
+
+    // 初始化
+    renderCards();
+    updateProgress();
+</script>
+</body>
+</html>
