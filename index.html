@@ -29,7 +29,7 @@
             color: var(--text);
             margin: 0;
             padding: 0;
-            padding-bottom: 80px;
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
         }
 
         .container {
@@ -108,7 +108,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 65px;
+            height: calc(65px + env(safe-area-inset-bottom));
+            padding-bottom: env(safe-area-inset-bottom);
             background: var(--card-bg);
             display: flex;
             justify-content: space-around;
@@ -237,7 +238,7 @@
             background: linear-gradient(90deg, var(--primary), var(--success));
             width: 0%;
             height: 100%;
-            transition: width 0.3s ease;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         /* 原則清單 */
@@ -324,8 +325,8 @@
         }
 
         .day-checkbox-wrapper input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
+            width: 28px;
+            height: 28px;
             cursor: pointer;
             accent-color: var(--primary);
         }
@@ -423,12 +424,42 @@
                 <input type="number" id="current-weight" value="74" step="0.1" min="30" max="300" aria-label="目前體重">
             </div>
             <div class="metric-card">
-                <h3>目標減重</h3>
-                <div class="metric-value" style="color: var(--success);">-2.5 kg</div>
+                <h3>目標體重 (kg)</h3>
+                <input type="number" id="target-weight" value="72.5" step="0.1" min="30" max="300" aria-label="目標體重">
             </div>
             <div class="metric-card">
                 <h3>已完成進度</h3>
                 <div class="metric-value" id="days-count" style="color: var(--primary);">0 / 60 天</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🚀 開始方式</h3>
+            <p style="font-size:0.9rem;color:var(--text-light);line-height:1.6;">
+                1. 設定起始體重、目前體重與目標體重<br>
+                2. 每天完成一項小任務即可勾選<br>
+                3. 每週觀察趨勢，不追求極端速度
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <h3>已減少</h3>
+                    <div class="metric-value" id="weight-lost" style="color: var(--success);">0 kg</div>
+                </div>
+                <div class="metric-card">
+                    <h3>距離目標</h3>
+                    <div class="metric-value" id="remaining-weight" style="color: var(--primary);">0 kg</div>
+                </div>
+                <div class="metric-card">
+                    <h3>體重進度</h3>
+                    <div class="metric-value" id="weight-progress">0%</div>
+                </div>
+                <div class="metric-card">
+                    <h3>建議每週速度</h3>
+                    <div class="metric-value" id="weekly-pace">0 kg</div>
+                </div>
             </div>
         </div>
 
@@ -604,7 +635,9 @@
         for (let i = 31; i <= 60; i++) {
             const templateRow = rawData[(i - 1) % 30];
             let note = templateRow.note;
-            if (i === 60) note = "【最終結算】恭喜完成！檢視體重與腰圍成果！";
+            if (i >= 31 && i <= 45) note = "【體態精雕】專注穩定與恢復品質。";
+            else if (i >= 46 && i <= 59) note = "【最後衝刺】維持穩定習慣與睡眠節奏。";
+            else if (i === 60) note = "【最終結算】恭喜完成！檢視體重與腰圍成果！";
             else if (i % 7 === 0) note = `【週結算】測量並記錄本週體重與體態。`;
             
             rawData.push(createDayData(
@@ -637,6 +670,9 @@
             if (localStorage.getItem('phone_diet_start_w')) {
                 document.getElementById('start-weight').value = localStorage.getItem('phone_diet_start_w');
             }
+            if (localStorage.getItem('phone_diet_target_w')) {
+                document.getElementById('target-weight').value = localStorage.getItem('phone_diet_target_w');
+            }
             if (localStorage.getItem('phone_diet_curr_w')) {
                 document.getElementById('current-weight').value = localStorage.getItem('phone_diet_curr_w');
             }
@@ -655,7 +691,31 @@
 
     // 分頁切換 (Bottom Nav) - 改用事件委託
     document.addEventListener('DOMContentLoaded', function() {
-        // 初始化底部導覽
+        
+    function updateWeightMetrics() {
+        const start = parseFloat(document.getElementById('start-weight').value) || 0;
+        const current = parseFloat(document.getElementById('current-weight').value) || 0;
+        const target = parseFloat(document.getElementById('target-weight').value) || 0;
+
+        const totalGoal = Math.max(start - target, 0);
+        const currentLoss = Math.max(start - current, 0);
+        const remaining = Math.max(current - target, 0);
+
+        const weightProgress = totalGoal > 0
+            ? Math.min(Math.round((currentLoss / totalGoal) * 100), 100)
+            : 0;
+
+        const remainingDays = Math.max(60 - checkedDays.length, 1);
+        const weeklyPace = ((remaining / remainingDays) * 7).toFixed(1);
+
+        document.getElementById('weight-lost').textContent = `${currentLoss.toFixed(1)} kg`;
+        document.getElementById('remaining-weight').textContent = `${remaining.toFixed(1)} kg`;
+        document.getElementById('weight-progress').textContent = `${weightProgress}%`;
+        document.getElementById('weekly-pace').textContent = `${weeklyPace} kg`;
+    }
+
+    // 初始化
+底部導覽
         document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
             btn.addEventListener('click', function() {
                 const tabId = this.getAttribute('aria-controls');
@@ -663,16 +723,65 @@
             });
         });
 
-        // 初始化 Phase 按鈕
+        
+    function updateWeightMetrics() {
+        const start = parseFloat(document.getElementById('start-weight').value) || 0;
+        const current = parseFloat(document.getElementById('current-weight').value) || 0;
+        const target = parseFloat(document.getElementById('target-weight').value) || 0;
+
+        const totalGoal = Math.max(start - target, 0);
+        const currentLoss = Math.max(start - current, 0);
+        const remaining = Math.max(current - target, 0);
+
+        const weightProgress = totalGoal > 0
+            ? Math.min(Math.round((currentLoss / totalGoal) * 100), 100)
+            : 0;
+
+        const remainingDays = Math.max(60 - checkedDays.length, 1);
+        const weeklyPace = ((remaining / remainingDays) * 7).toFixed(1);
+
+        document.getElementById('weight-lost').textContent = `${currentLoss.toFixed(1)} kg`;
+        document.getElementById('remaining-weight').textContent = `${remaining.toFixed(1)} kg`;
+        document.getElementById('weight-progress').textContent = `${weightProgress}%`;
+        document.getElementById('weekly-pace').textContent = `${weeklyPace} kg`;
+    }
+
+    // 初始化
+ Phase 按鈕
         document.querySelectorAll('.phase-selector .phase-btn').forEach((btn, idx) => {
             btn.addEventListener('click', function() {
                 switchPhase(idx + 1);
             });
         });
 
-        // 初始化體重輸入框
+        
+    function updateWeightMetrics() {
+        const start = parseFloat(document.getElementById('start-weight').value) || 0;
+        const current = parseFloat(document.getElementById('current-weight').value) || 0;
+        const target = parseFloat(document.getElementById('target-weight').value) || 0;
+
+        const totalGoal = Math.max(start - target, 0);
+        const currentLoss = Math.max(start - current, 0);
+        const remaining = Math.max(current - target, 0);
+
+        const weightProgress = totalGoal > 0
+            ? Math.min(Math.round((currentLoss / totalGoal) * 100), 100)
+            : 0;
+
+        const remainingDays = Math.max(60 - checkedDays.length, 1);
+        const weeklyPace = ((remaining / remainingDays) * 7).toFixed(1);
+
+        document.getElementById('weight-lost').textContent = `${currentLoss.toFixed(1)} kg`;
+        document.getElementById('remaining-weight').textContent = `${remaining.toFixed(1)} kg`;
+        document.getElementById('weight-progress').textContent = `${weightProgress}%`;
+        document.getElementById('weekly-pace').textContent = `${weeklyPace} kg`;
+    }
+
+    // 初始化
+體重輸入框
         document.getElementById('start-weight').addEventListener('change', validateAndSaveMetrics);
         document.getElementById('current-weight').addEventListener('change', validateAndSaveMetrics);
+        document.getElementById('target-weight').addEventListener('change', validateAndSaveMetrics);
 
         safeLoadStorage();
         renderCards();
@@ -686,7 +795,7 @@
             item.setAttribute('aria-selected', 'false');
         });
         
-        const tabElement = document.getElementById(`tab-${tabId}`);
+        const tabElement = document.getElementById(tabId);
         if (tabElement) {
             tabElement.classList.add('active');
         }
@@ -825,6 +934,8 @@
 
         if (daysCountElement) daysCountElement.textContent = `${checkedCount} / ${totalDays} 天`;
         if (progressTextElement) progressTextElement.textContent = `${percentage}%`;
+        updateWeightMetrics();
+
         if (mainProgressElement) {
             mainProgressElement.style.width = `${percentage}%`;
             mainProgressElement.setAttribute('aria-valuenow', percentage);
@@ -835,10 +946,12 @@
     function validateAndSaveMetrics() {
         const startWeightElement = document.getElementById('start-weight');
         const currentWeightElement = document.getElementById('current-weight');
+        const targetWeightElement = document.getElementById('target-weight');
         const errorDiv = document.getElementById('error-message-dash');
 
         const startValidation = validateWeight(startWeightElement.value);
         const currentValidation = validateWeight(currentWeightElement.value);
+        const targetValidation = validateWeight(targetWeightElement.value);
 
         let hasError = false;
         let errorMessage = '';
@@ -859,7 +972,17 @@
             currentWeightElement.classList.remove('error');
         }
 
+        
+        if (!targetValidation.valid) {
+            targetWeightElement.classList.add('error');
+            errorMessage += `目標體重：${targetValidation.error}`;
+            hasError = true;
+        } else {
+            targetWeightElement.classList.remove('error');
+        }
+
         if (hasError) {
+
             if (errorDiv) {
                 errorDiv.textContent = errorMessage;
                 errorDiv.classList.add('show');
@@ -874,6 +997,7 @@
         try {
             localStorage.setItem('phone_diet_start_w', startWeightElement.value);
             localStorage.setItem('phone_diet_curr_w', currentWeightElement.value);
+            localStorage.setItem('phone_diet_target_w', targetWeightElement.value);
         } catch (e) {
             console.warn('Failed to save metrics:', e);
             if (errorDiv) {
@@ -883,7 +1007,31 @@
         }
     }
 
+    
+    function updateWeightMetrics() {
+        const start = parseFloat(document.getElementById('start-weight').value) || 0;
+        const current = parseFloat(document.getElementById('current-weight').value) || 0;
+        const target = parseFloat(document.getElementById('target-weight').value) || 0;
+
+        const totalGoal = Math.max(start - target, 0);
+        const currentLoss = Math.max(start - current, 0);
+        const remaining = Math.max(current - target, 0);
+
+        const weightProgress = totalGoal > 0
+            ? Math.min(Math.round((currentLoss / totalGoal) * 100), 100)
+            : 0;
+
+        const remainingDays = Math.max(60 - checkedDays.length, 1);
+        const weeklyPace = ((remaining / remainingDays) * 7).toFixed(1);
+
+        document.getElementById('weight-lost').textContent = `${currentLoss.toFixed(1)} kg`;
+        document.getElementById('remaining-weight').textContent = `${remaining.toFixed(1)} kg`;
+        document.getElementById('weight-progress').textContent = `${weightProgress}%`;
+        document.getElementById('weekly-pace').textContent = `${weeklyPace} kg`;
+    }
+
     // 初始化
+
     safeLoadStorage();
 </script>
 </body>
