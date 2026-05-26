@@ -10,6 +10,7 @@
             --primary-light: #eff6ff;
             --success: #10b981;
             --success-light: #f0fdf4;
+            --danger: #ef4444;
             --bg: #f8fafc;
             --card-bg: #ffffff;
             --text: #1e293b;
@@ -28,7 +29,7 @@
             color: var(--text);
             margin: 0;
             padding: 0;
-            padding-bottom: 80px; /* 幫底部導覽列留空間 */
+            padding-bottom: 80px;
         }
 
         .container {
@@ -36,6 +37,24 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 16px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding-bottom: 75px;
+            }
+            .container {
+                padding: 12px;
+            }
+        }
+
+        @media (orientation: landscape) {
+            body {
+                padding-bottom: 60px;
+            }
+            .bottom-nav {
+                height: 55px;
+            }
         }
 
         header {
@@ -55,7 +74,35 @@
             margin: 0;
         }
 
-        /* 底部導覽列 (Bottom Navigation) */
+        /* 錯誤通知 */
+        .error-message {
+            display: none;
+            background: #fee;
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            color: #b91c1c;
+            font-size: 0.9rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 底部導覽列 */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -84,6 +131,12 @@
             font-weight: 500;
             cursor: pointer;
             padding: 5px 0;
+            transition: color 0.2s ease;
+        }
+
+        .nav-item:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: -2px;
         }
 
         .nav-item .icon {
@@ -95,7 +148,6 @@
             color: var(--primary);
         }
 
-        /* 主內容分頁控制 */
         .tab-content {
             display: none;
         }
@@ -138,13 +190,25 @@
 
         .metric-card input {
             width: 80%;
-            padding: 6px;
+            padding: 8px;
             text-align: center;
             border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 1.1rem;
             font-weight: bold;
             color: var(--text);
+            transition: border-color 0.2s ease;
+        }
+
+        .metric-card input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .metric-card input.error {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
         }
 
         .metric-value {
@@ -209,9 +273,9 @@
             overflow-x: auto;
             padding-bottom: 8px;
             margin-bottom: 16px;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
-        .phase-selector::-webkit-scrollbar { display: none; } /* Chrome */
+        .phase-selector::-webkit-scrollbar { display: none; }
 
         .phase-btn {
             padding: 8px 14px;
@@ -222,13 +286,21 @@
             font-weight: 600;
             white-space: nowrap;
             color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
+
+        .phase-btn:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
         .phase-btn.active {
             background: var(--primary);
             color: white;
         }
 
-        /* 手機最佳化卡片清單 (取代大表格) */
+        /* 手機最佳化卡片清單 */
         .day-card {
             display: flex;
             gap: 12px;
@@ -255,6 +327,7 @@
             width: 22px;
             height: 22px;
             cursor: pointer;
+            accent-color: var(--primary);
         }
 
         .day-content {
@@ -332,7 +405,9 @@
 <div class="container">
     
     <!-- 分頁一：Dashboard 看板 -->
-    <div id="tab-dash" class="tab-content active">
+    <div id="tab-dash" class="tab-content active" role="tabpanel" aria-labelledby="tab-dash-btn">
+        <div id="error-message-dash" class="error-message"></div>
+        
         <header>
             <h1>🎯 60天生活化減重看板</h1>
             <p>目標：2 個月穩健減重 2.5 kg</p>
@@ -341,11 +416,11 @@
         <div class="dashboard-grid">
             <div class="metric-card">
                 <h3>起始體重 (kg)</h3>
-                <input type="number" id="start-weight" value="75" step="0.1" onchange="saveMetrics()">
+                <input type="number" id="start-weight" value="75" step="0.1" min="30" max="300" aria-label="起始體重">
             </div>
             <div class="metric-card">
                 <h3>目前體重 (kg)</h3>
-                <input type="number" id="current-weight" value="74" step="0.1" onchange="saveMetrics()">
+                <input type="number" id="current-weight" value="74" step="0.1" min="30" max="300" aria-label="目前體重">
             </div>
             <div class="metric-card">
                 <h3>目標減重</h3>
@@ -363,7 +438,7 @@
                 <span id="progress-text">0%</span>
             </div>
             <div class="progress-bg">
-                <div class="progress-fill" id="main-progress"></div>
+                <div class="progress-fill" id="main-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
 
@@ -383,32 +458,32 @@
             </div>
             <div class="principle-item">
                 <div class="principle-title">🔍 外食的「定錨效應」流程</div>
-                <div class="principle-desc">點餐時眼睛先看「蛋白質」與「蔬菜」。當這兩者分量足夠帶來飽足感，大腦才有理性去分配剩下的甜點或酒額度。</div>
+                <div class="principle-desc">點餐時眼睛先看「蛋白質」與「蔬菜」。當這兩者分量足夠帶來飽足感，大腦才有理性去分配剩下的甜點或酒額度。飲食習慣需要時間養成，每一餐的正確選擇都在累積成功。</div>
             </div>
         </div>
     </div>
 
     <!-- 分頁二：60天每日行動表 -->
-    <div id="tab-plan" class="tab-content">
+    <div id="tab-plan" class="tab-content" role="tabpanel" aria-labelledby="tab-plan-btn">
         <header>
             <h1>📅 60天階梯式行動表</h1>
             <p>點擊上方切換階段，勾選每日任務</p>
         </header>
 
-        <div class="phase-selector">
-            <button class="phase-btn active" onclick="switchPhase(1)">Phase 1 習慣建立 (D1-15)</button>
-            <button class="phase-btn" onclick="switchPhase(2)">Phase 2 赤字穩定 (D16-30)</button>
-            <button class="phase-btn" onclick="switchPhase(3)">Phase 3 體態精雕 (D31-45)</button>
-            <button class="phase-btn" onclick="switchPhase(4)">Phase 4 最後衝刺 (D46-60)</button>
+        <div class="phase-selector" role="tablist" aria-label="行動表階段">
+            <button class="phase-btn active" role="tab" aria-selected="true" aria-controls="phase-1">Phase 1 習慣建立 (D1-15)</button>
+            <button class="phase-btn" role="tab" aria-selected="false" aria-controls="phase-2">Phase 2 赤字穩定 (D16-30)</button>
+            <button class="phase-btn" role="tab" aria-selected="false" aria-controls="phase-3">Phase 3 體態精雕 (D31-45)</button>
+            <button class="phase-btn" role="tab" aria-selected="false" aria-controls="phase-4">Phase 4 最後衝刺 (D46-60)</button>
         </div>
 
         <div id="cards-container">
-            <!-- JavaScript 會在這裡動態生成手機專用卡片 -->
+            <!-- 動態生成的卡片 -->
         </div>
     </div>
 
     <!-- 分頁三：應變紅綠燈 -->
-    <div id="tab-rules" class="tab-content">
+    <div id="tab-rules" class="tab-content" role="tabpanel" aria-labelledby="tab-rules-btn">
         <header>
             <h1>🚦 突發狀況應變紅綠燈</h1>
             <p>遇到日常考驗時的行為防禦指南</p>
@@ -466,97 +541,178 @@
 </div>
 
 <!-- 底部導覽列 -->
-<div class="bottom-nav">
-    <button class="nav-item active" onclick="switchTab('dash', this)">
+<div class="bottom-nav" role="tablist" aria-label="主頁面導覽">
+    <button class="nav-item active" role="tab" aria-selected="true" aria-controls="tab-dash" id="tab-dash-btn" aria-label="看板視圖">
         <span class="icon">📊</span>
         <span>看板</span>
     </button>
-    <button class="nav-item" onclick="switchTab('plan', this)">
+    <button class="nav-item" role="tab" aria-selected="false" aria-controls="tab-plan" id="tab-plan-btn" aria-label="60天行動表">
         <span class="icon">📅</span>
         <span>行動表</span>
     </button>
-    <button class="nav-item" onclick="switchTab('rules', this)">
+    <button class="nav-item" role="tab" aria-selected="false" aria-controls="tab-rules" id="tab-rules-btn" aria-label="應變規則指南">
         <span class="icon">🚦</span>
         <span>紅綠燈</span>
     </button>
 </div>
 
 <script>
-    // 60天營養學重組數據
+    // 數據結構：改用物件而非陣列，提升可維護性
+    const createDayData = (day, diet, mental, activity, note) => ({
+        day,
+        diet,
+        mental,
+        activity,
+        note
+    });
+
     const rawData = [
-        ["1", "調整定錨：如實記錄三餐內容與份量", "暫不安排，觀察無意識進食", "步行 6,000 步", "建立基準：記錄起始體重與圍度。"],
-        ["2", "早餐加入優質蛋白質（如蛋、豆漿）", "暫不安排", "快走 20 分鐘", "觀察中午前的飢餓感延緩變化。"],
-        ["3", "午餐碳水化合物（飯/麵）減少 1/4", "暫不安排", "累積 8,000 步", "評估下午 3-4 點是否出現嘴饞。"],
-        ["4", "晚餐精緻主食（澱粉類）減半", "時機防禦：甜點 1 份 (<300卡)", "重訓 20 分鐘", "重訓日後吃甜點，觀察隔天精神。"],
-        ["5", "將含糖飲料嚴格調整為無糖茶/水", "暫不安排", "步行 8,000 步", "記錄一整天想吃甜食的特定時段。"],
-        ["6", "每餐高纖定錨：蔬菜達 2 個拳頭大", "防禦微醺：酒 1 杯 (絕不空腹)", "散步 30 分鐘", "飲酒前先吃肉菜，酒後補水 500ml。"],
-        ["7", "正常三餐，嚴格執行睡前 3 小時禁食", "甜點或酒精擇一（不可並存）", "充分休息＋伸展", "【週結算】評估與記錄第一週體重。"],
-        ["8", "早餐固定攝取優質蛋白質定錨", "暫不安排", "重訓 20 分鐘", "外食族開始注意午餐便當烹調（少炸）。"],
-        ["9", "外食午餐調整進食順序：先菜再肉", "暫不安排", "累積 8,000 步", "觀察順序對餐後精神（血糖）的影響。"],
-        ["10", "晚餐拒絕高油醬汁（如咖哩/勾芡）", "高壓調節：甜點 1 份 (<300卡)", "快走 20 分鐘", "練習正念飲食，細品甜點不帶罪惡感。"],
-        ["11", "下午茶改為無糖優格或一小把堅果", "暫不安排", "步行 8,000 步", "區分是真飢餓還是壓力嘴饞。"],
-        ["12", "午餐避開油炸主菜，改選蒸滷烤", "防禦微醺：酒 1 杯", "重訓 20 分鐘", "遵守一口酒、一口水原則。"],
-        ["13", "確保每日飲水量達到體重 x 35 ml", "暫不安排", "累積 9,000 步", "水分充足利於代謝，觀察體重波動。"],
-        ["14", "三餐定時定量，維持穩定新陳代謝", "甜點或酒精擇一", "輕鬆散步", "【週結算】測量並記錄本週腰圍。"],
-        ["15", "早餐加入 1 份低 GI 水果（如蘋果）", "暫不安排", "重訓 25 分鐘", "回顧兩週：甜點與酒是否有依規控量。"],
-        ["16", "午餐精緻澱粉減半，改吃粗糙澱粉", "暫不安排", "步行 8,000 步", "評估改吃粗糙澱粉後的下午精神。"],
-        ["17", "晚餐選擇清蒸魚或烤雞胸（低脂）", "心靈充電：甜點 1 份 (<300卡)", "快走 25 分鐘", "吃完甜點後，當晚絕不延伸出宵夜。"],
-        ["18", "液體熱量歸零（不喝任何含糖手搖飲）", "暫不安排", "累積 8,000 步", "嘴饞時先喝水 300ml，排除偽飢餓。"],
-        ["19", "外食聚餐時，先吃完一盤蔬菜再吃主食", "社交微醺：酒 1 杯", "重訓 20 分鐘", "喝酒當晚澱粉量自動減半，平衡熱量。"],
-        ["20", "增加深綠色蔬菜（補充足夠微量元素）", "暫不安排", "累積 9,000 步", "提高纖維質有助於優化腸道排毒。"],
-        ["21", "規律三餐，每餐食量維持七至八分飽", "甜點或酒精擇一", "充分休息", "【週結算】記錄體重，保持平穩心態。"],
-        ["22", "早餐選擇原型食物（如燕麥配蛋）", "暫不安排", "重訓 25 分鐘", "觀察高壓工作日下，控糖是否變容易。"],
-        ["23", "午餐主菜去皮（如炸雞腿去皮）", "暫不安排", "累積 8,000 步", "簡單去皮即可減少 100卡隱形脂肪。"],
-        ["24", "晚餐以大量蔬菜搭配雙份豆腐/蛋", "週末前哨：甜點 1 份 (<300卡)", "快走 25 分鐘", "甜點安排在晚餐後立即吃，不單獨當午茶。"],
-        ["25", "下午嘴饞時改選高純度黑巧克力(>75%)", "暫不安排", "步行 8,000 步", "利用微苦味抑制對極甜食物的依賴。"],
-        ["26", "拒絕所有含高油醬汁的沙拉（如胡麻）", "聚會微醺：酒 1 杯", "重訓 20 分鐘", "外食沙拉改選和風醬或油醋汁。"],
-        ["27", "持續拉高飲水量，加速酒精毒素代謝", "暫不安排", "累積 9,000 步", "記錄並觀察飲酒隔天的水腫狀況。"],
-        ["28", "飲食保持清淡，減少鹽分與鈉攝取", "甜點或酒精擇一", "輕鬆散步", "【週結算】記錄腰圍，檢視體態精雕。"],
-        ["29", "早餐補充足夠的無糖豆漿或低脂乳品", "暫不安排", "重訓 25 分鐘", "觀察高蛋白飲食對運動修復的幫助。"],
-        ["30", "嘗試整天完全不吃任何加工食品", "暫不安排", "累積 8,000 步", "【半月檢視】體重應穩定下降達 1.2kg。"],
+        createDayData("1", "調整定錨：如實記錄三餐內容與份量", "暫不安排，觀察無意識進食", "步行 6,000 步", "建立基準：記錄起始體重與圍度。"),
+        createDayData("2", "早餐加入優質蛋白質（如蛋、豆漿）", "暫不安排", "快走 20 分鐘", "觀察中午前的飢餓感延緩變化。"),
+        createDayData("3", "午餐碳水化合物（飯/麵）減少 1/4", "暫不安排", "累積 8,000 步", "評估下午 3-4 點是否出現嘴饞。"),
+        createDayData("4", "晚餐精緻主食（澱粉類）減半", "時機防禦：甜點 1 份 (<300卡)", "重訓 20 分鐘", "重訓日後吃甜點，觀察隔天精神。"),
+        createDayData("5", "將含糖飲料嚴格調整為無糖茶/水", "暫不安排", "步行 8,000 步", "記錄一整天想吃甜食的特定時段。"),
+        createDayData("6", "每餐高纖定錨：蔬菜達 2 個拳頭大", "防禦微醺：酒 1 杯 (絕不空腹)", "散步 30 分鐘", "飲酒前先吃肉菜，酒後補水 500ml。"),
+        createDayData("7", "正常三餐，嚴格執行睡前 3 小時禁食", "甜點或酒精擇一（不可並存）", "充分休息＋伸展", "【週結算】評估與記錄第一週體重。"),
+        createDayData("8", "早餐固定攝取優質蛋白質定錨", "暫不安排", "重訓 20 分鐘", "外食族開始注意午餐便當烹調（少炸）。"),
+        createDayData("9", "外食午餐調整進食順序：先菜再肉", "暫不安排", "累積 8,000 步", "觀察順序對餐後精神（血糖）的影響。"),
+        createDayData("10", "晚餐拒絕高油醬汁（如咖哩/勾芡）", "高壓調節：甜點 1 份 (<300卡)", "快走 20 分鐘", "練習正念飲食，細品甜點不帶罪惡感。"),
+        createDayData("11", "下午茶改為無糖優格或一小把堅果", "暫不安排", "步行 8,000 步", "區分是真飢餓還是壓力嘴饞。"),
+        createDayData("12", "午餐避開油炸主菜，改選蒸滷烤", "防禦微醺：酒 1 杯", "重訓 20 分鐘", "遵守一口酒、一口水原則。"),
+        createDayData("13", "確保每日飲水量達到體重 x 35 ml", "暫不安排", "累積 9,000 步", "水分充足利於代謝，觀察體重波動。"),
+        createDayData("14", "三餐定時定量，維持穩定新陳代謝", "甜點或酒精擇一", "輕鬆散步", "【週結算】測量並記錄本週腰圍。"),
+        createDayData("15", "早餐加入 1 份低 GI 水果（如蘋果）", "暫不安排", "重訓 25 分鐘", "回顧兩週：甜點與酒是否有依規控量。"),
+        createDayData("16", "午餐精緻澱粉減半，改吃粗糙澱粉", "暫不安排", "步行 8,000 步", "評估改吃粗糙澱粉後的下午精神。"),
+        createDayData("17", "晚餐選擇清蒸魚或烤雞胸（低脂）", "心靈充電：甜點 1 份 (<300卡)", "快走 25 分鐘", "吃完甜點後，當晚絕不延伸出宵夜。"),
+        createDayData("18", "液體熱量歸零（不喝任何含糖手搖飲）", "暫不安排", "累積 8,000 步", "嘴饞時先喝水 300ml，排除偽飢餓。"),
+        createDayData("19", "外食聚餐時，先吃完一盤蔬菜再吃主食", "社交微醺：酒 1 杯", "重訓 20 分鐘", "喝酒當晚澱粉量自動減半，平衡熱量。"),
+        createDayData("20", "增加深綠色蔬菜（補充足夠微量元素）", "暫不安排", "累積 9,000 步", "提高纖維質有助於優化腸道排毒。"),
+        createDayData("21", "規律三餐，每餐食量維持七至八分飽", "甜點或酒精擇一", "充分休息", "【週結算】記錄體重，保持平穩心態。"),
+        createDayData("22", "早餐選擇原型食物（如燕麥配蛋）", "暫不安排", "重訓 25 分鐘", "觀察高壓工作日下，控糖是否變容易。"),
+        createDayData("23", "午餐主菜去皮（如炸雞腿去皮）", "暫不安排", "累積 8,000 步", "簡單去皮即可減少 100卡隱形脂肪。"),
+        createDayData("24", "晚餐以大量蔬菜搭配雙份豆腐/蛋", "週末前哨：甜點 1 份 (<300卡)", "快走 25 分鐘", "甜點安排在晚餐後立即吃，不單獨當午茶。"),
+        createDayData("25", "下午嘴饞時改選高純度黑巧克力(>75%)", "暫不安排", "步行 8,000 步", "利用微苦味抑制對極甜食物的依賴。"),
+        createDayData("26", "拒絕所有含高油醬汁的沙拉（如胡麻）", "聚會微醺：酒 1 杯", "重訓 20 分鐘", "外食沙拉改選和風醬或油醋汁。"),
+        createDayData("27", "持續拉高飲水量，加速酒精毒素代謝", "暫不安排", "累積 9,000 步", "記錄並觀察飲酒隔天的水腫狀況。"),
+        createDayData("28", "飲食保持清淡，減少鹽分與鈉攝取", "甜點或酒精擇一", "輕鬆散步", "【週結算】記錄腰圍，檢視體態精雕。"),
+        createDayData("29", "早餐補充足夠的無糖豆漿或低脂乳品", "暫不安排", "重訓 25 分鐘", "觀察高蛋白飲食對運動修復的幫助。"),
+        createDayData("30", "嘗試整天完全不吃任何加工食品", "暫不安排", "累積 8,000 步", "【半月檢視】體重應穩定下降達 1.2kg。"),
     ];
 
-    // 自動補完 Day 31-60 的數據庫，維持相同結構
-    for (let i = 31; i <= 60; i++) {
-        const templateRow = rawData[(i - 1) % 30];
-        let note = templateRow[4];
-        if (i === 60) note = "【最終結算】恭喜完成！檢視體重與腰圍成果！";
-        else if (i % 7 === 0) note = `【週結算】測量並記錄本週體重與體態。`;
-        
-        rawData.push([
-            i.toString(),
-            templateRow[1],
-            templateRow[2],
-            templateRow[3],
-            note
-        ]);
+    // 自動補完 Day 31-60，改善錯誤處理
+    try {
+        for (let i = 31; i <= 60; i++) {
+            const templateRow = rawData[(i - 1) % 30];
+            let note = templateRow.note;
+            if (i === 60) note = "【最終結算】恭喜完成！檢視體重與腰圍成果！";
+            else if (i % 7 === 0) note = `【週結算】測量並記錄本週體重與體態。`;
+            
+            rawData.push(createDayData(
+                i.toString(),
+                templateRow.diet,
+                templateRow.mental,
+                templateRow.activity,
+                note
+            ));
+        }
+    } catch (e) {
+        console.error('Error generating day data:', e);
     }
 
     let currentPhase = 1;
-    let checkedDays = JSON.parse(localStorage.getItem('phone_diet_checked_days')) || [];
+    let checkedDays = [];
+    let inputCache = {};
 
-    // 分頁切換 (Bottom Nav)
+    // 安全的 localStorage 操作
+    function safeLoadStorage() {
+        try {
+            const stored = localStorage.getItem('phone_diet_checked_days');
+            checkedDays = stored ? JSON.parse(stored) : [];
+        } catch (e) {
+            console.warn('Failed to load checked days from storage:', e);
+            checkedDays = [];
+        }
+
+        try {
+            if (localStorage.getItem('phone_diet_start_w')) {
+                document.getElementById('start-weight').value = localStorage.getItem('phone_diet_start_w');
+            }
+            if (localStorage.getItem('phone_diet_curr_w')) {
+                document.getElementById('current-weight').value = localStorage.getItem('phone_diet_curr_w');
+            }
+        } catch (e) {
+            console.warn('Failed to load weight from storage:', e);
+        }
+    }
+
+    // 輸入驗證
+    function validateWeight(value) {
+        const num = parseFloat(value);
+        if (isNaN(num)) return { valid: false, error: '請輸入有效的數字' };
+        if (num < 30 || num > 300) return { valid: false, error: '體重應介於 30-300 kg 之間' };
+        return { valid: true, error: null };
+    }
+
+    // 分頁切換 (Bottom Nav) - 改用事件委託
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化底部導覽
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('aria-controls');
+                switchTab(tabId, this);
+            });
+        });
+
+        // 初始化 Phase 按鈕
+        document.querySelectorAll('.phase-selector .phase-btn').forEach((btn, idx) => {
+            btn.addEventListener('click', function() {
+                switchPhase(idx + 1);
+            });
+        });
+
+        // 初始化體重輸入框
+        document.getElementById('start-weight').addEventListener('change', validateAndSaveMetrics);
+        document.getElementById('current-weight').addEventListener('change', validateAndSaveMetrics);
+
+        safeLoadStorage();
+        renderCards();
+        updateProgress();
+    });
+
     function switchTab(tabId, btn) {
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+            item.classList.remove('active');
+            item.setAttribute('aria-selected', 'false');
+        });
         
-        document.getElementById(`tab-${tabId}`).classList.add('active');
+        const tabElement = document.getElementById(`tab-${tabId}`);
+        if (tabElement) {
+            tabElement.classList.add('active');
+        }
+        
         btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
         
         window.scrollTo(0, 0);
     }
 
-    // 行動表階段切換 (Phase Tabs)
+    // 行動表階段切換
     function switchPhase(phaseNum) {
         currentPhase = phaseNum;
-        document.querySelectorAll('.phase-btn').forEach((btn, idx) => {
-            if (idx + 1 === phaseNum) btn.classList.add('active');
-            else btn.classList.remove('active');
+        document.querySelectorAll('.phase-selector .phase-btn').forEach((btn, idx) => {
+            if (idx + 1 === phaseNum) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+            } else {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            }
         });
         renderCards();
     }
 
-    // 渲染手機卡片清單
+    // 渲染手機卡片清單 - 改用 textContent 防止 XSS
     function renderCards() {
         const container = document.getElementById('cards-container');
         container.innerHTML = '';
@@ -566,25 +722,75 @@
         const phaseDays = rawData.slice(startIdx, endIdx);
 
         phaseDays.forEach(row => {
-            const dayNum = parseInt(row[0]);
+            const dayNum = parseInt(row.day);
             const isChecked = checkedDays.includes(dayNum);
 
             const card = document.createElement('div');
             card.className = `day-card ${isChecked ? 'completed' : ''}`;
-            card.innerHTML = `
-                <div class="day-checkbox-wrapper">
-                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleDayCard(${dayNum}, this)">
-                </div>
-                <div class="day-content">
-                    <div class="day-header">
-                        <span class="day-label">Day ${row[0]}</span>
-                    </div>
-                    <div class="task-box"><span class="task-tag tag-diet">飲食</span><span class="task-text">${row[1]}</span></div>
-                    <div class="task-box"><span class="task-tag tag-treat">心靈</span><span class="task-text">${row[2]}</span></div>
-                    <div class="task-box"><span class="task-tag tag-sport">動態</span><span class="task-text">${row[3]}</span></div>
-                    <div class="task-box"><span class="task-tag tag-note">筆記</span><span class="task-text" style="color:var(--text-light); font-style:italic;">${row[4]}</span></div>
-                </div>
-            `;
+            
+            // 安全地建立 DOM 元素而非使用 innerHTML
+            const checkboxWrapper = document.createElement('div');
+            checkboxWrapper.className = 'day-checkbox-wrapper';
+            
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = isChecked;
+            checkbox.setAttribute('aria-label', `Day ${row.day} 完成狀態`);
+            checkbox.addEventListener('change', () => toggleDayCard(dayNum, checkbox));
+            
+            checkboxWrapper.appendChild(checkbox);
+
+            const content = document.createElement('div');
+            content.className = 'day-content';
+
+            const header = document.createElement('div');
+            header.className = 'day-header';
+            
+            const label = document.createElement('span');
+            label.className = 'day-label';
+            label.textContent = `Day ${row.day}`;
+            
+            header.appendChild(label);
+            content.appendChild(header);
+
+            // 建立任務盒子
+            const createTaskBox = (tagClass, tagText, taskText) => {
+                const box = document.createElement('div');
+                box.className = 'task-box';
+                
+                const tag = document.createElement('span');
+                tag.className = `task-tag ${tagClass}`;
+                tag.textContent = tagText;
+                
+                const task = document.createElement('span');
+                task.className = 'task-text';
+                task.textContent = taskText;
+                
+                box.appendChild(tag);
+                box.appendChild(task);
+                return box;
+            };
+
+            content.appendChild(createTaskBox('tag-diet', '飲食', row.diet));
+            content.appendChild(createTaskBox('tag-treat', '心靈', row.mental));
+            content.appendChild(createTaskBox('tag-sport', '動態', row.activity));
+            
+            const noteBox = document.createElement('div');
+            noteBox.className = 'task-box';
+            const noteTag = document.createElement('span');
+            noteTag.className = 'task-tag tag-note';
+            noteTag.textContent = '筆記';
+            const noteText = document.createElement('span');
+            noteText.className = 'task-text';
+            noteText.style.color = 'var(--text-light)';
+            noteText.style.fontStyle = 'italic';
+            noteText.textContent = row.note;
+            noteBox.appendChild(noteTag);
+            noteBox.appendChild(noteText);
+            content.appendChild(noteBox);
+
+            card.appendChild(checkboxWrapper);
+            card.appendChild(content);
             container.appendChild(card);
         });
     }
@@ -598,7 +804,13 @@
             checkedDays = checkedDays.filter(d => d !== dayNum);
             card.classList.remove('completed');
         }
-        localStorage.setItem('phone_diet_checked_days', JSON.stringify(checkedDays));
+        
+        try {
+            localStorage.setItem('phone_diet_checked_days', JSON.stringify(checkedDays));
+        } catch (e) {
+            console.warn('Failed to save progress:', e);
+        }
+        
         updateProgress();
     }
 
@@ -607,23 +819,72 @@
         const checkedCount = checkedDays.length;
         const percentage = Math.round((checkedCount / totalDays) * 100);
 
-        document.getElementById('days-count').innerText = `${checkedCount} / ${totalDays} 天`;
-        document.getElementById('progress-text').innerText = `${percentage}%`;
-        document.getElementById('main-progress').style.width = `${percentage}%`;
+        const daysCountElement = document.getElementById('days-count');
+        const progressTextElement = document.getElementById('progress-text');
+        const mainProgressElement = document.getElementById('main-progress');
+
+        if (daysCountElement) daysCountElement.textContent = `${checkedCount} / ${totalDays} 天`;
+        if (progressTextElement) progressTextElement.textContent = `${percentage}%`;
+        if (mainProgressElement) {
+            mainProgressElement.style.width = `${percentage}%`;
+            mainProgressElement.setAttribute('aria-valuenow', percentage);
+        }
     }
 
-    function saveMetrics() {
-        localStorage.setItem('phone_diet_start_w', document.getElementById('start-weight').value);
-        localStorage.setItem('phone_diet_curr_w', document.getElementById('current-weight').value);
-    }
+    // 驗證並保存體重 - 新增驗證邏輯
+    function validateAndSaveMetrics() {
+        const startWeightElement = document.getElementById('start-weight');
+        const currentWeightElement = document.getElementById('current-weight');
+        const errorDiv = document.getElementById('error-message-dash');
 
-    // 載入緩存體重
-    if(localStorage.getItem('phone_diet_start_w')) document.getElementById('start-weight').value = localStorage.getItem('phone_diet_start_w');
-    if(localStorage.getItem('phone_diet_curr_w')) document.getElementById('current-weight').value = localStorage.getItem('phone_diet_curr_w');
+        const startValidation = validateWeight(startWeightElement.value);
+        const currentValidation = validateWeight(currentWeightElement.value);
+
+        let hasError = false;
+        let errorMessage = '';
+
+        if (!startValidation.valid) {
+            startWeightElement.classList.add('error');
+            errorMessage += `起始體重：${startValidation.error}\n`;
+            hasError = true;
+        } else {
+            startWeightElement.classList.remove('error');
+        }
+
+        if (!currentValidation.valid) {
+            currentWeightElement.classList.add('error');
+            errorMessage += `目前體重：${currentValidation.error}`;
+            hasError = true;
+        } else {
+            currentWeightElement.classList.remove('error');
+        }
+
+        if (hasError) {
+            if (errorDiv) {
+                errorDiv.textContent = errorMessage;
+                errorDiv.classList.add('show');
+            }
+            return;
+        }
+
+        if (errorDiv) {
+            errorDiv.classList.remove('show');
+        }
+
+        try {
+            localStorage.setItem('phone_diet_start_w', startWeightElement.value);
+            localStorage.setItem('phone_diet_curr_w', currentWeightElement.value);
+        } catch (e) {
+            console.warn('Failed to save metrics:', e);
+            if (errorDiv) {
+                errorDiv.textContent = '無法保存數據，請檢查存儲空間。';
+                errorDiv.classList.add('show');
+            }
+        }
+    }
 
     // 初始化
-    renderCards();
-    updateProgress();
+    safeLoadStorage();
 </script>
 </body>
 </html>
