@@ -691,31 +691,8 @@
 
     // 分頁切換 (Bottom Nav) - 改用事件委託
     document.addEventListener('DOMContentLoaded', function() {
-        
-    function updateWeightMetrics() {
-        const start = parseFloat(document.getElementById('start-weight').value) || 0;
-        const current = parseFloat(document.getElementById('current-weight').value) || 0;
-        const target = parseFloat(document.getElementById('target-weight').value) || 0;
 
-        const totalGoal = Math.max(start - target, 0);
-        const currentLoss = Math.max(start - current, 0);
-        const remaining = Math.max(current - target, 0);
-
-        const weightProgress = totalGoal > 0
-            ? Math.min(Math.round((currentLoss / totalGoal) * 100), 100)
-            : 0;
-
-        const remainingDays = Math.max(60 - checkedDays.length, 1);
-        const weeklyPace = ((remaining / remainingDays) * 7).toFixed(1);
-
-        document.getElementById('weight-lost').textContent = `${currentLoss.toFixed(1)} kg`;
-        document.getElementById('remaining-weight').textContent = `${remaining.toFixed(1)} kg`;
-        document.getElementById('weight-progress').textContent = `${weightProgress}%`;
-        document.getElementById('weekly-pace').textContent = `${weeklyPace} kg`;
-    }
-
-    // 初始化
-底部導覽
+    // 初始化 - 底部導覽
         document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
             btn.addEventListener('click', function() {
                 const tabId = this.getAttribute('aria-controls');
@@ -723,62 +700,14 @@
             });
         });
 
-        
-    function updateWeightMetrics() {
-        const start = parseFloat(document.getElementById('start-weight').value) || 0;
-        const current = parseFloat(document.getElementById('current-weight').value) || 0;
-        const target = parseFloat(document.getElementById('target-weight').value) || 0;
-
-        const totalGoal = Math.max(start - target, 0);
-        const currentLoss = Math.max(start - current, 0);
-        const remaining = Math.max(current - target, 0);
-
-        const weightProgress = totalGoal > 0
-            ? Math.min(Math.round((currentLoss / totalGoal) * 100), 100)
-            : 0;
-
-        const remainingDays = Math.max(60 - checkedDays.length, 1);
-        const weeklyPace = ((remaining / remainingDays) * 7).toFixed(1);
-
-        document.getElementById('weight-lost').textContent = `${currentLoss.toFixed(1)} kg`;
-        document.getElementById('remaining-weight').textContent = `${remaining.toFixed(1)} kg`;
-        document.getElementById('weight-progress').textContent = `${weightProgress}%`;
-        document.getElementById('weekly-pace').textContent = `${weeklyPace} kg`;
-    }
-
-    // 初始化
- Phase 按鈕
+    // 初始化 - Phase 按鈕
         document.querySelectorAll('.phase-selector .phase-btn').forEach((btn, idx) => {
             btn.addEventListener('click', function() {
                 switchPhase(idx + 1);
             });
         });
 
-        
-    function updateWeightMetrics() {
-        const start = parseFloat(document.getElementById('start-weight').value) || 0;
-        const current = parseFloat(document.getElementById('current-weight').value) || 0;
-        const target = parseFloat(document.getElementById('target-weight').value) || 0;
-
-        const totalGoal = Math.max(start - target, 0);
-        const currentLoss = Math.max(start - current, 0);
-        const remaining = Math.max(current - target, 0);
-
-        const weightProgress = totalGoal > 0
-            ? Math.min(Math.round((currentLoss / totalGoal) * 100), 100)
-            : 0;
-
-        const remainingDays = Math.max(60 - checkedDays.length, 1);
-        const weeklyPace = ((remaining / remainingDays) * 7).toFixed(1);
-
-        document.getElementById('weight-lost').textContent = `${currentLoss.toFixed(1)} kg`;
-        document.getElementById('remaining-weight').textContent = `${remaining.toFixed(1)} kg`;
-        document.getElementById('weight-progress').textContent = `${weightProgress}%`;
-        document.getElementById('weekly-pace').textContent = `${weeklyPace} kg`;
-    }
-
-    // 初始化
-體重輸入框
+    // 初始化 - 體重輸入框
         document.getElementById('start-weight').addEventListener('change', validateAndSaveMetrics);
         document.getElementById('current-weight').addEventListener('change', validateAndSaveMetrics);
         document.getElementById('target-weight').addEventListener('change', validateAndSaveMetrics);
@@ -789,21 +718,25 @@
     });
 
     function switchTab(tabId, btn) {
+        if (!tabId) return;
+
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
             item.classList.remove('active');
             item.setAttribute('aria-selected', 'false');
         });
-        
+
         const tabElement = document.getElementById(tabId);
         if (tabElement) {
             tabElement.classList.add('active');
         }
-        
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-        
-        window.scrollTo(0, 0);
+
+        if (btn) {
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // 行動表階段切換
