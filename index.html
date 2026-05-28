@@ -2,9 +2,21 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>60天「可持續性」生活化減重工具</title>
+    <script>
+        (function() {
+            var saved = null;
+            try { saved = localStorage.getItem('phone_diet_theme'); } catch(e) {}
+            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var theme = saved || (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
     <style>
+        /* =====================
+           1. 預設主題與變數（強迫綁定 Light）
+        ===================== */
         :root {
             --primary: #2563eb;
             --primary-light: #eff6ff;
@@ -16,6 +28,99 @@
             --text: #1e293b;
             --text-light: #64748b;
             --border: #e2e8f0;
+
+            /* Semantic tokens */
+            --heading: #1e3a8a;
+            --text-secondary: #475569;
+            --surface-muted: #f1f5f9;
+            --border-muted: #f1f5f9;
+            --progress-bg: #e2e8f0;
+            --completed-text: #94a3b8;
+            --phase-btn-bg: #e2e8f0;
+            --phase-btn-text: #475569;
+
+            /* Tag colours */
+            --tag-diet-bg: #ffe4e6;     --tag-diet-text: #b91c1c;
+            --tag-treat-bg: #fef3c7;    --tag-treat-text: #b45309;
+            --tag-sport-bg: #dcfce7;    --tag-sport-text: #15803d;
+            --tag-note-bg: #e0f2fe;     --tag-note-text: #0369a1;
+            --tag-default-bg: #f1f5f9;  --tag-default-text: #475569;
+
+            /* Traffic light backgrounds */
+            --light-red-bg: #fef2f2;
+            --light-yellow-bg: #fffbeb;
+            --light-green-bg: #f0fdf4;
+            --light-content-text: #475569;
+        }
+
+        /* 顯式指定 Light Mode (完全複製 :root 確保特異度權重最高) */
+        html[data-theme="light"] {
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --success: #10b981;
+            --success-light: #f0fdf4;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+
+            --heading: #1e3a8a;
+            --text-secondary: #475569;
+            --surface-muted: #f1f5f9;
+            --border-muted: #f1f5f9;
+            --progress-bg: #e2e8f0;
+            --completed-text: #94a3b8;
+            --phase-btn-bg: #e2e8f0;
+            --phase-btn-text: #475569;
+
+            --tag-diet-bg: #ffe4e6;     --tag-diet-text: #b91c1c;
+            --tag-treat-bg: #fef3c7;    --tag-treat-text: #b45309;
+            --tag-sport-bg: #dcfce7;    --tag-sport-text: #15803d;
+            --tag-note-bg: #e0f2fe;     --tag-note-text: #0369a1;
+            --tag-default-bg: #f1f5f9;  --tag-default-text: #475569;
+
+            --light-red-bg: #fef2f2;
+            --light-yellow-bg: #fffbeb;
+            --light-green-bg: #f0fdf4;
+            --light-content-text: #475569;
+        }
+
+        /* =====================
+           2. Dark Mode (用 html[data-theme="dark"] 提高權重)
+        ===================== */
+        html[data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-light: #1e3a8a;
+            --success: #34d399;
+            --success-light: #064e3b;
+            --danger: #f87171;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-light: #94a3b8;
+            --border: #334155;
+
+            --heading: #93c5fd;
+            --text-secondary: #94a3b8;
+            --surface-muted: #1e293b;
+            --border-muted: #334155;
+            --progress-bg: #334155;
+            --completed-text: #475569;
+            --phase-btn-bg: #334155;
+            --phase-btn-text: #94a3b8;
+
+            --tag-diet-bg: #450a0a;     --tag-diet-text: #fca5a5;
+            --tag-treat-bg: #422006;    --tag-treat-text: #fcd34d;
+            --tag-sport-bg: #052e16;    --tag-sport-text: #6ee7b7;
+            --tag-note-bg: #0c2a4a;     --tag-note-text: #7dd3fc;
+            --tag-default-bg: #334155;  --tag-default-text: #94a3b8;
+
+            --light-red-bg: #2d0a0a;
+            --light-yellow-bg: #2d1a00;
+            --light-green-bg: #052e16;
+            --light-content-text: #94a3b8;
         }
 
         * {
@@ -23,10 +128,11 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* 核心修復：加入 !important 確保背景色與當前 HTML 主題變數完全鎖死 */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: var(--bg) !important;
+            color: var(--text) !important;
             margin: 0;
             padding: 0;
             padding-bottom: calc(80px + env(safe-area-inset-bottom));
@@ -41,7 +147,7 @@
 
         @media (max-width: 480px) {
             body {
-                padding-bottom: 75px;
+                padding-bottom: calc(75px + env(safe-area-inset-bottom));
             }
             .container {
                 padding: 12px;
@@ -60,11 +166,12 @@
         header {
             text-align: center;
             padding: 10px 0 20px 0;
+            position: relative;
         }
 
         header h1 {
             font-size: 1.4rem;
-            color: #1e3a8a;
+            color: var(--heading);
             margin: 0 0 5px 0;
         }
 
@@ -110,7 +217,7 @@
             right: 0;
             height: calc(65px + env(safe-area-inset-bottom));
             padding-bottom: env(safe-area-inset-bottom);
-            background: var(--card-bg);
+            background: var(--card-bg) !important;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -132,7 +239,9 @@
             font-weight: 500;
             cursor: pointer;
             padding: 5px 0;
-            transition: color 0.2s ease;
+            transition: color 0.2s ease, opacity 0.2s ease;
+            opacity: 0.45;
+            position: relative;
         }
 
         .nav-item:focus-visible {
@@ -143,10 +252,28 @@
         .nav-item .icon {
             font-size: 1.4rem;
             margin-bottom: 2px;
+            transition: transform 0.2s ease;
         }
 
         .nav-item.active {
             color: var(--primary);
+            opacity: 1;
+            font-weight: 700;
+        }
+
+        .nav-item.active .icon {
+            transform: scale(1.15);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25%;
+            right: 25%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 0 0 3px 3px;
         }
 
         .tab-content {
@@ -198,6 +325,7 @@
             font-size: 1.1rem;
             font-weight: bold;
             color: var(--text);
+            background-color: var(--card-bg);
             transition: border-color 0.2s ease;
         }
 
@@ -227,7 +355,7 @@
         }
 
         .progress-bg {
-            background: #e2e8f0;
+            background: var(--progress-bg);
             height: 12px;
             border-radius: 6px;
             overflow: hidden;
@@ -245,7 +373,7 @@
         .principle-item {
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid var(--border-muted);
         }
         .principle-item:last-child {
             border-bottom: none;
@@ -254,7 +382,7 @@
         }
         .principle-title {
             font-weight: bold;
-            color: #1e3a8a;
+            color: var(--heading);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -262,7 +390,7 @@
         }
         .principle-desc {
             font-size: 0.85rem;
-            color: #475569;
+            color: var(--text-secondary);
             margin-top: 4px;
             padding-left: 22px;
         }
@@ -280,13 +408,13 @@
 
         .phase-btn {
             padding: 8px 14px;
-            background: #e2e8f0;
+            background: var(--phase-btn-bg);
             border: none;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
             white-space: nowrap;
-            color: #475569;
+            color: var(--phase-btn-text);
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -314,7 +442,7 @@
         }
 
         .day-card.completed {
-            background-color: var(--success-light);
+            background-color: var(--success-light) !important;
             border-color: #bbf7d0;
         }
 
@@ -350,7 +478,7 @@
 
         .day-card.completed .day-label, 
         .day-card.completed .task-text {
-            color: #94a3b8;
+            color: var(--completed-text);
             text-decoration: line-through;
         }
 
@@ -367,14 +495,14 @@
             padding: 2px 6px;
             border-radius: 4px;
             margin-right: 4px;
-            background: #f1f5f9;
-            color: #475569;
+            background: var(--tag-default-bg);
+            color: var(--tag-default-text);
         }
 
-        .tag-diet { background: #ffe4e6; color: #b91c1c; }
-        .tag-treat { background: #fef3c7; color: #b45309; }
-        .tag-sport { background: #dcfce7; color: #15803d; }
-        .tag-note { background: #e0f2fe; color: #0369a1; }
+        .tag-diet  { background: var(--tag-diet-bg);  color: var(--tag-diet-text); }
+        .tag-treat { background: var(--tag-treat-bg); color: var(--tag-treat-text); }
+        .tag-sport { background: var(--tag-sport-bg); color: var(--tag-sport-text); }
+        .tag-note  { background: var(--tag-note-bg);  color: var(--tag-note-text); }
 
         /* 紅綠燈樣式 */
         .light-section {
@@ -382,9 +510,9 @@
             padding-left: 12px;
             margin-bottom: 16px;
         }
-        .light-red { border-color: #ef4444; background: #fef2f2; }
-        .light-yellow { border-color: #f59e0b; background: #fffbeb; }
-        .light-green { border-color: #10b981; background: #f0fdf4; }
+        .light-red    { border-color: #ef4444; background: var(--light-red-bg); }
+        .light-yellow { border-color: #f59e0b; background: var(--light-yellow-bg); }
+        .light-green  { border-color: #10b981; background: var(--light-green-bg); }
         
         .light-title {
             font-weight: bold;
@@ -397,7 +525,70 @@
 
         .light-content {
             font-size: 0.85rem;
-            color: #475569;
+            color: var(--light-content-text);
+        }
+
+        /* =====================
+           Dark Mode 特定樣式覆蓋
+        ===================== */
+        html[data-theme="dark"] .metric-card input {
+            background: var(--bg);
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        html[data-theme="dark"] .metric-card input:focus {
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+
+        html[data-theme="dark"] .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        html[data-theme="dark"] .light-red .light-title  { color: #fca5a5; }
+        html[data-theme="dark"] .light-yellow .light-title { color: #fcd34d; }
+        html[data-theme="dark"] .light-green .light-title  { color: #6ee7b7; }
+
+        html[data-theme="dark"] .light-red   { border-color: #f87171; }
+        html[data-theme="dark"] .light-yellow { border-color: #fbbf24; }
+        html[data-theme="dark"] .light-green  { border-color: #34d399; }
+        
+        html[data-theme="dark"] .day-card.completed {
+            background-color: var(--success-light) !important;
+            border-color: #064e3b;
+        }
+
+        /* =====================
+           Theme Toggle Button
+        ===================== */
+        .theme-toggle {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            background: var(--surface-muted);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.2s ease, color 0.2s ease;
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 36px;
+        }
+
+        .theme-toggle:active {
+            opacity: 0.75;
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
         }
     </style>
 </head>
@@ -405,11 +596,14 @@
 
 <div class="container">
     
-    <!-- 分頁一：Dashboard 看板 -->
     <div id="tab-dash" class="tab-content active" role="tabpanel" aria-labelledby="tab-dash-btn">
         <div id="error-message-dash" class="error-message"></div>
         
         <header>
+            <button class="theme-toggle" id="theme-toggle-btn" aria-label="切換深色/淺色模式">
+                <span id="theme-icon">🌙</span>
+                <span id="theme-label">深色</span>
+            </button>
             <h1>🎯 60天生活化減重看板</h1>
             <p>目標：2 個月穩健減重 2.5 kg</p>
         </header>
@@ -417,15 +611,15 @@
         <div class="dashboard-grid">
             <div class="metric-card">
                 <h3>起始體重 (kg)</h3>
-                <input type="number" id="start-weight" value="75" step="0.1" min="30" max="300" aria-label="起始體重">
+                <input type="number" id="start-weight" value="75" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off" aria-label="起始體重">
             </div>
             <div class="metric-card">
                 <h3>目前體重 (kg)</h3>
-                <input type="number" id="current-weight" value="74" step="0.1" min="30" max="300" aria-label="目前體重">
+                <input type="number" id="current-weight" value="74" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off" aria-label="目前體重">
             </div>
             <div class="metric-card">
                 <h3>目標體重 (kg)</h3>
-                <input type="number" id="target-weight" value="72.5" step="0.1" min="30" max="300" aria-label="目標體重">
+                <input type="number" id="target-weight" value="72.5" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off" aria-label="目標體重">
             </div>
             <div class="metric-card">
                 <h3>已完成進度</h3>
@@ -494,7 +688,6 @@
         </div>
     </div>
 
-    <!-- 分頁二：60天每日行動表 -->
     <div id="tab-plan" class="tab-content" role="tabpanel" aria-labelledby="tab-plan-btn">
         <header>
             <h1>📅 60天階梯式行動表</h1>
@@ -509,11 +702,9 @@
         </div>
 
         <div id="cards-container">
-            <!-- 動態生成的卡片 -->
-        </div>
+            </div>
     </div>
 
-    <!-- 分頁三：應變紅綠燈 -->
     <div id="tab-rules" class="tab-content" role="tabpanel" aria-labelledby="tab-rules-btn">
         <header>
             <h1>🚦 突發狀況應變紅綠燈</h1>
@@ -548,7 +739,7 @@
             </div>
             <div class="light-section light-green">
                 <div class="light-title">🟢 綠燈 (首選定錨)</div>
-                <div class="light-content">晚餐吃清淡原型食物，提早 1 小時就寢，用高質量睡眠修復內分泌。</div>
+                <div class="light-content">晚餐吃清淡原型食物，提早 1 小時就漸寢，用高質量睡眠修復內分泌。</div>
             </div>
         </div>
 
@@ -571,7 +762,6 @@
 
 </div>
 
-<!-- 底部導覽列 -->
 <div class="bottom-nav" role="tablist" aria-label="主頁面導覽">
     <button class="nav-item active" role="tab" aria-selected="true" aria-controls="tab-dash" id="tab-dash-btn" aria-label="看板視圖">
         <span class="icon">📊</span>
@@ -588,13 +778,8 @@
 </div>
 
 <script>
-    // 數據結構：改用物件而非陣列，提升可維護性
     const createDayData = (day, diet, mental, activity, note) => ({
-        day,
-        diet,
-        mental,
-        activity,
-        note
+        day, diet, mental, activity, note
     });
 
     const rawData = [
@@ -615,10 +800,10 @@
         createDayData("15", "早餐加入 1 份低 GI 水果（如蘋果）", "暫不安排", "重訓 25 分鐘", "回顧兩週：甜點與酒是否有依規控量。"),
         createDayData("16", "午餐精緻澱粉減半，改吃粗糙澱粉", "暫不安排", "步行 8,000 步", "評估改吃粗糙澱粉後的下午精神。"),
         createDayData("17", "晚餐選擇清蒸魚或烤雞胸（低脂）", "心靈充電：甜點 1 份 (<300卡)", "快走 25 分鐘", "吃完甜點後，當晚絕不延伸出宵夜。"),
-        createDayData("18", "液體熱量歸零（不喝任何含糖手搖飲）", "暫不安排", "累積 8,000 步", "嘴饞時先喝水 300ml，排除偽飢餓。"),
+        createDayData("18", "液體熱量歸零（不喝 any 含糖手搖飲）", "暫不安排", "累積 8,000 步", "嘴饞時先喝水 300ml，排除偽飢餓。"),
         createDayData("19", "外食聚餐時，先吃完一盤蔬菜再吃主食", "社交微醺：酒 1 杯", "重訓 20 分鐘", "喝酒當晚澱粉量自動減半，平衡熱量。"),
         createDayData("20", "增加深綠色蔬菜（補充足夠微量元素）", "暫不安排", "累積 9,000 步", "提高纖維質有助於優化腸道排毒。"),
-        createDayData("21", "規律三餐，每餐食量維持七至八分飽", "甜點或酒精擇一", "充分休息", "【週結算】記錄體重，保持平穩心態。"),
+        createDayData("21", "規律三餐，每餐食量維持七至八分飽", "甜點或酒精擇一", "充分休息", "【週結算】記錄體重，保持平穩心態. "),
         createDayData("22", "早餐選擇原型食物（如燕麥配蛋）", "暫不安排", "重訓 25 分鐘", "觀察高壓工作日下，控糖是否變容易。"),
         createDayData("23", "午餐主菜去皮（如炸雞腿去皮）", "暫不安排", "累積 8,000 步", "簡單去皮即可減少 100卡隱形脂肪。"),
         createDayData("24", "晚餐以大量蔬菜搭配雙份豆腐/蛋", "週末前哨：甜點 1 份 (<300卡)", "快走 25 分鐘", "甜點安排在晚餐後立即吃，不單獨當午茶。"),
@@ -630,7 +815,6 @@
         createDayData("30", "嘗試整天完全不吃任何加工食品", "暫不安排", "累積 8,000 步", "【半月檢視】體重應穩定下降達 1.2kg。"),
     ];
 
-    // 自動補完 Day 31-60，改善錯誤處理
     try {
         for (let i = 31; i <= 60; i++) {
             const templateRow = rawData[(i - 1) % 30];
@@ -638,50 +822,30 @@
             if (i >= 31 && i <= 45) note = "【體態精雕】專注穩定與恢復品質。";
             else if (i >= 46 && i <= 59) note = "【最後衝刺】維持穩定習慣與睡眠節奏。";
             else if (i === 60) note = "【最終結算】恭喜完成！檢視體重與腰圍成果！";
-            else if (i % 7 === 0) note = `【週結算】測量並記錄本週體重與體態。`;
             
             rawData.push(createDayData(
-                i.toString(),
-                templateRow.diet,
-                templateRow.mental,
-                templateRow.activity,
-                note
+                i.toString(), templateRow.diet, templateRow.mental, templateRow.activity, note
             ));
         }
-    } catch (e) {
-        console.error('Error generating day data:', e);
-    }
+    } catch (e) { console.error('Error generating day data:', e); }
 
     let currentPhase = 1;
     let checkedDays = [];
-    let inputCache = {};
+    const THEME_KEY = 'phone_diet_theme';
 
-    // 安全的 localStorage 操作
     function safeLoadStorage() {
         try {
             const stored = localStorage.getItem('phone_diet_checked_days');
             checkedDays = stored ? JSON.parse(stored) : [];
-        } catch (e) {
-            console.warn('Failed to load checked days from storage:', e);
-            checkedDays = [];
-        }
+        } catch (e) { checkedDays = []; }
 
         try {
-            if (localStorage.getItem('phone_diet_start_w')) {
-                document.getElementById('start-weight').value = localStorage.getItem('phone_diet_start_w');
-            }
-            if (localStorage.getItem('phone_diet_target_w')) {
-                document.getElementById('target-weight').value = localStorage.getItem('phone_diet_target_w');
-            }
-            if (localStorage.getItem('phone_diet_curr_w')) {
-                document.getElementById('current-weight').value = localStorage.getItem('phone_diet_curr_w');
-            }
-        } catch (e) {
-            console.warn('Failed to load weight from storage:', e);
-        }
+            if (localStorage.getItem('phone_diet_start_w')) document.getElementById('start-weight').value = localStorage.getItem('phone_diet_start_w');
+            if (localStorage.getItem('phone_diet_target_w')) document.getElementById('target-weight').value = localStorage.getItem('phone_diet_target_w');
+            if (localStorage.getItem('phone_diet_curr_w')) document.getElementById('current-weight').value = localStorage.getItem('phone_diet_curr_w');
+        } catch (e) {}
     }
 
-    // 輸入驗證
     function validateWeight(value) {
         const num = parseFloat(value);
         if (isNaN(num)) return { valid: false, error: '請輸入有效的數字' };
@@ -689,37 +853,65 @@
         return { valid: true, error: null };
     }
 
-    // 分頁切換 (Bottom Nav) - 改用事件委託
-    document.addEventListener('DOMContentLoaded', function() {
+    // =====================
+    // 修正版主題管理核心
+    // =====================
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        const icon  = document.getElementById('theme-icon');
+        const label = document.getElementById('theme-label');
 
-    // 初始化 - 底部導覽
+        if (theme === 'dark') {
+            if (icon)  icon.textContent  = '☀️';
+            if (label) label.textContent = '淺色';
+        } else {
+            if (icon)  icon.textContent  = '🌙';
+            if (label) label.textContent = '深色';
+        }
+    }
+
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next    = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 確保按鈕綁定事件
+        const themeBtn = document.getElementById('theme-toggle-btn');
+        if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
         document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
             btn.addEventListener('click', function() {
-                const tabId = this.getAttribute('aria-controls');
-                switchTab(tabId, this);
+                switchTab(this.getAttribute('aria-controls'), this);
             });
         });
 
-    // 初始化 - Phase 按鈕
         document.querySelectorAll('.phase-selector .phase-btn').forEach((btn, idx) => {
-            btn.addEventListener('click', function() {
-                switchPhase(idx + 1);
-            });
+            btn.addEventListener('click', function() { switchPhase(idx + 1); });
         });
 
-    // 初始化 - 體重輸入框
-        document.getElementById('start-weight').addEventListener('change', validateAndSaveMetrics);
-        document.getElementById('current-weight').addEventListener('change', validateAndSaveMetrics);
-        document.getElementById('target-weight').addEventListener('change', validateAndSaveMetrics);
+        const inputs = ['start-weight', 'current-weight', 'target-weight'];
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) {
+                el.addEventListener('change', validateAndSaveMetrics);
+                el.addEventListener('input', validateAndSaveMetrics);
+            }
+        });
 
         safeLoadStorage();
         renderCards();
         updateProgress();
+        
+        // 從 DOM 頂層讀取同步腳本執行完的結果，維持狀態一致
+        const activeTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        applyTheme(activeTheme);
     });
 
     function switchTab(tabId, btn) {
         if (!tabId) return;
-
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
             item.classList.remove('active');
@@ -727,19 +919,14 @@
         });
 
         const tabElement = document.getElementById(tabId);
-        if (tabElement) {
-            tabElement.classList.add('active');
-        }
-
+        if (tabElement) tabElement.classList.add('active');
         if (btn) {
             btn.classList.add('active');
             btn.setAttribute('aria-selected', 'true');
         }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
 
-    // 行動表階段切換
     function switchPhase(phaseNum) {
         currentPhase = phaseNum;
         document.querySelectorAll('.phase-selector .phase-btn').forEach((btn, idx) => {
@@ -754,60 +941,45 @@
         renderCards();
     }
 
-    // 渲染手機卡片清單 - 改用 textContent 防止 XSS
     function renderCards() {
         const container = document.getElementById('cards-container');
         container.innerHTML = '';
-
         const startIdx = (currentPhase - 1) * 15;
-        const endIdx = startIdx + 15;
-        const phaseDays = rawData.slice(startIdx, endIdx);
+        const phaseDays = rawData.slice(startIdx, startIdx + 15);
 
         phaseDays.forEach(row => {
             const dayNum = parseInt(row.day);
             const isChecked = checkedDays.includes(dayNum);
-
             const card = document.createElement('div');
             card.className = `day-card ${isChecked ? 'completed' : ''}`;
             
-            // 安全地建立 DOM 元素而非使用 innerHTML
             const checkboxWrapper = document.createElement('div');
             checkboxWrapper.className = 'day-checkbox-wrapper';
-            
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.checked = isChecked;
-            checkbox.setAttribute('aria-label', `Day ${row.day} 完成狀態`);
             checkbox.addEventListener('change', () => toggleDayCard(dayNum, checkbox));
-            
             checkboxWrapper.appendChild(checkbox);
 
             const content = document.createElement('div');
             content.className = 'day-content';
-
             const header = document.createElement('div');
             header.className = 'day-header';
-            
             const label = document.createElement('span');
             label.className = 'day-label';
             label.textContent = `Day ${row.day}`;
-            
             header.appendChild(label);
             content.appendChild(header);
 
-            // 建立任務盒子
             const createTaskBox = (tagClass, tagText, taskText) => {
                 const box = document.createElement('div');
                 box.className = 'task-box';
-                
                 const tag = document.createElement('span');
                 tag.className = `task-tag ${tagClass}`;
                 tag.textContent = tagText;
-                
                 const task = document.createElement('span');
                 task.className = 'task-text';
                 task.textContent = taskText;
-                
                 box.appendChild(tag);
                 box.appendChild(task);
                 return box;
@@ -817,18 +989,9 @@
             content.appendChild(createTaskBox('tag-treat', '心靈', row.mental));
             content.appendChild(createTaskBox('tag-sport', '動態', row.activity));
             
-            const noteBox = document.createElement('div');
-            noteBox.className = 'task-box';
-            const noteTag = document.createElement('span');
-            noteTag.className = 'task-tag tag-note';
-            noteTag.textContent = '筆記';
-            const noteText = document.createElement('span');
-            noteText.className = 'task-text';
-            noteText.style.color = 'var(--text-light)';
-            noteText.style.fontStyle = 'italic';
-            noteText.textContent = row.note;
-            noteBox.appendChild(noteTag);
-            noteBox.appendChild(noteText);
+            const noteBox = createTaskBox('tag-note', '筆記', row.note);
+            noteBox.querySelector('.task-text').style.color = 'var(--text-light)';
+            noteBox.querySelector('.task-text').style.fontStyle = 'italic';
             content.appendChild(noteBox);
 
             card.appendChild(checkboxWrapper);
@@ -846,13 +1009,7 @@
             checkedDays = checkedDays.filter(d => d !== dayNum);
             card.classList.remove('completed');
         }
-        
-        try {
-            localStorage.setItem('phone_diet_checked_days', JSON.stringify(checkedDays));
-        } catch (e) {
-            console.warn('Failed to save progress:', e);
-        }
-        
+        try { localStorage.setItem('phone_diet_checked_days', JSON.stringify(checkedDays)); } catch (e) {}
         updateProgress();
     }
 
@@ -861,86 +1018,45 @@
         const checkedCount = checkedDays.length;
         const percentage = Math.round((checkedCount / totalDays) * 100);
 
-        const daysCountElement = document.getElementById('days-count');
-        const progressTextElement = document.getElementById('progress-text');
-        const mainProgressElement = document.getElementById('main-progress');
-
-        if (daysCountElement) daysCountElement.textContent = `${checkedCount} / ${totalDays} 天`;
-        if (progressTextElement) progressTextElement.textContent = `${percentage}%`;
-        updateWeightMetrics();
-
-        if (mainProgressElement) {
-            mainProgressElement.style.width = `${percentage}%`;
-            mainProgressElement.setAttribute('aria-valuenow', percentage);
+        if (document.getElementById('days-count')) document.getElementById('days-count').textContent = `${checkedCount} / ${totalDays} 天`;
+        if (document.getElementById('progress-text')) document.getElementById('progress-text').textContent = `${percentage}%`;
+        
+        const mainProgress = document.getElementById('main-progress');
+        if (mainProgress) {
+            mainProgress.style.width = `${percentage}%`;
+            mainProgress.setAttribute('aria-valuenow', percentage);
         }
+        updateWeightMetrics();
     }
 
-    // 驗證並保存體重 - 新增驗證邏輯
     function validateAndSaveMetrics() {
-        const startWeightElement = document.getElementById('start-weight');
-        const currentWeightElement = document.getElementById('current-weight');
-        const targetWeightElement = document.getElementById('target-weight');
+        const startW = document.getElementById('start-weight');
+        const currW = document.getElementById('current-weight');
+        const targetW = document.getElementById('target-weight');
         const errorDiv = document.getElementById('error-message-dash');
 
-        const startValidation = validateWeight(startWeightElement.value);
-        const currentValidation = validateWeight(currentWeightElement.value);
-        const targetValidation = validateWeight(targetWeightElement.value);
+        const v1 = validateWeight(startW.value);
+        const v2 = validateWeight(currW.value);
+        const v3 = validateWeight(targetW.value);
 
-        let hasError = false;
-        let errorMessage = '';
-
-        if (!startValidation.valid) {
-            startWeightElement.classList.add('error');
-            errorMessage += `起始體重：${startValidation.error}\n`;
-            hasError = true;
-        } else {
-            startWeightElement.classList.remove('error');
-        }
-
-        if (!currentValidation.valid) {
-            currentWeightElement.classList.add('error');
-            errorMessage += `目前體重：${currentValidation.error}`;
-            hasError = true;
-        } else {
-            currentWeightElement.classList.remove('error');
-        }
-
-        
-        if (!targetValidation.valid) {
-            targetWeightElement.classList.add('error');
-            errorMessage += `目標體重：${targetValidation.error}`;
-            hasError = true;
-        } else {
-            targetWeightElement.classList.remove('error');
-        }
-
-        if (hasError) {
-
-            if (errorDiv) {
-                errorDiv.textContent = errorMessage;
+        if (!v1.valid || !v2.valid || !v3.valid) {
+            if(errorDiv) {
+                errorDiv.textContent = '請輸入正確的體重範圍 (30-300)';
                 errorDiv.classList.add('show');
             }
             return;
         }
-
-        if (errorDiv) {
-            errorDiv.classList.remove('show');
-        }
+        if (errorDiv) errorDiv.classList.remove('show');
 
         try {
-            localStorage.setItem('phone_diet_start_w', startWeightElement.value);
-            localStorage.setItem('phone_diet_curr_w', currentWeightElement.value);
-            localStorage.setItem('phone_diet_target_w', targetWeightElement.value);
-        } catch (e) {
-            console.warn('Failed to save metrics:', e);
-            if (errorDiv) {
-                errorDiv.textContent = '無法保存數據，請檢查存儲空間。';
-                errorDiv.classList.add('show');
-            }
-        }
+            localStorage.setItem('phone_diet_start_w', startW.value);
+            localStorage.setItem('phone_diet_curr_w', currW.value);
+            localStorage.setItem('phone_diet_target_w', targetW.value);
+        } catch (e) {}
+
+        updateWeightMetrics();
     }
 
-    
     function updateWeightMetrics() {
         const start = parseFloat(document.getElementById('start-weight').value) || 0;
         const current = parseFloat(document.getElementById('current-weight').value) || 0;
@@ -949,23 +1065,15 @@
         const totalGoal = Math.max(start - target, 0);
         const currentLoss = Math.max(start - current, 0);
         const remaining = Math.max(current - target, 0);
-
-        const weightProgress = totalGoal > 0
-            ? Math.min(Math.round((currentLoss / totalGoal) * 100), 100)
-            : 0;
-
+        const weightProgress = totalGoal > 0 ? Math.min(Math.round((currentLoss / totalGoal) * 100), 100) : 0;
         const remainingDays = Math.max(60 - checkedDays.length, 1);
         const weeklyPace = ((remaining / remainingDays) * 7).toFixed(1);
 
-        document.getElementById('weight-lost').textContent = `${currentLoss.toFixed(1)} kg`;
-        document.getElementById('remaining-weight').textContent = `${remaining.toFixed(1)} kg`;
-        document.getElementById('weight-progress').textContent = `${weightProgress}%`;
-        document.getElementById('weekly-pace').textContent = `${weeklyPace} kg`;
+        if(document.getElementById('weight-lost')) document.getElementById('weight-lost').textContent = `${currentLoss.toFixed(1)} kg`;
+        if(document.getElementById('remaining-weight')) document.getElementById('remaining-weight').textContent = `${remaining.toFixed(1)} kg`;
+        if(document.getElementById('weight-progress')) document.getElementById('weight-progress').textContent = `${weightProgress}%`;
+        if(document.getElementById('weekly-pace')) document.getElementById('weekly-pace').textContent = `${weeklyPace} kg`;
     }
-
-    // 初始化
-
-    safeLoadStorage();
 </script>
 </body>
 </html>
