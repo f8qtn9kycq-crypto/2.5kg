@@ -217,12 +217,12 @@
             right: 0;
             height: calc(65px + env(safe-area-inset-bottom));
             padding-bottom: env(safe-area-inset-bottom);
-            background: var(--card-bg) !important;
+            background: #202020 !important;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            border-top: 1px solid var(--border);
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            border-top: 1px solid #303030;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.25);
             z-index: 1000;
         }
 
@@ -234,7 +234,7 @@
             justify-content: center;
             background: none;
             border: none;
-            color: var(--text-light);
+            color: #787878;
             font-size: 0.8rem;
             font-weight: 500;
             cursor: pointer;
@@ -256,7 +256,7 @@
         }
 
         .nav-item.active {
-            color: var(--primary);
+            color: #00e676;
             opacity: 1;
             font-weight: 700;
         }
@@ -272,7 +272,7 @@
             left: 25%;
             right: 25%;
             height: 3px;
-            background: var(--primary);
+            background: #00e676;
             border-radius: 0 0 3px 3px;
         }
 
@@ -292,6 +292,449 @@
             margin-bottom: 16px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             border: 1px solid var(--border);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .hero-card {
+            background: #101010;
+            border: 1px solid #202020;
+            border-radius: 0;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+            color: #f8fafc;
+            margin-bottom: 16px;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .mobile-hdr {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 4px 16px;
+        }
+
+        .brand-group {
+            align-items: center;
+            display: flex;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            font-size: 1.8rem;
+        }
+
+        .brand-name {
+            color: var(--heading);
+            font-size: 1.25rem;
+            font-weight: 850;
+            margin: 0;
+        }
+
+        .brand-tagline {
+            color: var(--text-light);
+            font-size: 0.75rem;
+            margin: 2px 0 0;
+        }
+
+        .theme-toggle-compact {
+            align-items: center;
+            background: var(--surface-muted);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            height: 40px;
+            justify-content: center;
+            width: 40px;
+        }
+
+        .summary-hero-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 12px;
+            padding: 16px;
+        }
+
+        .hero-top-row {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .streak-badge {
+            background: var(--tag-treat-bg);
+            border-radius: 20px;
+            color: var(--tag-treat-text);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 5px 9px;
+        }
+
+        .progress-mini-text {
+            color: var(--text-light);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .main-weight-display {
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .weight-label {
+            color: var(--text-light);
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .weight-control-row {
+            align-items: center;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .stepper-btn {
+            align-items: center;
+            background: var(--surface-muted);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            font-size: 1.25rem;
+            font-weight: 850;
+            height: 48px;
+            justify-content: center;
+            width: 48px;
+        }
+
+        .stepper-btn.plus {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+
+        .weight-numeric-group {
+            align-items: baseline;
+            display: flex;
+            gap: 3px;
+        }
+
+        .weight-value {
+            color: var(--text);
+            font-size: 2.55rem;
+            font-weight: 950;
+            line-height: 1;
+        }
+
+        .weight-unit {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-weight: 800;
+        }
+
+        .progress-track-wrapper {
+            background: var(--surface-muted);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            padding: 10px;
+        }
+
+        .progress-bar-meta {
+            color: var(--text-secondary);
+            display: flex;
+            font-size: 0.75rem;
+            font-weight: 800;
+            justify-content: space-between;
+        }
+
+        .progress-bg-container {
+            background: var(--progress-bg);
+            border-radius: 4px;
+            height: 8px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill-line {
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            height: 100%;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .cta-primary-action-btn {
+            align-items: center;
+            background: var(--success);
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.22);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            font-size: 1rem;
+            font-weight: 850;
+            justify-content: center;
+            margin-bottom: 12px;
+            min-height: 58px;
+            padding: 8px 10px;
+            width: 100%;
+        }
+
+        .cta-subtext {
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1.35;
+            margin-top: 2px;
+            opacity: 0.92;
+        }
+
+        .safety-indicator-bar {
+            align-items: center;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            display: flex;
+            font-size: 0.78rem;
+            font-weight: 800;
+            gap: 8px;
+            line-height: 1.4;
+            padding: 9px 12px;
+        }
+
+        .indicator-dot {
+            background: currentColor;
+            border-radius: 50%;
+            flex: 0 0 auto;
+            height: 7px;
+            width: 7px;
+        }
+
+        .compact-metrics-strip {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: grid;
+            gap: 6px;
+            grid-template-columns: repeat(4, 1fr);
+            margin-bottom: 16px;
+            padding: 8px;
+        }
+
+        .strip-item {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .strip-label {
+            color: var(--text-light);
+            font-size: 0.68rem;
+            font-weight: 800;
+            margin-bottom: 3px;
+        }
+
+        .strip-input {
+            background: var(--surface-muted);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 0.85rem;
+            font-weight: 850;
+            max-width: 64px;
+            padding: 5px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .strip-value {
+            font-size: 0.85rem;
+            font-weight: 850;
+            padding: 4px 0;
+        }
+
+        .strip-value.success { color: var(--success); }
+        .strip-value.primary { color: var(--primary); }
+
+        .hero-main {
+            padding: 18px 18px 20px;
+            text-align: center;
+        }
+
+        .hero-brand-row {
+            align-items: center;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            margin-bottom: 26px;
+        }
+
+        .hero-brand {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 950;
+            letter-spacing: 0;
+        }
+
+        .hero-streak-pill {
+            background: #1f1f1f;
+            border-radius: 999px;
+            color: #00e676;
+            font-size: 0.88rem;
+            font-weight: 800;
+            padding: 8px 12px;
+        }
+
+        .hero-title {
+            color: #8a8a8a;
+            font-size: 0.78rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .hero-action {
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 850;
+            line-height: 1.35;
+            margin: 6px auto 14px;
+            max-width: 420px;
+        }
+
+        .hero-weight-row {
+            align-items: center;
+            display: grid;
+            gap: 14px;
+            grid-template-columns: 64px 1fr 64px;
+            margin: 0 auto 12px;
+            max-width: 320px;
+        }
+
+        .hero-round-btn {
+            align-items: center;
+            border: 0;
+            border-radius: 999px;
+            display: flex;
+            font-size: 1.75rem;
+            font-weight: 950;
+            height: 64px;
+            justify-content: center;
+            min-width: 64px;
+        }
+
+        .hero-round-btn.minus {
+            background: #202020;
+            color: #fff;
+        }
+
+        .hero-round-btn.plus {
+            background: #00e676;
+            color: #020202;
+        }
+
+        .hero-weight-main {
+            color: #fff;
+            font-size: 2.8rem;
+            font-weight: 950;
+            line-height: 0.95;
+        }
+
+        .hero-weight-unit {
+            color: #8a8a8a;
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .hero-history-link {
+            color: #8a8a8a;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin: 18px 0 0;
+        }
+
+        .hero-subnav {
+            background: #202020;
+            border-top: 1px solid #303030;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            min-height: 76px;
+        }
+
+        .hero-subnav-item {
+            align-items: center;
+            color: #787878;
+            display: flex;
+            flex-direction: column;
+            font-size: 0.72rem;
+            font-weight: 800;
+            gap: 5px;
+            justify-content: center;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .hero-subnav-item strong {
+            color: #00e676;
+        }
+
+        .hero-grid {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: 1fr 1fr;
+            margin: 16px auto 12px;
+            max-width: 420px;
+        }
+
+        .hero-mini {
+            background: #151515;
+            border: 1px solid #2d2d2d;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .hero-mini-label {
+            color: #a3a3a3;
+            font-size: 0.78rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .hero-mini-value {
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 800;
+            line-height: 1.35;
+        }
+
+        .status-green {
+            background: rgba(0, 230, 118, 0.12);
+            border-color: #00e676;
+        }
+
+        .status-yellow {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: #f59e0b;
+        }
+
+        .status-red {
+            background: rgba(239, 68, 68, 0.14);
+            border-color: #ef4444;
         }
 
         /* 看板元件 */
@@ -393,6 +836,390 @@
             color: var(--text-secondary);
             margin-top: 4px;
             padding-left: 22px;
+        }
+
+        /* Persona / AI Coach */
+        .card-title-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .card-title-row h3 {
+            margin: 0;
+        }
+
+        .section-note {
+            color: var(--text-light);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin: 4px 0 12px;
+        }
+
+        .persona-status {
+            background: var(--primary-light);
+            color: var(--heading);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 5px 9px;
+            white-space: nowrap;
+        }
+
+        .choice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .choice-btn {
+            min-height: 44px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface-muted);
+            color: var(--text);
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-align: left;
+            padding: 10px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+
+        .choice-btn span {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.76rem;
+            font-weight: 500;
+            line-height: 1.35;
+            margin-top: 4px;
+        }
+
+        .choice-btn.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--heading);
+        }
+
+        .settings-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .control-group label,
+        .control-group legend {
+            color: var(--text);
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        fieldset.control-group {
+            border: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .segmented-control,
+        .pain-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .option-pill {
+            min-height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--card-bg);
+            color: var(--text-secondary);
+            font-size: 0.84rem;
+            font-weight: 700;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .option-pill.active {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: var(--text);
+        }
+
+        .range-row {
+            display: grid;
+            grid-template-columns: 1fr 72px;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .range-row input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+
+        .range-row input[type="number"],
+        .custom-kcal-input {
+            min-height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text);
+            font: inherit;
+            font-weight: 800;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .pain-level-caption {
+            color: var(--text-light);
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .coach-question {
+            width: 100%;
+            min-height: 72px;
+            resize: vertical;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text);
+            font: inherit;
+            line-height: 1.5;
+            padding: 10px;
+        }
+
+        .coach-actions {
+            display: grid;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .primary-action {
+            min-height: 46px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 800;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        .ai-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ai-links a {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .copy-status {
+            color: var(--success);
+            font-size: 0.85rem;
+            font-weight: 700;
+            min-height: 1.2em;
+        }
+
+        .coach-preview {
+            background: var(--surface-muted);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            line-height: 1.55;
+            margin-top: 12px;
+            max-height: 170px;
+            overflow: auto;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+
+        .safety-list {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.65;
+            margin: 8px 0 0;
+            padding-left: 20px;
+        }
+
+        .safety-note {
+            background: var(--light-yellow-bg);
+            border-left: 5px solid #f59e0b;
+            border-radius: 8px;
+            color: var(--light-content-text);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-top: 12px;
+            padding: 10px 12px;
+        }
+
+        .workout-comparison {
+            background: var(--surface-muted);
+            border: 1px solid var(--border-muted);
+            border-radius: 10px;
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            gap: 8px;
+        }
+
+        .comparison-item {
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .comparison-item strong {
+            color: var(--text);
+            display: block;
+            font-size: 0.78rem;
+            margin-bottom: 2px;
+        }
+
+        .actual-row {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr;
+            margin-top: 8px;
+        }
+
+        .actual-select {
+            min-height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text);
+            font: inherit;
+            font-weight: 800;
+            padding: 8px 10px;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .report-item {
+            background: var(--surface-muted);
+            border: 1px solid var(--border-muted);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .report-label {
+            color: var(--text-light);
+            font-size: 0.78rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .report-value {
+            color: var(--text);
+            font-size: 0.96rem;
+            font-weight: 900;
+        }
+
+        .report-actions {
+            display: grid;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .secondary-action {
+            min-height: 44px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 800;
+            padding: 10px 12px;
+            cursor: pointer;
+        }
+
+        .hero-cta-row {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr;
+            margin-bottom: 12px;
+        }
+
+        .hero-secondary-action {
+            min-height: 48px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface-muted);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.92rem;
+            font-weight: 850;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .home-accordion-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .home-accordion {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .home-accordion > summary {
+            align-items: center;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            font-size: 0.98rem;
+            font-weight: 850;
+            justify-content: space-between;
+            list-style: none;
+            min-height: 50px;
+            padding: 0 14px;
+        }
+
+        .home-accordion > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .home-accordion > summary::after {
+            color: var(--text-light);
+            content: '+';
+            font-size: 1.25rem;
+            font-weight: 850;
+        }
+
+        .home-accordion[open] > summary::after {
+            content: '−';
+        }
+
+        .accordion-body {
+            border-top: 1px solid var(--border);
+            padding: 12px;
+        }
+
+        .accordion-body > .card:last-child,
+        .accordion-body > .compact-metrics-strip:last-child {
+            margin-bottom: 0;
         }
 
         /* 行動表 Phase 子分頁 */
@@ -552,6 +1379,9 @@
         html[data-theme="dark"] .light-red   { border-color: #f87171; }
         html[data-theme="dark"] .light-yellow { border-color: #fbbf24; }
         html[data-theme="dark"] .light-green  { border-color: #34d399; }
+        html[data-theme="dark"] .status-green { border-color: #34d399; }
+        html[data-theme="dark"] .status-yellow { border-color: #fbbf24; }
+        html[data-theme="dark"] .status-red { border-color: #f87171; }
         
         html[data-theme="dark"] .day-card.completed {
             background-color: var(--success-light) !important;
@@ -590,6 +1420,20 @@
             outline: 2px solid var(--primary);
             outline-offset: 2px;
         }
+
+        @media (max-width: 480px) {
+            .choice-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-title-row {
+                flex-direction: column;
+            }
+
+            .persona-status {
+                align-self: flex-start;
+            }
+        }
     </style>
 </head>
 <body>
@@ -599,92 +1443,200 @@
     <div id="tab-dash" class="tab-content active" role="tabpanel" aria-labelledby="tab-dash-btn">
         <div id="error-message-dash" class="error-message"></div>
         
-        <header>
-            <button class="theme-toggle" id="theme-toggle-btn" aria-label="切換深色/淺色模式">
+        <header class="mobile-hdr">
+            <div class="brand-group">
+                <span class="brand-logo">🎯</span>
+                <div>
+                    <h1 class="brand-name">2.5kg</h1>
+                    <p class="brand-tagline">穩健減重，生活化減脂工具</p>
+                </div>
+            </div>
+            <button class="theme-toggle-compact" id="theme-toggle-btn" aria-label="切換深色/淺色模式">
                 <span id="theme-icon">🌙</span>
-                <span id="theme-label">深色</span>
+                <span id="theme-label" class="hidden">深色</span>
             </button>
-            <h1>🎯 60天生活化減重看板</h1>
-            <p>目標：2 個月穩健減重 2.5 kg</p>
         </header>
 
-        <div class="dashboard-grid">
-            <div class="metric-card">
-                <h3>起始體重 (kg)</h3>
-                <input type="number" id="start-weight" value="75" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off" aria-label="起始體重">
+        <div class="summary-hero-card" id="today-hero">
+            <div class="hero-top-row">
+                <div class="streak-badge" id="hero-week-progress">本週完成 0 / 7 天</div>
+                <div class="progress-mini-text" id="hero-status-short">判斷中</div>
             </div>
-            <div class="metric-card">
-                <h3>目前體重 (kg)</h3>
-                <input type="number" id="current-weight" value="74" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off" aria-label="目前體重">
+
+            <div class="main-weight-display">
+                <span class="weight-label">目前體重</span>
+                <div class="weight-control-row">
+                    <button class="stepper-btn minus" type="button" id="hero-minus-weight" aria-label="減少 0.1 公斤">−</button>
+                    <div class="weight-numeric-group">
+                        <span class="weight-value" id="hero-weight-main">74.0</span>
+                        <span class="weight-unit">kg</span>
+                    </div>
+                    <button class="stepper-btn plus" type="button" id="hero-plus-weight" aria-label="增加 0.1 公斤">+</button>
+                </div>
             </div>
-            <div class="metric-card">
-                <h3>目標體重 (kg)</h3>
-                <input type="number" id="target-weight" value="72.5" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off" aria-label="目標體重">
+
+            <div class="weight-label">今日任務</div>
+            <div id="hero-action" class="hero-action">正在生成客製化任務...</div>
+
+            <div class="safety-indicator-bar status-green" id="hero-status-card">
+                <span class="indicator-dot"></span>
+                <span id="hero-status">安全狀態：綠燈（適宜運動）</span>
             </div>
-            <div class="metric-card">
-                <h3>已完成進度</h3>
-                <div class="metric-value" id="days-count" style="color: var(--primary);">0 / 60 天</div>
+            <div class="safety-note hidden" id="hero-safety-notice"></div>
+
+            <div class="hero-cta-row">
+                <button class="cta-primary-action-btn" type="button" id="start-today-btn">完成今日任務</button>
+                <button class="hero-secondary-action" type="button" id="adjust-today-btn">調整今日訓練</button>
             </div>
         </div>
 
-        <div class="card">
-            <h3>🚀 開始方式</h3>
-            <p style="font-size:0.9rem;color:var(--text-light);line-height:1.6;">
-                1. 設定起始體重、目前體重與目標體重<br>
-                2. 每天完成一項小任務即可勾選<br>
-                3. 每週觀察趨勢，不追求極端速度
-            </p>
-        </div>
+        <div class="home-accordion-list">
+            <details class="home-accordion" id="today-adjustments-section">
+                <summary>今日調整</summary>
+                <div class="accordion-body">
+                    <div class="card" id="persona-card">
+                        <div class="card-title-row">
+                            <h3>👤 選擇你的使用情境</h3>
+                            <span class="persona-status" id="persona-status">尚未選擇</span>
+                        </div>
+                        <p class="section-note">先選一個最接近你的狀態，行動表會自動調整今天的動態任務。之後可以隨時改。</p>
+                        <div class="choice-grid" role="radiogroup" aria-label="使用者情境">
+                            <button class="choice-btn" type="button" data-persona="office" role="radio" aria-checked="false">上班久坐型<span>會議多、久坐、外食與壓力偏高。</span></button>
+                            <button class="choice-btn" type="button" data-persona="family" role="radio" aria-checked="false">家庭忙碌型<span>時間破碎，適合短時間居家行動。</span></button>
+                            <button class="choice-btn" type="button" data-persona="activeAging" role="radio" aria-checked="false">樂齡維持型<span>重視肌力、平衡、活動度與安全。</span></button>
+                            <button class="choice-btn" type="button" data-persona="health" role="radio" aria-checked="false">主動健康型<span>已有健康意識，想要更有結構的安排。</span></button>
+                        </div>
+                    </div>
 
-        <div class="card">
-            <div class="dashboard-grid">
-                <div class="metric-card">
-                    <h3>已減少</h3>
-                    <div class="metric-value" id="weight-lost" style="color: var(--success);">0 kg</div>
+                    <div class="card">
+                        <h3>🏃 今日訓練客製化</h3>
+                        <p class="section-note">這些設定只用在你的手機瀏覽器，不會送到外部伺服器。</p>
+                        <div class="settings-grid">
+                            <div class="control-group">
+                                <label>今天可用時間</label>
+                                <div class="segmented-control" data-setting="time">
+                                    <button class="option-pill" type="button" data-value="5">5 分鐘</button>
+                                    <button class="option-pill" type="button" data-value="15">15 分鐘</button>
+                                    <button class="option-pill" type="button" data-value="30">30 分鐘</button>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label>今天疲勞程度</label>
+                                <div class="segmented-control" data-setting="fatigue">
+                                    <button class="option-pill" type="button" data-value="low">低</button>
+                                    <button class="option-pill" type="button" data-value="medium">中</button>
+                                    <button class="option-pill" type="button" data-value="high">高</button>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label>睡眠</label>
+                                <div class="segmented-control" data-setting="sleep">
+                                    <button class="option-pill" type="button" data-value="under5">少於 5 小時</button>
+                                    <button class="option-pill" type="button" data-value="between5and7">5-7 小時</button>
+                                    <button class="option-pill" type="button" data-value="over7">7 小時以上</button>
+                                </div>
+                            </div>
+                            <fieldset class="control-group">
+                                <legend>疼痛或限制</legend>
+                                <div class="pain-options" aria-label="疼痛或限制">
+                                    <button class="option-pill" type="button" data-pain="none">無</button>
+                                    <button class="option-pill" type="button" data-pain="shoulder">肩</button>
+                                    <button class="option-pill" type="button" data-pain="hip">髖</button>
+                                    <button class="option-pill" type="button" data-pain="back">腰</button>
+                                    <button class="option-pill" type="button" data-pain="knee">膝</button>
+                                    <button class="option-pill" type="button" data-pain="warning">胸悶/頭暈/急性痛</button>
+                                </div>
+                            </fieldset>
+                            <div class="control-group">
+                                <label for="pain-level-range">疼痛程度 0-10</label>
+                                <div class="range-row">
+                                    <input type="range" id="pain-level-range" min="0" max="10" step="1" value="0">
+                                    <input type="number" id="pain-level-input" min="0" max="10" step="1" value="0" inputmode="numeric" aria-label="疼痛程度 0 到 10">
+                                </div>
+                                <div class="pain-level-caption" id="pain-level-caption">0-2：可以訓練；3：調整動作；4 以上：降階或停止</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="metric-card">
-                    <h3>距離目標</h3>
-                    <div class="metric-value" id="remaining-weight" style="color: var(--primary);">0 kg</div>
-                </div>
-                <div class="metric-card">
-                    <h3>體重進度</h3>
-                    <div class="metric-value" id="weight-progress">0%</div>
-                </div>
-                <div class="metric-card">
-                    <h3>建議每週速度</h3>
-                    <div class="metric-value" id="weekly-pace">0 kg</div>
-                </div>
-            </div>
-        </div>
+            </details>
 
-        <div class="card">
-            <div class="progress-title">
-                <span>總執行進度</span>
-                <span id="progress-text">0%</span>
-            </div>
-            <div class="progress-bg">
-                <div class="progress-fill" id="main-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        </div>
+            <details class="home-accordion">
+                <summary>體重與目標</summary>
+                <div class="accordion-body">
+                    <div class="compact-metrics-strip">
+                        <div class="strip-item"><span class="strip-label">起始</span><input type="number" id="start-weight" value="75" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off" aria-label="起始體重" class="strip-input"></div>
+                        <div class="strip-item"><span class="strip-label">目標</span><input type="number" id="target-weight" value="72.5" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off" aria-label="目標體重" class="strip-input"></div>
+                        <div class="strip-item"><span class="strip-label">已減</span><span class="strip-value success" id="weight-lost">0.0 kg</span></div>
+                        <div class="strip-item"><span class="strip-label">剩餘</span><span class="strip-value primary" id="remaining-weight">2.5 kg</span></div>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="metric-card"><h3>目前體重 (kg)</h3><input type="number" id="current-weight" value="74" step="0.1" min="30" max="300" inputmode="decimal" autocomplete="off" aria-label="目前體重"></div>
+                        <div class="metric-card"><h3>已完成進度</h3><div class="metric-value" id="days-count" style="color: var(--primary);">0 / 60 天</div></div>
+                        <div class="metric-card"><h3>體重進度</h3><div class="metric-value" id="weight-progress">0%</div></div>
+                        <div class="metric-card"><h3>建議每週速度</h3><div class="metric-value" id="weekly-pace">0 kg</div></div>
+                    </div>
+                    <div class="card">
+                        <div class="progress-title"><span>總執行進度</span><span id="progress-text">0%</span></div>
+                        <div class="progress-bg"><div class="progress-fill" id="main-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>
+                    </div>
+                </div>
+            </details>
 
-        <h2>🥗 營養師的四大核心執行原則</h2>
-        <div class="card">
-            <div class="principle-item">
-                <div class="principle-title">⚖️ 彈性熱量赤字與食物平反</div>
-                <div class="principle-desc">沒有絕對不能吃的食物，只有不會調配的份量。平日維持 300~400 大卡溫和赤字，保留心靈慰藉才走得遠。</div>
-            </div>
-            <div class="principle-item">
-                <div class="principle-title">🍰 甜點的「時機防禦」規則</div>
-                <div class="principle-desc">單次上限 300 大卡以內。優先放在重訓日（運動後肌肉易儲存）或高壓工作日（調節壓力，預防深夜暴食）。</div>
-            </div>
-            <div class="principle-item">
-                <div class="principle-title">🍷 酒精的「當量與防禦」規則</div>
-                <div class="principle-desc">女性每日上限 1 個酒精當量（如啤酒330ml/紅酒120ml）。絕不空腹喝，飲酒前必先補充高蛋白質與蔬菜定錨血糖。</div>
-            </div>
-            <div class="principle-item">
-                <div class="principle-title">🔍 外食的「定錨效應」流程</div>
-                <div class="principle-desc">點餐時眼睛先看「蛋白質」與「蔬菜」。當這兩者分量足夠帶來飽足感，大腦才有理性去分配剩下的甜點或酒額度。飲食習慣需要時間養成，每一餐的正確選擇都在累積成功。</div>
-            </div>
+            <details class="home-accordion">
+                <summary>AI 顧問</summary>
+                <div class="accordion-body">
+                    <div class="card" id="ai-coach-card">
+                        <h3>🤖 AI 顧問提示詞</h3>
+                        <p class="section-note">App 不會串接 AI，也不會自動傳資料。複製提示詞後，可貼到免費版 ChatGPT、Gemini 或 Claude 詢問今天怎麼做。</p>
+                        <div class="control-group">
+                            <label for="coach-question">你今天想問 AI 什麼？</label>
+                            <textarea class="coach-question" id="coach-question" placeholder="例如：今天只有 15 分鐘又有點膝蓋不舒服，我該怎麼調整？"></textarea>
+                        </div>
+                        <div class="coach-actions">
+                            <button class="primary-action" type="button" id="copy-ai-prompt">詢問 AI 顧問 / 複製 Prompt</button>
+                            <div class="ai-links" aria-label="免費 AI 工具連結">
+                                <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">開啟 ChatGPT</a>
+                                <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">開啟 Gemini</a>
+                                <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer">開啟 Claude</a>
+                            </div>
+                            <div class="copy-status" id="copy-status" aria-live="polite"></div>
+                        </div>
+                        <div class="coach-preview" id="coach-preview" aria-label="AI 提示詞預覽"></div>
+                        <div class="safety-note">AI 建議僅供參考，不是醫療診斷。若有疼痛、慢性病、術後狀況，請先諮詢醫師或物理治療師。</div>
+                    </div>
+                </div>
+            </details>
+
+            <details class="home-accordion">
+                <summary>結訓報告</summary>
+                <div class="accordion-body">
+                    <div class="card">
+                        <button class="secondary-action" type="button" id="show-cycle-report">查看結訓報告</button>
+                    </div>
+                    <div class="card hidden" id="cycle-report-card">
+                        <div class="card-title-row"><h3>🏁 60 天結訓報告</h3><span class="persona-status" id="cycle-classification">未達標</span></div>
+                        <div class="report-grid" id="cycle-report-grid"></div>
+                        <div class="safety-note" id="cycle-report-advice"></div>
+                        <div class="report-actions">
+                            <button class="primary-action" type="button" id="start-next-cycle">開始下一輪</button>
+                            <button class="secondary-action" type="button" id="enter-maintenance">進入維持期</button>
+                            <button class="secondary-action" type="button" id="reset-goals">重新設定目標</button>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details class="home-accordion">
+                <summary>營養原則</summary>
+                <div class="accordion-body">
+                    <div class="card">
+                        <div class="principle-item"><div class="principle-title">⚖️ 彈性熱量赤字與食物平反</div><div class="principle-desc">沒有絕對不能吃的食物，只有不會調配的份量。平日維持 300~400 大卡溫和赤字，保留心靈慰藉才走得遠。</div></div>
+                        <div class="principle-item"><div class="principle-title">🍰 甜點的「時機防禦」規則</div><div class="principle-desc">單次上限 300 大卡以內。優先放在重訓日（運動後肌肉易儲存）或高壓工作日（調節壓力，預防深夜暴食）。</div></div>
+                        <div class="principle-item"><div class="principle-title">🍷 酒精的「當量與防禦」規則</div><div class="principle-desc">女性每日上限 1 個酒精當量（如啤酒330ml/紅酒120ml）。絕不空腹喝，飲酒前必先補充高蛋白質與蔬菜定錨血糖。</div></div>
+                        <div class="principle-item"><div class="principle-title">🔍 外食的「定錨效應」流程</div><div class="principle-desc">點餐時眼睛先看「蛋白質」與「蔬菜」。當這兩者分量足夠帶來飽足感，大腦才有理性去分配剩下的甜點或酒額度。飲食習慣需要時間養成，每一餐的正確選擇都在累積成功。</div></div>
+                    </div>
+                </div>
+            </details>
         </div>
     </div>
 
@@ -697,8 +1649,8 @@
         <div class="phase-selector" role="tablist" aria-label="行動表階段">
             <button class="phase-btn active" role="tab" aria-selected="true" aria-controls="phase-1">Phase 1 習慣建立 (D1-15)</button>
             <button class="phase-btn" role="tab" aria-selected="false" aria-controls="phase-2">Phase 2 赤字穩定 (D16-30)</button>
-            <button class="phase-btn" role="tab" aria-selected="false" aria-controls="phase-3">Phase 3 體態精雕 (D31-45)</button>
-            <button class="phase-btn" role="tab" aria-selected="false" aria-controls="phase-4">Phase 4 最後衝刺 (D46-60)</button>
+            <button class="phase-btn" role="tab" aria-selected="false" aria-controls="phase-3">Phase 3 肌力恢復 (D31-45)</button>
+            <button class="phase-btn" role="tab" aria-selected="false" aria-controls="phase-4">Phase 4 鞏固自主 (D46-60)</button>
         </div>
 
         <div id="cards-container">
@@ -758,6 +1710,18 @@
                 <div class="light-content">控制在 300 大卡內並在「重訓運動後」吃，或搭配無糖黑咖啡享用。</div>
             </div>
         </div>
+
+        <div class="card">
+            <h3>樂齡與疼痛安全規則</h3>
+            <ul class="safety-list">
+                <li>疼痛、胸悶、頭暈是停止訊號，不要硬撐完成任務。</li>
+                <li>平衡動作可以扶牆、扶桌或站在穩固椅子旁。</li>
+                <li>今天的主觀用力維持 RPE 5-7：能講話、微喘，但不拼極限。</li>
+                <li>避免跳躍、高衝擊、快速轉身，以及含糊的「重訓 20 分鐘」。</li>
+                <li>優先累積一致性、平衡、肌力維持、關節活動度。</li>
+            </ul>
+            <div class="safety-note">本工具提供一般健康行為建議，不是醫療診斷。若有慢性病、術後狀況、急性疼痛或不確定是否能運動，請先詢問醫師、物理治療師或合格專業人員。</div>
+        </div>
     </div>
 
 </div>
@@ -813,25 +1777,180 @@
         createDayData("28", "飲食保持清淡，減少鹽分與鈉攝取", "甜點或酒精擇一", "輕鬆散步", "【週結算】記錄腰圍，檢視體態精雕。"),
         createDayData("29", "早餐補充足夠的無糖豆漿或低脂乳品", "暫不安排", "重訓 25 分鐘", "觀察高蛋白飲食對運動修復的幫助。"),
         createDayData("30", "嘗試整天完全不吃任何加工食品", "暫不安排", "累積 8,000 步", "【半月檢視】體重應穩定下降達 1.2kg。"),
+        createDayData("31", "盤點最常成功的三餐組合，挑 2 套當固定模板", "寫下這 30 天最容易做到的一件事", "肌力循環 2 組＋飯後散步 10 分鐘", "【肌力恢復】進入後半段，目標是穩定而不是加壓。"),
+        createDayData("32", "午餐外食先選蛋白質，再決定澱粉份量", "今天不追求完美，只追求完成一個小行動", "快走或低衝擊有氧 20 分鐘", "把決策變少，成功率會變高。"),
+        createDayData("33", "晚餐加入一份豆魚蛋肉，避免只吃菜", "檢查睡眠時間，今晚提前 20 分鐘放下手機", "肩髖活動度＋核心穩定 12 分鐘", "體態改變需要肌肉保留，不只看體重。"),
+        createDayData("34", "下午茶前先喝水 300ml，再決定是否需要點心", "嘴饞時先問：我累了、餓了，還是壓力大？", "下肢肌力 2 組，保留 3 分力", "不要做到力竭，留下明天還想做的餘裕。"),
+        createDayData("35", "正常三餐，不補償性少吃", "允許自己恢復，恢復也是計畫的一部分", "主動恢復：輕鬆走路＋伸展", "【週恢復】檢查膝、腰、肩是否有不舒服。"),
+        createDayData("36", "本週選 1 餐練習外食防禦：少炸、醬分開", "把壓力餐改成有意識地吃，不邊滑手機邊吃", "上肢推拉動作 2 組＋散步", "強度只要穩定增加一點點即可。"),
+        createDayData("37", "晚餐主食用半碗飯或地瓜替代大份麵食", "記錄今天能量 1-5 分，不用批判", "間歇快走：快 1 分鐘、慢 2 分鐘循環", "用節奏變化提高活動品質。"),
+        createDayData("38", "早餐加入蛋白質，減少上午亂吃零食機率", "今天練習拒絕一個非必要甜食邀請", "髖膝踝穩定訓練＋平衡練習", "穩定度比流汗量更重要。"),
+        createDayData("39", "聚餐前先吃蛋白質或無糖豆漿墊胃", "社交餐只選一個享受重點：酒、甜點或主食", "全身肌力循環 2-3 組", "把社交吃飯納入生活，而不是視為破功。"),
+        createDayData("40", "今天蔬菜至少 2 餐達到 2 個拳頭", "檢查水分與鹽分，降低水腫焦慮", "低衝擊有氧 25 分鐘", "體重波動可能來自水分，不急著下結論。"),
+        createDayData("41", "選擇原型點心：水果、無糖優格或堅果小份", "把想吃甜食延後 10 分鐘再決定", "核心抗旋轉或站姿穩定訓練", "訓練身體，也訓練延後滿足。"),
+        createDayData("42", "正常吃，不因前一天體重高低而極端調整", "做一次週回顧：哪天最順、哪天最卡？", "主動恢復：散步 20 分鐘＋呼吸放鬆", "【週結算】用 7 天趨勢，不用單日體重判斷。"),
+        createDayData("43", "本週準備 2 個便利商店安全選項", "把『沒時間』改成『今天做 5 分鐘版』", "短版肌力循環，專注動作品質", "建立備案，比靠意志力更可靠。"),
+        createDayData("44", "晚餐避免油炸＋濃醬雙重疊加", "睡前寫下明天最小健康行動", "漸進肌力：比上次多 1 組或多 2 分鐘", "只做小幅進步，避免爆衝受傷。"),
+        createDayData("45", "檢查蛋白質、蔬菜、水分三個基本盤", "肯定自己已完成 45 天，不用等達標才值得鼓勵", "輕中強度全身整合訓練", "【階段檢視】後 15 天開始轉向獨立維持。"),
+        createDayData("46", "設計一份完成後也能繼續吃的日常菜單", "想像 60 天後如何維持，而不是如何衝刺", "維持版肌力＋飯後走路", "【鞏固自主】目標是把方法帶出 60 天。"),
+        createDayData("47", "選一個最常外食場景，寫下固定點餐規則", "遇到破功餐，下一餐回到正常，不補償", "低衝擊有氧 20-30 分鐘", "避免『反正都破了』的連鎖效應。"),
+        createDayData("48", "今天不新增限制，只穩住三餐節奏", "檢查壓力來源，安排一個非食物放鬆方式", "活動度＋核心穩定 15 分鐘", "穩定作息比短期嚴格更能維持。"),
+        createDayData("49", "週末前先決定甜點或酒精額度，只選一個", "用計畫取代臨場硬撐", "主動恢復：輕鬆散步＋伸展", "【週恢復】讓身體吸收前面訓練。"),
+        createDayData("50", "回顧最有效的早餐，設定為下週預設", "把成功歸因於策略，不是意志力", "肌力循環 2-3 組，保留餘裕", "越接近終點，越要做能長期持續的版本。"),
+        createDayData("51", "外食澱粉維持半份，蛋白質與蔬菜優先", "今天如果只能做一件事，就做飯後走路", "飯後步行累積 20 分鐘", "小行動比空白日更有價值。"),
+        createDayData("52", "準備一份加班安全餐：蛋白質＋蔬菜＋小份澱粉", "避免用疲勞換宵夜，先安排睡眠", "低疲勞訓練：伸展＋輕有氧", "高壓日的目標是防守，不是突破。"),
+        createDayData("53", "今天練習吃到七八分飽就停", "用 1-5 分記錄飽足感，不計算熱量", "全身肌力整合，動作放慢", "放慢速度能提升控制感與安全性。"),
+        createDayData("54", "選一餐完全不喝含糖飲料", "把想喝甜飲改成先喝無糖茶 10 分鐘", "有氧＋肌力混合 20 分鐘", "把飲料改掉通常是低痛苦高回報。"),
+        createDayData("55", "盤點家中或辦公室容易失控的食物位置", "把誘惑移遠，不要求自己一直抵抗", "平衡與下肢穩定訓練", "環境設計比意志力更穩。"),
+        createDayData("56", "正常三餐，保持蛋白質與蔬菜基本盤", "回顧最想保留的 3 個新習慣", "主動恢復：散步 20 分鐘＋伸展", "【週結算】準備最後 4 天，重點是收斂與維持。"),
+        createDayData("57", "寫下 60 天後的一週維持版飲食規則", "預先設定復胖警訊：連續宵夜、甜飲回歸、久坐", "維持版肌力 2 組", "把警訊寫清楚，未來更早拉回來。"),
+        createDayData("58", "今天用最熟悉的成功模板吃三餐", "不要臨時加碼，穩定完成就很好", "最熟悉的運動版本，保持輕中強度", "最後階段不需要衝刺，需要可複製。"),
+        createDayData("59", "安排一餐正常社交餐，練習不補償也不失控", "把健康行動融入生活，不讓生活配合計畫", "飯後散步＋活動度保養", "測試真實生活中的維持能力。"),
+        createDayData("60", "回顧最有效的三個飲食策略，留下未來版本", "感謝自己完成 60 天，設定下一個溫和目標", "完成日：輕鬆走路＋全身伸展", "【最終結算】記錄體重、腰圍、精神與可持續習慣。"),
     ];
-
-    try {
-        for (let i = 31; i <= 60; i++) {
-            const templateRow = rawData[(i - 1) % 30];
-            let note = templateRow.note;
-            if (i >= 31 && i <= 45) note = "【體態精雕】專注穩定與恢復品質。";
-            else if (i >= 46 && i <= 59) note = "【最後衝刺】維持穩定習慣與睡眠節奏。";
-            else if (i === 60) note = "【最終結算】恭喜完成！檢視體重與腰圍成果！";
-            
-            rawData.push(createDayData(
-                i.toString(), templateRow.diet, templateRow.mental, templateRow.activity, note
-            ));
-        }
-    } catch (e) { console.error('Error generating day data:', e); }
 
     let currentPhase = 1;
     let checkedDays = [];
     const THEME_KEY = 'phone_diet_theme';
+    const PERSONA_KEY = 'phone_diet_persona';
+    const TIME_KEY = 'phone_diet_today_time';
+    const FATIGUE_KEY = 'phone_diet_today_fatigue';
+    const SLEEP_KEY = 'phone_diet_today_sleep';
+    const PAIN_KEY = 'phone_diet_pain_flags';
+    const PAIN_LEVEL_KEY = 'phone_diet_pain_level';
+    const COACH_QUESTION_KEY = 'phone_diet_coach_question';
+    const ACTUAL_WORKOUTS_KEY = 'phone_diet_actual_workouts';
+    const CYCLE_HISTORY_KEY = 'phone_diet_cycle_history';
+    const CURRENT_CYCLE_FOCUS_KEY = 'phone_diet_current_cycle_focus';
+
+    const personaProfiles = {
+        office: {
+            label: '上班久坐型',
+            aiLabel: '40-55 歲上班族，久坐、會議多、常外食，偏好低摩擦行動',
+            goal: '穩定減脂、降低久坐疲勞、建立飯後走路與肩髖活動習慣'
+        },
+        family: {
+            label: '家庭忙碌型',
+            aiLabel: '35-50 歲忙碌工作者或家庭照顧者，時間破碎，適合短時間居家訓練',
+            goal: '用短時間完成最低有效行動，兼顧壓力、睡眠與家庭節奏'
+        },
+        activeAging: {
+            label: '樂齡維持型',
+            aiLabel: '55 歲以上樂齡使用者，重視肌力維持、平衡、活動度與跌倒預防',
+            goal: '安全維持肌力、平衡與活動度，體重下降不是唯一目標'
+        },
+        health: {
+            label: '主動健康型',
+            aiLabel: '45-60 歲健康意識較高，已有基礎運動習慣，想要更有結構',
+            goal: '穩定執行肌力、有氧與恢復，避免過度衝刺'
+        }
+    };
+
+    const painLabels = {
+        none: '無',
+        shoulder: '肩',
+        hip: '髖',
+        back: '腰',
+        knee: '膝',
+        warning: '胸悶/頭暈/急性痛'
+    };
+
+    const allowedPersonas = Object.keys(personaProfiles);
+    const allowedTimes = ['5', '15', '30'];
+    const allowedFatigueLevels = ['low', 'medium', 'high'];
+    const allowedSleepLevels = ['under5', 'between5and7', 'over7'];
+    const allowedPainFlags = Object.keys(painLabels);
+
+    const timeLabels = { '5': '5 分鐘', '15': '15 分鐘', '30': '30 分鐘' };
+    const fatigueLabels = { low: '低', medium: '中', high: '高' };
+    const sleepLabels = { under5: '少於 5 小時', between5and7: '5-7 小時', over7: '7 小時以上' };
+    const estimatedKcalByTime = { '5': 35, '15': 85, '30': 150 };
+    const actualWorkoutOptions = {
+        full: '完整',
+        half: '減半',
+        none: '未做',
+        custom: '自訂'
+    };
+
+    const exerciseExclusions = {
+        shoulder: ['過頭推舉', '雙槓撐體', '直立划船', '頸後推舉'],
+        hip: ['深蹲到底', '深弓箭步', '仰臥起坐', '登山者'],
+        knee: ['跳深蹲', '波比跳', '跑步間歇', '負重深蹲到底'],
+        back: ['大重量硬舉', '早安式', '俄羅斯轉體', '高量仰臥起坐']
+    };
+
+    const exerciseSubstitutions = {
+        shoulder: ['斜板伏地挺身', '彈力帶拉開', '肩胛平面側舉'],
+        hip: ['箱式深蹲', '站姿抬膝', '死蟲'],
+        knee: ['扶椅坐站', '快走', '腳踏車'],
+        back: ['臀橋', '死蟲', '鳥狗']
+    };
+
+    const workoutLibrary = {
+        office: {
+            short: ['會議間 5 分鐘快走＋肩頸伸展', '飯後走 5 分鐘，回座位前做髖屈肌伸展', '站起來做 10 次坐站＋胸椎旋轉'],
+            medium: ['午餐後快走 10 分鐘＋肩髖活動 5 分鐘', '下班前做坐站、牆伏地挺身、髖伸展各 2 組', '晚餐後散步 15 分鐘，刻意放鬆肩頸'],
+            long: ['20 分鐘阻力循環：坐站、牆伏地挺身、划船替代動作＋10 分鐘散步', '快走 25 分鐘＋肩髖活動 5 分鐘', '全身肌力 2-3 組，動作慢、不要做到力竭'],
+            recovery: '今天改做 10 分鐘輕鬆散步＋肩頸與髖部伸展，提早休息'
+        },
+        family: {
+            short: ['居家 5 分鐘：坐站、靠牆伏地挺身、原地踏步各 1 分鐘', '孩子或家事空檔做 5 分鐘低衝擊踏步', '睡前伸展 5 分鐘，放鬆腰背與小腿'],
+            medium: ['12-15 分鐘居家循環：坐站、牆伏地挺身、臀橋、原地踏步', '無器材低衝擊有氧 10 分鐘＋伸展 5 分鐘', '家中走動或爬平緩樓梯 10 分鐘，膝不舒服就改平地'],
+            long: ['居家全身循環 20 分鐘＋收操 10 分鐘', '低衝擊有氧 20 分鐘＋核心穩定 8 分鐘', '分段完成：早晚各 15 分鐘散步或居家訓練'],
+            recovery: '今天只做 8-10 分鐘伸展與輕鬆走動，讓壓力先下降'
+        },
+        activeAging: {
+            short: ['扶穩椅背做坐站 6-8 次、牆伏地挺身 6-8 次、雙腳平衡 20 秒', '扶牆腳跟抬起 8 次＋踝關節活動＋輕鬆走 3 分鐘', '椅子旁左右重心轉移＋肩胛後收＋溫和伸展'],
+            medium: ['椅子坐站 2 組、牆伏地挺身 2 組、扶椅平衡各 20 秒、輕鬆走 5 分鐘', '低衝擊步行 10 分鐘＋踝膝髖活動 5 分鐘', '扶穩支撐做下肢肌力與平衡，RPE 5-6 即可'],
+            long: ['輕鬆步行 15-20 分鐘＋椅子坐站、牆伏地挺身、扶椅平衡各 2 組', '功能性訓練 20 分鐘：坐站、提踵、側向踏步、牆推，全部可扶支撐', '關節活動 10 分鐘＋低衝擊步行 15 分鐘，過程能正常說話'],
+            recovery: '今天做關節活動、呼吸放鬆與輕鬆散步；若有痛，停止並休息'
+        },
+        health: {
+            short: ['5 分鐘最低有效版：深蹲替代、推、拉、核心各 45 秒', 'Zone 2 快走 5 分鐘，讓身體暖起來即可', '活動度 5 分鐘：髖、胸椎、踝關節'],
+            medium: ['15 分鐘肌力循環：下肢、推、拉、核心各 2 組', 'Zone 2 有氧 12 分鐘＋伸展 3 分鐘', '肌力動作品質日：慢速控制，保留 2-3 分力'],
+            long: ['20 分鐘漸進肌力＋10 分鐘 Zone 2 有氧', 'Zone 2 有氧 25 分鐘＋活動度 5 分鐘', '全身肌力 3 組，這週只小幅增加一個變因'],
+            recovery: '今天做 Zone 2 輕鬆版或活動度 15 分鐘，專注恢復品質'
+        }
+    };
+
+    let userSettings = {
+        persona: null,
+        time: '15',
+        fatigue: 'medium',
+        sleep: 'between5and7',
+        pain: ['none'],
+        painLevel: 0,
+        question: ''
+    };
+    let actualWorkouts = {};
+    let cycleHistory = [];
+    let currentCycleFocus = '';
+
+    function normalizePainFlags(value) {
+        const source = Array.isArray(value) ? value : ['none'];
+        const filtered = source.filter(item => allowedPainFlags.includes(item));
+
+        if (filtered.includes('warning')) return ['warning'];
+
+        const painFlags = filtered.filter(item => item !== 'none');
+        return painFlags.length > 0 ? Array.from(new Set(painFlags)) : ['none'];
+    }
+
+    function normalizePainLevel(value, painFlags) {
+        const parsed = Number.parseInt(value, 10);
+        const level = Number.isFinite(parsed) ? Math.min(Math.max(parsed, 0), 10) : 0;
+        return normalizePainFlags(painFlags).includes('warning') ? Math.max(level, 7) : level;
+    }
+
+    function normalizeUserSettings() {
+        if (!allowedPersonas.includes(userSettings.persona)) userSettings.persona = null;
+        if (!allowedTimes.includes(userSettings.time)) userSettings.time = '15';
+        if (!allowedFatigueLevels.includes(userSettings.fatigue)) userSettings.fatigue = 'medium';
+        if (!allowedSleepLevels.includes(userSettings.sleep)) userSettings.sleep = 'between5and7';
+        userSettings.pain = normalizePainFlags(userSettings.pain);
+        userSettings.painLevel = normalizePainLevel(userSettings.painLevel, userSettings.pain);
+        userSettings.question = typeof userSettings.question === 'string' ? userSettings.question : '';
+    }
 
     function safeLoadStorage() {
         try {
@@ -844,6 +1963,36 @@
             if (localStorage.getItem('phone_diet_target_w')) document.getElementById('target-weight').value = localStorage.getItem('phone_diet_target_w');
             if (localStorage.getItem('phone_diet_curr_w')) document.getElementById('current-weight').value = localStorage.getItem('phone_diet_curr_w');
         } catch (e) {}
+
+        try {
+            userSettings.persona = localStorage.getItem(PERSONA_KEY) || null;
+            userSettings.time = localStorage.getItem(TIME_KEY) || '15';
+            userSettings.fatigue = localStorage.getItem(FATIGUE_KEY) || 'medium';
+            userSettings.sleep = localStorage.getItem(SLEEP_KEY) || 'between5and7';
+            userSettings.question = localStorage.getItem(COACH_QUESTION_KEY) || '';
+            const storedPain = localStorage.getItem(PAIN_KEY);
+            userSettings.pain = storedPain ? JSON.parse(storedPain) : ['none'];
+            userSettings.painLevel = localStorage.getItem(PAIN_LEVEL_KEY) || 0;
+            normalizeUserSettings();
+        } catch (e) {
+            userSettings = { persona: null, time: '15', fatigue: 'medium', sleep: 'between5and7', pain: ['none'], painLevel: 0, question: '' };
+        }
+
+        try {
+            const storedActual = localStorage.getItem(ACTUAL_WORKOUTS_KEY);
+            actualWorkouts = storedActual ? JSON.parse(storedActual) : {};
+            if (!actualWorkouts || typeof actualWorkouts !== 'object' || Array.isArray(actualWorkouts)) actualWorkouts = {};
+        } catch (e) { actualWorkouts = {}; }
+
+        try {
+            const storedHistory = localStorage.getItem(CYCLE_HISTORY_KEY);
+            cycleHistory = storedHistory ? JSON.parse(storedHistory) : [];
+            if (!Array.isArray(cycleHistory)) cycleHistory = [];
+            currentCycleFocus = localStorage.getItem(CURRENT_CYCLE_FOCUS_KEY) || '';
+        } catch (e) {
+            cycleHistory = [];
+            currentCycleFocus = '';
+        }
     }
 
     function validateWeight(value) {
@@ -877,10 +2026,552 @@
         try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
     }
 
+    function getActivePersonaKey() {
+        return userSettings.persona || 'office';
+    }
+
+    function savePersonalization() {
+        try {
+            if (userSettings.persona) localStorage.setItem(PERSONA_KEY, userSettings.persona);
+            localStorage.setItem(TIME_KEY, userSettings.time);
+            localStorage.setItem(FATIGUE_KEY, userSettings.fatigue);
+            localStorage.setItem(SLEEP_KEY, userSettings.sleep);
+            localStorage.setItem(PAIN_KEY, JSON.stringify(userSettings.pain));
+            localStorage.setItem(PAIN_LEVEL_KEY, userSettings.painLevel);
+            localStorage.setItem(COACH_QUESTION_KEY, userSettings.question || '');
+        } catch (e) {}
+    }
+
+    function setupPersonalizationControls() {
+        document.querySelectorAll('[data-persona]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                userSettings.persona = this.getAttribute('data-persona');
+                normalizeUserSettings();
+                savePersonalization();
+                refreshPersonalizationUI();
+                renderCards();
+                updateHeroDashboard();
+                updateAiCoach();
+            });
+        });
+
+        document.querySelectorAll('[data-setting]').forEach(group => {
+            group.querySelectorAll('[data-value]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const setting = group.getAttribute('data-setting');
+                    userSettings[setting] = this.getAttribute('data-value');
+                    normalizeUserSettings();
+                    savePersonalization();
+                    refreshPersonalizationUI();
+                    renderCards();
+                    updateHeroDashboard();
+                    updateAiCoach();
+                });
+            });
+        });
+
+        document.querySelectorAll('[data-pain]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const pain = this.getAttribute('data-pain');
+                if (pain === 'none') {
+                    userSettings.pain = ['none'];
+                    userSettings.painLevel = 0;
+                } else {
+                    const current = userSettings.pain.filter(item => item !== 'none');
+                    if (current.includes(pain)) {
+                        userSettings.pain = current.filter(item => item !== pain);
+                    } else {
+                        current.push(pain);
+                        userSettings.pain = current;
+                    }
+                    if (userSettings.pain.length === 0) userSettings.pain = ['none'];
+                    if (pain === 'warning') userSettings.painLevel = Math.max(userSettings.painLevel, 7);
+                    if (userSettings.painLevel === 0) userSettings.painLevel = 1;
+                }
+                normalizeUserSettings();
+                savePersonalization();
+                refreshPersonalizationUI();
+                renderCards();
+                updateHeroDashboard();
+                updateAiCoach();
+            });
+        });
+
+        ['pain-level-range', 'pain-level-input'].forEach(id => {
+            const input = document.getElementById(id);
+            if (!input) return;
+            input.addEventListener('input', function() {
+                userSettings.painLevel = this.value;
+                normalizeUserSettings();
+                savePersonalization();
+                refreshPersonalizationUI();
+                renderCards();
+                updateHeroDashboard();
+                updateAiCoach();
+            });
+        });
+
+        const startBtn = document.getElementById('start-today-btn');
+        if (startBtn) {
+            startBtn.addEventListener('click', function() {
+                completeTodayTask();
+            });
+        }
+
+        const adjustBtn = document.getElementById('adjust-today-btn');
+        if (adjustBtn) {
+            adjustBtn.addEventListener('click', function() {
+                const section = document.getElementById('today-adjustments-section');
+                if (section) {
+                    section.open = true;
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
+        const heroMinusWeight = document.getElementById('hero-minus-weight');
+        const heroPlusWeight = document.getElementById('hero-plus-weight');
+        if (heroMinusWeight) heroMinusWeight.addEventListener('click', function() { adjustCurrentWeight(-0.1); });
+        if (heroPlusWeight) heroPlusWeight.addEventListener('click', function() { adjustCurrentWeight(0.1); });
+
+        const reportBtn = document.getElementById('show-cycle-report');
+        if (reportBtn) reportBtn.addEventListener('click', function() { renderCycleReport(true); });
+
+        const nextCycleBtn = document.getElementById('start-next-cycle');
+        if (nextCycleBtn) nextCycleBtn.addEventListener('click', startNextCycle);
+
+        const maintenanceBtn = document.getElementById('enter-maintenance');
+        if (maintenanceBtn) maintenanceBtn.addEventListener('click', enterMaintenance);
+
+        const resetGoalsBtn = document.getElementById('reset-goals');
+        if (resetGoalsBtn) resetGoalsBtn.addEventListener('click', resetGoals);
+
+        const question = document.getElementById('coach-question');
+        if (question) {
+            question.addEventListener('input', function() {
+                userSettings.question = this.value;
+                savePersonalization();
+                updateAiCoach();
+            });
+        }
+
+        const copyBtn = document.getElementById('copy-ai-prompt');
+        if (copyBtn) copyBtn.addEventListener('click', copyAiPrompt);
+    }
+
+    function refreshPersonalizationUI() {
+        const activePersona = userSettings.persona;
+        document.querySelectorAll('[data-persona]').forEach(btn => {
+            const isActive = btn.getAttribute('data-persona') === activePersona;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        });
+
+        const status = document.getElementById('persona-status');
+        if (status) {
+            status.textContent = activePersona ? personaProfiles[activePersona].label : '建議先選擇';
+        }
+
+        document.querySelectorAll('[data-setting]').forEach(group => {
+            const setting = group.getAttribute('data-setting');
+            group.querySelectorAll('[data-value]').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-value') === userSettings[setting]);
+            });
+        });
+
+        document.querySelectorAll('[data-pain]').forEach(btn => {
+            btn.classList.toggle('active', userSettings.pain.includes(btn.getAttribute('data-pain')));
+        });
+
+        const painRange = document.getElementById('pain-level-range');
+        const painInput = document.getElementById('pain-level-input');
+        if (painRange) painRange.value = userSettings.painLevel;
+        if (painInput) painInput.value = userSettings.painLevel;
+        const painCaption = document.getElementById('pain-level-caption');
+        if (painCaption) painCaption.textContent = getPainLevelGuidance(userSettings.painLevel);
+
+        const question = document.getElementById('coach-question');
+        if (question && question.value !== userSettings.question) question.value = userSettings.question || '';
+    }
+
+    function chooseFromList(list, dayNum) {
+        return list[(dayNum - 1) % list.length];
+    }
+
+    function getPainLevelGuidance(level) {
+        if (level <= 2) return '0-2：可以訓練，保持可對話強度。';
+        if (level === 3) return '3：改動作、減少幅度，今天完成最低有效劑量即可。';
+        if (level <= 6) return '4-6：恢復模式，不做正式訓練。';
+        return '7+：停止訓練，請休息並視情況尋求專業協助。';
+    }
+
+    function getSafetyMode(pain, painLevel) {
+        if (pain.includes('warning') || painLevel >= 7) {
+            return {
+                mode: 'stop',
+                status: 'red',
+                label: '紅燈',
+                message: '停止運動：若有胸悶、頭暈、急性疼痛或嚴重疼痛，今天不訓練，請休息並視情況諮詢醫師或物理治療師。'
+            };
+        }
+
+        if (painLevel > 3 || userSettings.fatigue === 'high' || userSettings.sleep === 'under5') {
+            return {
+                mode: 'recovery',
+                status: 'red',
+                label: '紅燈',
+                message: '恢復模式：今天只做溫和活動度、呼吸放鬆或輕鬆散步；任何動作讓疼痛升高就停止。'
+            };
+        }
+
+        if (painLevel === 3 || userSettings.fatigue === 'medium') {
+            return {
+                mode: 'modified',
+                status: 'yellow',
+                label: '黃燈',
+                message: '最低有效劑量：今天降低幅度與組數，避開疼痛部位，完成短版也算成功。'
+            };
+        }
+
+        return {
+            mode: 'normal',
+            status: 'green',
+            label: '綠燈',
+            message: '可以正常訓練：維持可對話強度，不追求爆汗或力竭。'
+        };
+    }
+
+    function appendSafetyAdjustments(task, personaKey, pain, painLevel) {
+        let safeTask = task;
+
+        if (painLevel > 0 && painLevel <= 2) {
+            safeTask += ' 全程保持可對話強度，疼痛升高就停止或改休息。';
+        }
+        if (painLevel === 3) {
+            safeTask += ' 今天降為最低有效劑量，動作幅度減半。';
+        }
+        if (pain.includes('knee')) {
+            safeTask += ' 膝不舒服時取消跳躍、深蹲幅度減半，改平地走路或扶椅坐站。';
+        }
+        if (pain.includes('shoulder')) {
+            safeTask += ' 肩不舒服時取消推撐動作，改肩胛後收與手臂溫和活動。';
+        }
+        if (pain.includes('hip')) {
+            safeTask += ' 髖不舒服時避免深蹲到底與深弓箭步，改站姿抬膝或箱式坐站。';
+        }
+        if (pain.includes('back')) {
+            safeTask += ' 腰不舒服時避免彎腰負重，改站姿活動度與輕鬆步行。';
+        }
+        const selectedLimitations = pain.filter(item => exerciseExclusions[item]);
+        if (selectedLimitations.length > 0) {
+            const exclusions = selectedLimitations.flatMap(item => exerciseExclusions[item]);
+            const substitutions = selectedLimitations.flatMap(item => exerciseSubstitutions[item]);
+            safeTask += ` 避免：${exclusions.join('、')}。替代：${substitutions.join('、')}。`;
+        }
+        if (personaKey === 'activeAging') {
+            safeTask += ' 全程可扶牆或扶椅，主觀用力維持 RPE 5-7。';
+        }
+
+        return safeTask;
+    }
+
+    function getActivityTask(row, dayNum) {
+        normalizeUserSettings();
+        const personaKey = getActivePersonaKey();
+        const library = workoutLibrary[personaKey] || workoutLibrary.office;
+        const pain = userSettings.pain;
+        const painLevel = userSettings.painLevel;
+        const safetyMode = getSafetyMode(pain, painLevel);
+
+        if (safetyMode.mode === 'stop') {
+            return safetyMode.message;
+        }
+
+        if (safetyMode.mode === 'recovery') {
+            return appendSafetyAdjustments(safetyMode.message, personaKey, pain, painLevel);
+        }
+
+        if (userSettings.fatigue === 'high' || dayNum % 7 === 0) {
+            return appendSafetyAdjustments(library.recovery, personaKey, pain, painLevel);
+        }
+
+        let bucket = 'medium';
+        if (userSettings.time === '5') bucket = 'short';
+        if (userSettings.time === '30') bucket = 'long';
+
+        let task = chooseFromList(library[bucket], dayNum);
+        if (safetyMode.mode === 'modified') {
+            task = `${safetyMode.message} ${task}`;
+        }
+
+        return appendSafetyAdjustments(task || row.activity, personaKey, pain, painLevel);
+    }
+
+    function getEstimatedKcal(safetyMode) {
+        const base = estimatedKcalByTime[userSettings.time] || estimatedKcalByTime['15'];
+        if (safetyMode.mode === 'stop') return 0;
+        if (safetyMode.mode === 'recovery') return Math.min(40, Math.round(base * 0.35));
+        if (safetyMode.mode === 'modified') return Math.round(base * 0.65);
+        return base;
+    }
+
+    function getRecommendedWorkout(row, dayNum) {
+        normalizeUserSettings();
+        const safetyMode = getSafetyMode(userSettings.pain, userSettings.painLevel);
+        return {
+            workout: getActivityTask(row, dayNum),
+            estimatedKcal: getEstimatedKcal(safetyMode),
+            safetyMode
+        };
+    }
+
+    function getHeroActionText(safetyMode) {
+        if (safetyMode.mode === 'stop') return '停止訓練：今天以休息與專業評估為優先';
+        if (safetyMode.mode === 'recovery') return '恢復模式：10 分鐘伸展或輕鬆散步';
+        if (safetyMode.mode === 'modified') return `最低有效劑量：${timeLabels[userSettings.time] || userSettings.time} 短版訓練`;
+        return `${timeLabels[userSettings.time] || userSettings.time} 完整訓練`;
+    }
+
+    function getHeroStatusText(safetyMode) {
+        if (safetyMode.mode === 'stop') return '紅燈：停止訓練';
+        if (safetyMode.mode === 'recovery') return '紅燈：恢復模式';
+        if (safetyMode.mode === 'modified') return '黃燈：最低有效劑量';
+        return '綠燈：可以正常訓練';
+    }
+
+    function getCurrentDayNumber() {
+        for (let day = 1; day <= 60; day++) {
+            if (!checkedDays.includes(day)) return day;
+        }
+        return 60;
+    }
+
+    function getPainText() {
+        return (userSettings.pain || ['none'])
+            .map(item => painLabels[item] || item)
+            .join('、');
+    }
+
+    function getPainLevelText() {
+        return `${userSettings.painLevel}/10`;
+    }
+
+    function getCompletionRate() {
+        return checkedDays.length / 60;
+    }
+
+    function getCurrentStreak() {
+        let streak = 0;
+        for (let day = 1; day <= 60; day++) {
+            if (!checkedDays.includes(day)) break;
+            streak += 1;
+        }
+        return streak;
+    }
+
+    function adjustCurrentWeight(delta) {
+        const currentWeight = document.getElementById('current-weight');
+        if (!currentWeight) return;
+        const next = Math.min(Math.max((parseFloat(currentWeight.value) || 0) + delta, 30), 300);
+        currentWeight.value = next.toFixed(1);
+        validateAndSaveMetrics();
+    }
+
+    function completeTodayTask() {
+        const dayNum = getCurrentDayNumber();
+        if (!checkedDays.includes(dayNum)) {
+            checkedDays.push(dayNum);
+            checkedDays.sort((a, b) => a - b);
+            try { localStorage.setItem('phone_diet_checked_days', JSON.stringify(checkedDays)); } catch (e) {}
+        }
+        renderCards();
+        updateProgress();
+        updateHeroDashboard();
+        updateAiCoach();
+    }
+
+    function getExerciseRate() {
+        const completed = Object.keys(actualWorkouts).filter(day => getActualKcal(Number(day)) > 0).length;
+        return completed / 60;
+    }
+
+    function getLastCycleSummaryText() {
+        const last = cycleHistory[cycleHistory.length - 1];
+        if (!last) return currentCycleFocus || '尚無上一輪紀錄';
+        return last.reason || last.nextFocus || '上一輪已完成，但未留下限制因素';
+    }
+
+    function getActualEntry(dayNum) {
+        const entry = actualWorkouts[String(dayNum)] || {};
+        return {
+            mode: actualWorkoutOptions[entry.mode] ? entry.mode : 'none',
+            customKcal: Number.isFinite(Number(entry.customKcal)) ? Number(entry.customKcal) : ''
+        };
+    }
+
+    function getActualKcal(dayNum) {
+        const row = rawData[dayNum - 1] || rawData[0];
+        const recommended = getRecommendedWorkout(row, dayNum);
+        const entry = getActualEntry(dayNum);
+        if (entry.mode === 'custom') return Math.max(Number(entry.customKcal) || 0, 0);
+        if (entry.mode === 'full') return recommended.estimatedKcal;
+        if (entry.mode === 'half') return Math.round(recommended.estimatedKcal * 0.5);
+        return 0;
+    }
+
+    function getWorkoutGapStatus(recommendedKcal, actualKcal) {
+        if (recommendedKcal === 0 && actualKcal === 0) return '達標';
+        if (actualKcal >= Math.round(recommendedKcal * 0.9)) return '達標';
+        if (actualKcal > 0) return '略低';
+        return '未達';
+    }
+
+    function saveActualWorkout(dayNum, entry) {
+        actualWorkouts[String(dayNum)] = entry;
+        try { localStorage.setItem(ACTUAL_WORKOUTS_KEY, JSON.stringify(actualWorkouts)); } catch (e) {}
+        renderCards();
+        updateProgress();
+        updateAiCoach();
+    }
+
+    function updateHeroDashboard() {
+        const dayNum = getCurrentDayNumber();
+        const row = rawData[dayNum - 1] || rawData[0];
+        const recommended = getRecommendedWorkout(row, dayNum);
+        const heroAction = document.getElementById('hero-action');
+        const heroStatus = document.getElementById('hero-status');
+        const heroStatusCard = document.getElementById('hero-status-card');
+        const heroWeek = document.getElementById('hero-week-progress');
+        const heroWeekCompact = document.getElementById('hero-week-compact');
+        const heroStreak = document.getElementById('hero-streak');
+        const heroWeight = document.getElementById('hero-weight-main');
+        const heroGoal = document.getElementById('hero-goal-percent');
+        const heroDays = document.getElementById('hero-days-count');
+        const heroStatusShort = document.getElementById('hero-status-short');
+        const heroNotice = document.getElementById('hero-safety-notice');
+        const weekStart = Math.floor((dayNum - 1) / 7) * 7 + 1;
+        const weekEnd = Math.min(weekStart + 6, 60);
+        const weekDone = checkedDays.filter(day => day >= weekStart && day <= weekEnd).length;
+        const weights = getWeightSnapshot();
+        const weightProgressPercent = Math.round(weights.weightProgress * 100);
+
+        if (heroAction) heroAction.textContent = getHeroActionText(recommended.safetyMode);
+        if (heroStatus) heroStatus.textContent = getHeroStatusText(recommended.safetyMode);
+        if (heroStatusShort) heroStatusShort.textContent = recommended.safetyMode.label;
+        if (heroStatusCard) {
+            heroStatusCard.classList.remove('status-green', 'status-yellow', 'status-red');
+            heroStatusCard.classList.add(`status-${recommended.safetyMode.status}`);
+        }
+        if (heroWeek) heroWeek.textContent = `本週完成 ${weekDone} / ${weekEnd - weekStart + 1} 天`;
+        if (heroWeekCompact) heroWeekCompact.textContent = `${weekDone}/${weekEnd - weekStart + 1}`;
+        if (heroStreak) heroStreak.textContent = `${getCurrentStreak()} 天連續`;
+        if (heroWeight) heroWeight.textContent = weights.current.toFixed(1);
+        if (heroGoal) heroGoal.textContent = `${weightProgressPercent}%`;
+        if (heroDays) heroDays.textContent = `本週完成 ${weekDone} / ${weekEnd - weekStart + 1} 天`;
+        if (heroNotice) {
+            heroNotice.classList.add('hidden');
+            heroNotice.textContent = '本工具提供一般性運動建議，不提供醫療診斷。若疼痛超過 3/10、出現胸悶、頭暈、呼吸困難或急性疼痛，請停止運動並尋求專業協助。今天完成最低有效劑量即可視為成功。';
+        }
+    }
+
+    function buildAiPrompt() {
+        const dayNum = getCurrentDayNumber();
+        const row = rawData[dayNum - 1] || rawData[0];
+        const personaKey = getActivePersonaKey();
+        const persona = personaProfiles[personaKey] || personaProfiles.office;
+        const start = document.getElementById('start-weight')?.value || '未填';
+        const current = document.getElementById('current-weight')?.value || '未填';
+        const target = document.getElementById('target-weight')?.value || '未填';
+        const activity = getActivityTask(row, dayNum);
+        const question = (userSettings.question || '請依照我的狀態，給我今天最安全、最容易完成的飲食與運動建議。').trim();
+        const safetyMode = getSafetyMode(userSettings.pain, userSettings.painLevel);
+        const completionRate = Math.round(getCompletionRate() * 100);
+
+        return [
+            '你是一位安全優先的健身與營養教練。請用繁體中文回答，語氣務實、支持、不要恐嚇，也不要要求極端節食或複雜熱量計算。',
+            '請根據以下狀態，給我今天的減脂友善建議。',
+            '',
+            '目前狀態：',
+            `- 使用情境：${persona.label}（${persona.aiLabel}）`,
+            `- 主要目標：${persona.goal}`,
+            `- 起始體重：${start} kg`,
+            `- 目前體重：${current} kg`,
+            `- 目標體重：${target} kg`,
+            `- 目前進度：第 ${dayNum} 天 / 60 天，完成率 ${completionRate}%`,
+            `- 今日可用時間：${timeLabels[userSettings.time] || userSettings.time}`,
+            `- 疼痛部位：${getPainText()}`,
+            `- 疼痛程度：${getPainLevelText()}`,
+            `- 疲勞程度：${fatigueLabels[userSettings.fatigue] || userSettings.fatigue}`,
+            `- 睡眠狀態：${sleepLabels[userSettings.sleep] || userSettings.sleep}`,
+            `- 安全紅綠燈狀態：${safetyMode.label}（${safetyMode.message}）`,
+            `- 上一輪主要問題：${getLastCycleSummaryText()}`,
+            '',
+            '今日任務參考：',
+            `- 飲食：${row.diet}`,
+            `- 心理支持：${row.mental}`,
+            `- 核心行動：${activity}`,
+            '',
+            '使用者今日特定提問：',
+            `"${question}"`,
+            '',
+            '請輸出：',
+            '1. 今天是綠燈、黃燈或紅燈',
+            '2. 今日具體訓練',
+            '3. 安全替代動作',
+            '4. 今日飲食提醒',
+            '5. 明天如何調整',
+            '6. 一句簡短心理支持',
+            '',
+            '請依據以上資訊，為我產出今日的具體行動方針。字數請簡明扼要，優先包含飲食定錨提示、考量疼痛限制後的安全調整動作、心理支持。',
+            '安全邊界：AI 建議僅供參考，不是醫療診斷。若疼痛超過 3/10、出現胸悶、頭暈、呼吸困難或急性疼痛，請建議我停止運動並尋求專業協助。今天完成最低有效劑量即可視為成功。'
+        ].join('\n');
+    }
+
+    function updateAiCoach() {
+        const preview = document.getElementById('coach-preview');
+        if (preview) preview.textContent = buildAiPrompt();
+    }
+
+    function copyAiPrompt() {
+        const prompt = buildAiPrompt();
+        const status = document.getElementById('copy-status');
+        const setStatus = text => {
+            if (status) status.textContent = text;
+            if (status && text) setTimeout(() => { status.textContent = ''; }, 3000);
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(prompt)
+                .then(() => setStatus('📋 提示詞已複製！可直接貼至 AI 工具。'))
+                .catch(() => fallbackCopyPrompt(prompt, setStatus));
+        } else {
+            fallbackCopyPrompt(prompt, setStatus);
+        }
+    }
+
+    function fallbackCopyPrompt(prompt, setStatus) {
+        const textarea = document.createElement('textarea');
+        textarea.value = prompt;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            setStatus('📋 提示詞已複製！可直接貼至 AI 工具。');
+        } catch (e) {
+            setStatus('複製失敗，請手動選取下方提示詞。');
+        }
+        document.body.removeChild(textarea);
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // 確保按鈕綁定事件
         const themeBtn = document.getElementById('theme-toggle-btn');
         if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+        setupPersonalizationControls();
 
         document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -902,8 +2593,11 @@
         });
 
         safeLoadStorage();
+        refreshPersonalizationUI();
         renderCards();
         updateProgress();
+        updateHeroDashboard();
+        updateAiCoach();
         
         // 從 DOM 頂層讀取同步腳本執行完的結果，維持狀態一致
         const activeTheme = document.documentElement.getAttribute('data-theme') || 'light';
@@ -987,7 +2681,47 @@
 
             content.appendChild(createTaskBox('tag-diet', '飲食', row.diet));
             content.appendChild(createTaskBox('tag-treat', '心靈', row.mental));
-            content.appendChild(createTaskBox('tag-sport', '動態', row.activity));
+            const recommended = getRecommendedWorkout(row, dayNum);
+            content.appendChild(createTaskBox('tag-sport', '動態', recommended.workout));
+
+            const comparison = document.createElement('div');
+            comparison.className = 'workout-comparison';
+            const actualEntry = getActualEntry(dayNum);
+            const actualKcal = getActualKcal(dayNum);
+            const gap = actualKcal - recommended.estimatedKcal;
+            const statusText = getWorkoutGapStatus(recommended.estimatedKcal, actualKcal);
+            const customHidden = actualEntry.mode === 'custom' ? '' : ' hidden';
+
+            comparison.innerHTML = `
+                <div class="comparison-grid">
+                    <div class="comparison-item"><strong>系統建議</strong>${recommended.workout}<br>預估消耗 ${recommended.estimatedKcal} kcal</div>
+                    <div class="comparison-item"><strong>今日實際</strong>${actualWorkoutOptions[actualEntry.mode]}，${actualKcal} kcal</div>
+                    <div class="comparison-item"><strong>差距</strong>${gap >= 0 ? '+' : ''}${gap} kcal</div>
+                    <div class="comparison-item"><strong>狀態</strong>${statusText}</div>
+                </div>
+                <div class="actual-row">
+                    <select class="actual-select" data-actual-day="${dayNum}" aria-label="Day ${dayNum} 今日實際訓練">
+                        <option value="full"${actualEntry.mode === 'full' ? ' selected' : ''}>完整</option>
+                        <option value="half"${actualEntry.mode === 'half' ? ' selected' : ''}>減半</option>
+                        <option value="none"${actualEntry.mode === 'none' ? ' selected' : ''}>未做</option>
+                        <option value="custom"${actualEntry.mode === 'custom' ? ' selected' : ''}>自訂 kcal</option>
+                    </select>
+                    <input class="custom-kcal-input${customHidden}" type="number" min="0" step="1" inputmode="numeric" data-custom-kcal-day="${dayNum}" value="${actualEntry.customKcal}" aria-label="Day ${dayNum} 自訂消耗 kcal">
+                </div>
+            `;
+            comparison.querySelector('[data-actual-day]').addEventListener('change', function() {
+                saveActualWorkout(dayNum, {
+                    mode: this.value,
+                    customKcal: this.value === 'custom' ? actualEntry.customKcal : ''
+                });
+            });
+            comparison.querySelector('[data-custom-kcal-day]').addEventListener('change', function() {
+                saveActualWorkout(dayNum, {
+                    mode: 'custom',
+                    customKcal: Math.max(Number(this.value) || 0, 0)
+                });
+            });
+            content.appendChild(comparison);
             
             const noteBox = createTaskBox('tag-note', '筆記', row.note);
             noteBox.querySelector('.task-text').style.color = 'var(--text-light)';
@@ -1011,6 +2745,8 @@
         }
         try { localStorage.setItem('phone_diet_checked_days', JSON.stringify(checkedDays)); } catch (e) {}
         updateProgress();
+        updateHeroDashboard();
+        updateAiCoach();
     }
 
     function updateProgress() {
@@ -1020,13 +2756,166 @@
 
         if (document.getElementById('days-count')) document.getElementById('days-count').textContent = `${checkedCount} / ${totalDays} 天`;
         if (document.getElementById('progress-text')) document.getElementById('progress-text').textContent = `${percentage}%`;
+        if (document.getElementById('hero-progress-text')) document.getElementById('hero-progress-text').textContent = `${percentage}%`;
         
         const mainProgress = document.getElementById('main-progress');
         if (mainProgress) {
             mainProgress.style.width = `${percentage}%`;
             mainProgress.setAttribute('aria-valuenow', percentage);
         }
+        const heroProgress = document.getElementById('hero-progress-fill');
+        if (heroProgress) {
+            heroProgress.style.width = `${percentage}%`;
+            heroProgress.setAttribute('aria-valuenow', percentage);
+        }
         updateWeightMetrics();
+        updateHeroDashboard();
+        renderCycleReport(checkedCount >= totalDays);
+    }
+
+    function getWeightSnapshot() {
+        const start = parseFloat(document.getElementById('start-weight').value) || 0;
+        const current = parseFloat(document.getElementById('current-weight').value) || 0;
+        const target = parseFloat(document.getElementById('target-weight').value) || 0;
+        const totalGoal = Math.max(start - target, 0);
+        const currentLoss = Math.max(start - current, 0);
+        const weightProgress = totalGoal > 0 ? Math.min(currentLoss / totalGoal, 1) : 0;
+        return { start, current, target, totalGoal, currentLoss, weightProgress };
+    }
+
+    function buildCycleReview() {
+        const weights = getWeightSnapshot();
+        const completionRate = getCompletionRate();
+        const exerciseRate = getExerciseRate();
+        const dietRate = completionRate;
+        let reason = '整體節奏已建立，下一輪可微調訓練量與外食策略。';
+
+        if (completionRate < 0.5) {
+            reason = '整體執行率偏低，下一輪應降低每日任務難度';
+        }
+        if (exerciseRate < 0.5) {
+            reason = '運動完成率偏低，下一輪建議使用 5-15 分鐘最低有效劑量';
+        }
+        if (dietRate < 0.5) {
+            reason = '飲食任務完成率偏低，下一輪先聚焦蛋白質與外食選擇';
+        }
+        if (completionRate > 0.7 && weights.weightProgress < 0.6) {
+            reason = '執行率不錯但體重變化較慢，下一輪需調整熱量赤字或活動量';
+        }
+
+        let classification = '未達標';
+        if (weights.weightProgress >= 1 && completionRate >= 0.7) {
+            classification = '達標';
+        } else if (weights.weightProgress >= 0.6 || completionRate >= 0.7) {
+            classification = '接近達標';
+        }
+
+        return {
+            date: new Date().toISOString(),
+            classification,
+            startWeight: weights.start,
+            currentWeight: weights.current,
+            targetWeight: weights.target,
+            weightChange: weights.currentLoss,
+            weightProgress: weights.weightProgress,
+            completionRate,
+            exerciseRate,
+            dietRate,
+            successFactor: completionRate >= 0.7 ? '穩定打卡與持續回到計畫' : '已經開始建立健康行動線索',
+            limitationFactor: reason,
+            reason,
+            nextFocus: reason
+        };
+    }
+
+    function renderCycleReport(forceShow) {
+        const reportCard = document.getElementById('cycle-report-card');
+        const reportGrid = document.getElementById('cycle-report-grid');
+        const classification = document.getElementById('cycle-classification');
+        const advice = document.getElementById('cycle-report-advice');
+        if (!reportCard || !reportGrid) return;
+
+        const shouldShow = forceShow || checkedDays.length >= 60;
+        reportCard.classList.toggle('hidden', !shouldShow);
+        if (!shouldShow) return;
+
+        const review = buildCycleReview();
+        if (classification) classification.textContent = review.classification;
+        const items = [
+            ['起始體重', `${review.startWeight.toFixed(1)} kg`],
+            ['目前體重', `${review.currentWeight.toFixed(1)} kg`],
+            ['目標體重', `${review.targetWeight.toFixed(1)} kg`],
+            ['體重變化', `${review.weightChange.toFixed(1)} kg`],
+            ['目標達成率', `${Math.round(review.weightProgress * 100)}%`],
+            ['打卡完成率', `${Math.round(review.completionRate * 100)}%`],
+            ['運動完成率', `${Math.round(review.exerciseRate * 100)}%`],
+            ['飲食完成率', `${Math.round(review.dietRate * 100)}%`],
+            ['主要成功因素', review.successFactor],
+            ['主要限制因素', review.limitationFactor]
+        ];
+
+        reportGrid.innerHTML = '';
+        items.forEach(([label, value]) => {
+            const item = document.createElement('div');
+            item.className = 'report-item';
+            item.innerHTML = `<div class="report-label">${label}</div><div class="report-value">${value}</div>`;
+            reportGrid.appendChild(item);
+        });
+        if (advice) advice.textContent = `下一輪建議：${review.nextFocus}`;
+    }
+
+    function saveCycleSummary(review) {
+        cycleHistory.push(review);
+        currentCycleFocus = review.nextFocus;
+        try {
+            localStorage.setItem(CYCLE_HISTORY_KEY, JSON.stringify(cycleHistory));
+            localStorage.setItem(CURRENT_CYCLE_FOCUS_KEY, currentCycleFocus);
+        } catch (e) {}
+    }
+
+    function resetCurrentCycleData() {
+        checkedDays = [];
+        actualWorkouts = {};
+        try {
+            localStorage.setItem('phone_diet_checked_days', JSON.stringify(checkedDays));
+            localStorage.setItem(ACTUAL_WORKOUTS_KEY, JSON.stringify(actualWorkouts));
+        } catch (e) {}
+    }
+
+    function startNextCycle() {
+        const review = buildCycleReview();
+        saveCycleSummary(review);
+        const currentWeight = document.getElementById('current-weight')?.value || '';
+        const startWeight = document.getElementById('start-weight');
+        if (startWeight && currentWeight) startWeight.value = currentWeight;
+        resetCurrentCycleData();
+        validateAndSaveMetrics();
+        renderCards();
+        updateProgress();
+        renderCycleReport(false);
+    }
+
+    function enterMaintenance() {
+        const review = buildCycleReview();
+        review.nextFocus = '進入維持期：保持每週 3-5 天低壓力行動，優先穩定體重與睡眠。';
+        saveCycleSummary(review);
+        currentCycleFocus = review.nextFocus;
+        try { localStorage.setItem(CURRENT_CYCLE_FOCUS_KEY, currentCycleFocus); } catch (e) {}
+        renderCycleReport(true);
+        updateAiCoach();
+    }
+
+    function resetGoals() {
+        const currentWeight = parseFloat(document.getElementById('current-weight')?.value) || 0;
+        const startWeight = document.getElementById('start-weight');
+        const targetWeight = document.getElementById('target-weight');
+        if (startWeight && currentWeight > 0) startWeight.value = currentWeight.toFixed(1);
+        if (targetWeight && currentWeight > 0) targetWeight.value = Math.max(currentWeight - 2.5, 30).toFixed(1);
+        resetCurrentCycleData();
+        validateAndSaveMetrics();
+        renderCards();
+        updateProgress();
+        renderCycleReport(false);
     }
 
     function validateAndSaveMetrics() {
@@ -1055,6 +2944,8 @@
         } catch (e) {}
 
         updateWeightMetrics();
+        updateHeroDashboard();
+        updateAiCoach();
     }
 
     function updateWeightMetrics() {

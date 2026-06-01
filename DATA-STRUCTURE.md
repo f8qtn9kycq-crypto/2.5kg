@@ -10,12 +10,13 @@
 index.html (單文件應用)
 ├── HTML 結構
 │   ├── 儀表板分頁 (tab-dash)
+│   ├── Persona / 今日狀態 / AI 顧問區塊
 │   ├── 行動表分頁 (tab-plan)
 │   └── 應變紅綠燈分頁 (tab-rules)
 ├── CSS 樣式 (內嵌 <style>)
 │   └── CSS 變數系統 + 響應式設計
 └── JavaScript 邏輯 (內嵌 <script>)
-    ├── 數據管理 (rawData 陣列)
+    ├── 數據管理 (rawData 60 天資料 + persona workout library)
     ├── UI 渲染 (renderCards 等)
     ├── 狀態管理 (localStorage)
     └── 事件監聽 (onclick 處理)
@@ -29,25 +30,27 @@ index.html (單文件應用)
 
 ```javascript
 const rawData = [
-    [
-        "1",                                    // [0] 日期編號 (String)
-        "調整定錨：如實記錄三餐內容與份量",    // [1] 飲食任務
-        "暫不安排，觀察無意識進食",            // [2] 心靈任務
-        "步行 6,000 步",                        // [3] 動態任務
-        "建立基準：記錄起始體重與圍度。"       // [4] 筆記/觀察
-    ],
-    // ... D2-D60 以此類推
-]
+    createDayData(
+        "1",
+        "調整定錨：如實記錄三餐內容與份量",
+        "暫不安排，觀察無意識進食",
+        "步行 6,000 步",
+        "建立基準：記錄起始體重與圍度。"
+    ),
+    // ... D2-D60 皆為明確資料，不再複製 D1-D30
+];
 ```
 
 **字段說明：**
-| 索引 | 字段名 | 數據類型 | 示例 | 說明 |
-|------|--------|---------|------|------|
-| 0 | dayNum | String | "1" | 日期編號 1-60 |
-| 1 | dietTask | String | "調整定錨..." | 飲食相關任務 |
-| 2 | treatTask | String | "暫不安排..." | 心靈/甜點/酒精管理 |
-| 3 | sportTask | String | "步行 6,000 步" | 運動/活動任務 |
-| 4 | noteTask | String | "建立基準..." | 周檢視或觀察重點 |
+| 欄位 | 數據類型 | 示例 | 說明 |
+|------|---------|------|------|
+| `day` | String | `"1"` | 日期編號 1-60 |
+| `diet` | String | `"調整定錨..."` | 飲食相關任務 |
+| `mental` | String | `"暫不安排..."` | 心靈/甜點/酒精管理 |
+| `activity` | String | `"步行 6,000 步"` | 預設動態任務 |
+| `note` | String | `"建立基準..."` | 週檢視或觀察重點 |
+
+目前 `renderCards()` 會用 `getActivityTask(row, dayNum)` 產生實際顯示的動態任務，因此畫面上的「動態」會依 persona、可用時間、疲勞與疼痛限制調整。
 
 ### 2.2 LocalStorage 數據結構
 
@@ -76,6 +79,81 @@ const rawData = [
   value: '74',
   type: 'String',
   example: '72.5'
+}
+
+// 4. 目標體重
+{
+  key: 'phone_diet_target_w',
+  value: '72.5',
+  type: 'String',
+  example: '72.5'
+}
+
+// 5. Persona 與今日狀態
+{
+  key: 'phone_diet_persona',
+  value: 'activeAging',
+  type: 'String',
+  allowed: ['office', 'family', 'activeAging', 'health']
+}
+
+{
+  key: 'phone_diet_today_time',
+  value: '15',
+  type: 'String',
+  allowed: ['5', '15', '30']
+}
+
+{
+  key: 'phone_diet_today_fatigue',
+  value: 'medium',
+  type: 'String',
+  allowed: ['low', 'medium', 'high']
+}
+
+{
+  key: 'phone_diet_today_sleep',
+  value: 'between5and7',
+  type: 'String',
+  allowed: ['under5', 'between5and7', 'over7']
+}
+
+{
+  key: 'phone_diet_pain_flags',
+  value: ['none'],
+  type: 'Array<string>',
+  allowed: ['none', 'shoulder', 'hip', 'back', 'knee', 'warning']
+}
+
+{
+  key: 'phone_diet_pain_level',
+  value: '0',
+  type: 'String',
+  allowed: '0-10'
+}
+
+{
+  key: 'phone_diet_actual_workouts',
+  value: { "1": { "mode": "full", "customKcal": "" } },
+  type: 'Object<string, { mode: "full" | "half" | "none" | "custom", customKcal: number | "" }>'
+}
+
+{
+  key: 'phone_diet_cycle_history',
+  value: [],
+  type: 'Array<CycleSummary>'
+}
+
+{
+  key: 'phone_diet_current_cycle_focus',
+  value: '運動完成率偏低，下一輪建議使用 5-15 分鐘最低有效劑量',
+  type: 'String'
+}
+
+{
+  key: 'phone_diet_coach_question',
+  value: '今天膝蓋不舒服，該怎麼調整？',
+  type: 'String'
 }
 ```
 
@@ -357,15 +435,17 @@ function saveMetrics() {
   ↓
 執行 <script> 區塊
   ↓
-1. 初始化 rawData 陣列（D1-D30 + 自動補完 D31-D60）
+1. 初始化 rawData 陣列（D1-D60 明確資料）
   ↓
 2. 載入 checkedDays （若無則為 []）
   ↓
-3. 載入體重數據（若無則使用預設）
+3. 載入體重數據、persona、今日狀態、AI 顧問問題
   ↓
-4. 執行 renderCards() → 渲染 Phase 1 卡片
+4. refreshPersonalizationUI() → 同步 persona 與狀態控制
   ↓
-5. 執行 updateProgress() → 計算進度
+5. renderCards() → 渲染 Phase 1 卡片與 persona-aware 動態任務
+  ↓
+6. updateProgress() / updateAiCoach() → 計算進度與提示詞
   ↓
 應用就緒 ✅
 ```
@@ -593,16 +673,20 @@ updateProgress();
 
 ### 本地測試
 ```bash
-# 直接打開 index.html
-# 在瀏覽器中：file:///path/to/index.html
+python3 -m http.server 5177
+# 在瀏覽器中打開 http://localhost:5177/index.html
 ```
 
 ### GitHub Pages 部署
 ```bash
-git push
-# 在 Settings → Pages → Source 選擇 main 分支
-# 自動發佈至 https://f8qtn9kycq-crypto.github.io/2.5kg
+git add index.html README.md DATA-STRUCTURE.md .gitignore .nojekyll
+git commit -m "Prepare GitHub Pages deployment"
+git push origin main
 ```
+
+在 GitHub `Settings → Pages` 選擇 `Deploy from a branch`，branch 設為 `main`，folder 設為 `/ (root)`。
+
+發佈網址：`https://f8qtn9kycq-crypto.github.io/2.5kg/`
 
 ### 其他部署選項
 - Vercel (推薦，零配置)
@@ -613,16 +697,19 @@ git push
 
 ---
 
-**版本：** 1.0  
-**最後更新：** 2026年5月26日  
+**版本：** 1.6  
+**最後更新：** 2026年6月1日  
 **面向用戶：** 開發者、進階用戶
 
 
 ---
 
-## 🆕 Version 1.1
+## 🆕 Version 1.6
 
 新增：
 - `phone_diet_target_w`
-- 體重進度公式
-- 習慣完成度與成果進度分離
+- persona onboarding
+- persona-aware workout generation
+- AI 顧問提示詞產生器
+- Active Aging 安全規則
+- D31-D60 明確內容，不再複製 D1-D30
