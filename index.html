@@ -1217,6 +1217,10 @@
             padding: 12px;
         }
 
+        .home-accordion:not([open]) .accordion-body {
+            display: none;
+        }
+
         .accordion-body > .card:last-child,
         .accordion-body > .compact-metrics-strip:last-child {
             margin-bottom: 0;
@@ -2403,9 +2407,13 @@
 
     function getActualEntry(dayNum) {
         const entry = actualWorkouts[String(dayNum)] || {};
+        const hasCustomKcal = entry.customKcal !== '' && entry.customKcal !== null && entry.customKcal !== undefined;
+        const customKcal = hasCustomKcal && Number.isFinite(Number(entry.customKcal))
+            ? Math.max(Number(entry.customKcal), 0)
+            : '';
         return {
             mode: actualWorkoutOptions[entry.mode] ? entry.mode : 'none',
-            customKcal: Number.isFinite(Number(entry.customKcal)) ? Number(entry.customKcal) : ''
+            customKcal
         };
     }
 
@@ -2426,10 +2434,20 @@
         return '未達';
     }
 
-    function saveActualWorkout(dayNum, entry) {
-        actualWorkouts[String(dayNum)] = entry;
+    function normalizeActualWorkoutEntry(entry) {
+        const mode = actualWorkoutOptions[entry.mode] ? entry.mode : 'none';
+        const hasCustomKcal = entry.customKcal !== '' && entry.customKcal !== null && entry.customKcal !== undefined;
+        const customKcal = hasCustomKcal && Number.isFinite(Number(entry.customKcal))
+            ? Math.max(Number(entry.customKcal), 0)
+            : '';
+        return { mode, customKcal: mode === 'custom' ? customKcal : '' };
+    }
+
+    function saveActualWorkout(dayNum, entry, options = {}) {
+        const shouldRender = options.render !== false;
+        actualWorkouts[String(dayNum)] = normalizeActualWorkoutEntry(entry);
         try { localStorage.setItem(ACTUAL_WORKOUTS_KEY, JSON.stringify(actualWorkouts)); } catch (e) {}
-        renderCards();
+        if (shouldRender) renderCards();
         updateProgress();
         updateAiCoach();
     }
@@ -2695,9 +2713,9 @@
             comparison.innerHTML = `
                 <div class="comparison-grid">
                     <div class="comparison-item"><strong>系統建議</strong>${recommended.workout}<br>預估消耗 ${recommended.estimatedKcal} kcal</div>
-                    <div class="comparison-item"><strong>今日實際</strong>${actualWorkoutOptions[actualEntry.mode]}，${actualKcal} kcal</div>
-                    <div class="comparison-item"><strong>差距</strong>${gap >= 0 ? '+' : ''}${gap} kcal</div>
-                    <div class="comparison-item"><strong>狀態</strong>${statusText}</div>
+                    <div class="comparison-item"><strong>今日實際</strong><span data-actual-label-day="${dayNum}">${actualWorkoutOptions[actualEntry.mode]}</span>，<span data-actual-kcal-day="${dayNum}">${actualKcal}</span> kcal</div>
+                    <div class="comparison-item"><strong>差距</strong><span data-gap-day="${dayNum}">${gap >= 0 ? '+' : ''}${gap}</span> kcal</div>
+                    <div class="comparison-item"><strong>狀態</strong><span data-status-day="${dayNum}">${statusText}</span></div>
                 </div>
                 <div class="actual-row">
                     <select class="actual-select" data-actual-day="${dayNum}" aria-label="Day ${dayNum} 今日實際訓練">
@@ -2709,16 +2727,39 @@
                     <input class="custom-kcal-input${customHidden}" type="number" min="0" step="1" inputmode="numeric" data-custom-kcal-day="${dayNum}" value="${actualEntry.customKcal}" aria-label="Day ${dayNum} 自訂消耗 kcal">
                 </div>
             `;
-            comparison.querySelector('[data-actual-day]').addEventListener('change', function() {
-                saveActualWorkout(dayNum, {
+            const actualSelect = comparison.querySelector('[data-actual-day]');
+            const customKcalInput = comparison.querySelector('[data-custom-kcal-day]');
+            const updateWorkoutComparison = function(entry) {
+                const normalized = normalizeActualWorkoutEntry(entry);
+                let nextActualKcal = 0;
+                if (normalized.mode === 'custom') nextActualKcal = Math.max(Number(normalized.customKcal) || 0, 0);
+                if (normalized.mode === 'full') nextActualKcal = recommended.estimatedKcal;
+                if (normalized.mode === 'half') nextActualKcal = Math.round(recommended.estimatedKcal * 0.5);
+                const nextGap = nextActualKcal - recommended.estimatedKcal;
+                comparison.querySelector(`[data-actual-label-day="${dayNum}"]`).textContent = actualWorkoutOptions[normalized.mode];
+                comparison.querySelector(`[data-actual-kcal-day="${dayNum}"]`).textContent = nextActualKcal;
+                comparison.querySelector(`[data-gap-day="${dayNum}"]`).textContent = `${nextGap >= 0 ? '+' : ''}${nextGap}`;
+                comparison.querySelector(`[data-status-day="${dayNum}"]`).textContent = getWorkoutGapStatus(recommended.estimatedKcal, nextActualKcal);
+            };
+            const saveAndUpdateWorkout = function(entry) {
+                const normalized = normalizeActualWorkoutEntry(entry);
+                saveActualWorkout(dayNum, normalized, { render: false });
+                updateWorkoutComparison(normalized);
+            };
+            actualSelect.addEventListener('change', function() {
+                const isCustom = this.value === 'custom';
+                customKcalInput.classList.toggle('hidden', !isCustom);
+                saveAndUpdateWorkout({
                     mode: this.value,
-                    customKcal: this.value === 'custom' ? actualEntry.customKcal : ''
+                    customKcal: isCustom ? customKcalInput.value : ''
                 });
             });
-            comparison.querySelector('[data-custom-kcal-day]').addEventListener('change', function() {
-                saveActualWorkout(dayNum, {
+            customKcalInput.addEventListener('input', function() {
+                actualSelect.value = 'custom';
+                customKcalInput.classList.remove('hidden');
+                saveAndUpdateWorkout({
                     mode: 'custom',
-                    customKcal: Math.max(Number(this.value) || 0, 0)
+                    customKcal: this.value
                 });
             });
             content.appendChild(comparison);
