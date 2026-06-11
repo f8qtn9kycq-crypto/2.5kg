@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "scripts": {
+    "test": "node --test src/tests/safety.test.js src/tests/storage.test.js src/tests/workout.test.js"
+  }
+}
