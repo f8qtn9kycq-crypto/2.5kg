@@ -16,6 +16,14 @@ export const STORAGE_KEYS = {
   currentCycleFocus: 'phone_diet_current_cycle_focus'
 };
 
+export const SLEEP_VALUES = {
+  under5: 'under5',
+  between5and7: 'between5and7',
+  over7: 'over7'
+};
+
+const ALLOWED_SLEEP_VALUES = new Set(Object.values(SLEEP_VALUES));
+
 function getStorage() {
   try {
     return globalThis.localStorage || null;
@@ -87,6 +95,11 @@ function safeGetString(key, fallback = '') {
   }
 }
 
+export function normalizeStoredSleep(value, fallback = SLEEP_VALUES.between5and7) {
+  const normalized = typeof value === 'string' ? value : String(value ?? '');
+  return ALLOWED_SLEEP_VALUES.has(normalized) ? normalized : fallback;
+}
+
 export function getAppState() {
   return {
     checkedDays: safeGetJSON(STORAGE_KEYS.checkedDays, []),
@@ -98,7 +111,7 @@ export function getAppState() {
       persona: safeGetString(STORAGE_KEYS.persona, ''),
       availableTime: safeGetNumber(STORAGE_KEYS.availableTime, 15),
       fatigue: safeGetString(STORAGE_KEYS.fatigue, 'medium'),
-      sleep: safeGetString(STORAGE_KEYS.sleep, 'between5and7'),
+      sleep: normalizeStoredSleep(safeGetString(STORAGE_KEYS.sleep, SLEEP_VALUES.between5and7)),
       painAreas: safeGetJSON(STORAGE_KEYS.painAreas, ['none']),
       painLevel: safeGetNumber(STORAGE_KEYS.painLevel, 0),
       coachQuestion: safeGetString(STORAGE_KEYS.coachQuestion, '')
@@ -124,7 +137,7 @@ export function savePersonalization(input = {}) {
       storage.setItem(STORAGE_KEYS.fatigue, String(input.fatigue));
     }
     if (input.sleep !== undefined) {
-      storage.setItem(STORAGE_KEYS.sleep, String(input.sleep));
+      storage.setItem(STORAGE_KEYS.sleep, normalizeStoredSleep(input.sleep));
     }
     if (input.painAreas !== undefined || input.pain !== undefined) {
       storage.setItem(STORAGE_KEYS.painAreas, JSON.stringify(input.painAreas ?? input.pain));
@@ -142,10 +155,12 @@ export function savePersonalization(input = {}) {
 }
 
 export default {
+  SLEEP_VALUES,
   safeGetJSON,
   safeSetJSON,
   safeGetNumber,
   safeSetNumber,
+  normalizeStoredSleep,
   getAppState,
   savePersonalization
 };

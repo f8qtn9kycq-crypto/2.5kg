@@ -198,6 +198,29 @@ export const exercises = [
     instructions: 'Carry light weights with tall posture and steady breathing.'
   },
   {
+    id: 'pallof_press',
+    name: 'Pallof Press',
+    category: 'core',
+    equipment: ['band', 'cable'],
+    goalTags: ['muscle_maintenance', 'active_aging', 'rehab_friendly'],
+    riskTags: [],
+    substitutionFor: ['russian twist', 'heavy deadlift', 'heavy good morning'],
+    activeAgingFriendly: true,
+    level: 'beginner',
+    instructions: [
+      'Stand tall with band or cable at chest height',
+      'Press hands forward slowly',
+      'Resist rotation through the trunk',
+      'Return with control'
+    ],
+    safetyNotes: [
+      'Keep ribs down',
+      'Avoid twisting through the lower back',
+      'Use light resistance first'
+    ],
+    contraindications: []
+  },
+  {
     id: 'bike',
     name: 'bike',
     category: 'walk',

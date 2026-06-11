@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  SLEEP_VALUES,
   STORAGE_KEYS,
   getAppState,
+  normalizeStoredSleep,
   safeGetJSON,
   safeGetNumber,
   safeSetJSON,
@@ -102,6 +104,7 @@ test('getAppState safely reads current app storage shape', () => {
     phone_diet_target_w: '75',
     phone_diet_curr_w: '78.5',
     phone_diet_today_time: '30',
+    phone_diet_today_sleep: 'under5',
     phone_diet_pain_flags: '["shoulder"]',
     phone_diet_actual_workouts: '{"1":{"mode":"full"}}'
   });
@@ -111,6 +114,23 @@ test('getAppState safely reads current app storage shape', () => {
   assert.equal(state.targetWeight, 75);
   assert.equal(state.currentWeight, 78.5);
   assert.equal(state.personalization.availableTime, 30);
+  assert.equal(state.personalization.sleep, SLEEP_VALUES.under5);
   assert.deepEqual(state.personalization.painAreas, ['shoulder']);
   assert.deepEqual(state.actualWorkouts, { 1: { mode: 'full' } });
+});
+
+test('stored sleep values are canonicalized without crashing', () => {
+  assert.equal(normalizeStoredSleep('under5'), SLEEP_VALUES.under5);
+  assert.equal(normalizeStoredSleep('between5and7'), SLEEP_VALUES.between5and7);
+  assert.equal(normalizeStoredSleep('over7'), SLEEP_VALUES.over7);
+  assert.equal(normalizeStoredSleep('invalid'), SLEEP_VALUES.between5and7);
+});
+
+test('savePersonalization preserves canonical stored sleep strings', () => {
+  const store = installLocalStorage();
+  assert.equal(savePersonalization({ sleep: 'under5' }), true);
+  assert.equal(store.get(STORAGE_KEYS.sleep), SLEEP_VALUES.under5);
+
+  assert.equal(savePersonalization({ sleep: 'not-valid' }), true);
+  assert.equal(store.get(STORAGE_KEYS.sleep), SLEEP_VALUES.between5and7);
 });

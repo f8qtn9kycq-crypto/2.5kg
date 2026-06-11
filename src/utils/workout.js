@@ -7,9 +7,48 @@ const TIME_TO_DURATION = {
   30: 30
 };
 
+const SLEEP_TO_HOURS = {
+  under5: 4,
+  between5and7: 6,
+  over7: 7.5
+};
+
 function normalizeTime(value) {
   const parsed = Number(value);
   return TIME_TO_DURATION[parsed] || 15;
+}
+
+function getFiniteNumber(value, fallback = null) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+export function normalizeWorkoutInputFromAppState(appState = {}) {
+  const state = appState && typeof appState === 'object' ? appState : {};
+  const personalization = state.personalization && typeof state.personalization === 'object'
+    ? state.personalization
+    : {};
+
+  const rawSleepHours = personalization.sleepHours ?? state.sleepHours;
+  const parsedSleepHours = SLEEP_TO_HOURS[personalization.sleep] ??
+    SLEEP_TO_HOURS[state.sleep] ??
+    Number(rawSleepHours);
+
+  return {
+    availableTime: personalization.availableTime ?? state.availableTime ?? 15,
+    painLevel: Number(personalization.painLevel ?? state.painLevel ?? 0),
+    painAreas: Array.isArray(personalization.painAreas)
+      ? personalization.painAreas
+      : Array.isArray(state.painAreas)
+        ? state.painAreas
+        : [],
+    fatigue: personalization.fatigue ?? state.fatigue ?? 'medium',
+    sleepHours: Number.isFinite(parsedSleepHours) ? parsedSleepHours : null,
+    warningSymptoms: Array.isArray(state.warningSymptoms) ? state.warningSymptoms : [],
+    goal: personalization.goal ?? state.goal ?? 'active_aging',
+    equipment: personalization.equipment ?? state.equipment ?? 'none',
+    persona: personalization.persona ?? state.persona ?? 'default'
+  };
 }
 
 function hasAllowedEquipment(exercise, equipment) {
@@ -27,7 +66,7 @@ function findExercise(name, input) {
   const equipment = input.equipment || 'none';
 
   return exercises.find(exercise => (
-    exercise.name === normalizedName &&
+    exercise.name.toLowerCase() === normalizedName &&
     hasAllowedEquipment(exercise, equipment) &&
     isSafeForPainAreas(exercise, painAreas)
   ));
@@ -192,16 +231,9 @@ function getNormalWorkout(input = {}) {
 }
 
 export function getWorkoutRecommendation(input = {}) {
-  const normalizedInput = {
-    availableTime: normalizeTime(input.availableTime),
-    painLevel: Number(input.painLevel) || 0,
-    painAreas: Array.isArray(input.painAreas) ? input.painAreas : [],
-    fatigue: input.fatigue || 'medium',
-    sleepHours: input.sleepHours ?? null,
-    warningSymptoms: Array.isArray(input.warningSymptoms) ? input.warningSymptoms : [],
-    goal: input.goal || 'active_aging',
-    equipment: input.equipment || 'none'
-  };
+  const normalizedInput = normalizeWorkoutInputFromAppState(input);
+  normalizedInput.availableTime = normalizeTime(normalizedInput.availableTime);
+  normalizedInput.painLevel = getFiniteNumber(normalizedInput.painLevel, 0);
   const safetyMode = getSafetyMode(normalizedInput);
 
   if (safetyMode.mode === 'stop') {
@@ -228,6 +260,7 @@ export function getWorkoutRecommendation(input = {}) {
 }
 
 export default {
+  normalizeWorkoutInputFromAppState,
   getWorkoutRecommendation,
   getEstimatedKcal,
   getMinimumEffectiveDose,
