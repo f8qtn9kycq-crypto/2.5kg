@@ -1081,6 +1081,12 @@
             grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
         }
 
+        @media (max-width: 359px) {
+            .today-card-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .cta-primary-action-btn.mode-modified,
         .cta-primary-action-btn.mode-recovery {
             background: #f59e0b;
@@ -3654,7 +3660,7 @@
 
     function getHeroCtaConfig(safetyMode) {
         if (safetyMode.mode === 'stop') {
-            return { primary: '查看原因', primaryAction: 'reason', secondary: '調整今日訓練', secondaryAction: 'adjust' };
+            return { primary: '查看原因', primaryAction: 'reason', secondary: '', secondaryAction: '' };
         }
         if (safetyMode.mode === 'recovery') {
             return { primary: '進入恢復模式', primaryAction: 'plan', secondary: '查看原因', secondaryAction: 'reason' };
@@ -3787,6 +3793,7 @@
         if (adjustTodayBtn) {
             adjustTodayBtn.textContent = ctaConfig.secondary;
             adjustTodayBtn.dataset.action = ctaConfig.secondaryAction;
+            adjustTodayBtn.classList.toggle('hidden', !ctaConfig.secondary);
         }
         if (heroRecommendedKcal) heroRecommendedKcal.textContent = `建議：${recommended.estimatedKcal} kcal`;
         if (heroActualKcal) heroActualKcal.textContent = actualEntry.mode === 'none'
