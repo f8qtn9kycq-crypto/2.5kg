@@ -364,10 +364,13 @@
             border: 1px solid rgba(180, 83, 9, 0.25);
             border-radius: 999px;
             color: var(--tag-treat-text);
-            font-size: 0.82rem;
+            font-size: 0.74rem;
             font-weight: 850;
             line-height: 1;
+            max-width: 150px;
+            overflow: hidden;
             padding: 7px 10px;
+            text-overflow: ellipsis;
             white-space: nowrap;
         }
 
@@ -420,10 +423,10 @@
         .summary-hero-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 18px;
+            border-radius: 16px;
             box-shadow: var(--shadow-soft);
-            margin-bottom: 14px;
-            padding: 18px;
+            margin-bottom: 12px;
+            padding: 14px;
         }
 
         .hero-top-row {
@@ -572,7 +575,7 @@
             font-weight: 850;
             justify-content: center;
             margin-bottom: 12px;
-            min-height: 58px;
+            min-height: 50px;
             padding: 8px 10px;
             width: 100%;
         }
@@ -887,7 +890,7 @@
 
         .today-simple-card {
             display: grid;
-            gap: 12px;
+            gap: 9px;
         }
 
         .today-simple-card .cta-primary-action-btn {
@@ -910,56 +913,150 @@
 
         .today-main-task {
             color: var(--heading);
-            font-size: 1.28rem;
+            font-size: 1.16rem;
             font-weight: 900;
-            line-height: 1.35;
+            line-height: 1.32;
             margin: 0;
         }
 
         .today-reason-line {
             color: var(--text-secondary);
-            font-size: 0.92rem;
+            font-size: 0.88rem;
             font-weight: 760;
-            line-height: 1.45;
-            margin: -2px 0 0;
+            line-height: 1.36;
+            margin: 0;
         }
 
         .today-section-label {
             color: var(--text-light);
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             font-weight: 900;
             letter-spacing: 0.04em;
-            margin: 0 0 -8px;
+            margin: 0 0 -6px;
         }
 
-        .today-quick-grid {
+        .today-safety-visual {
+            align-items: center;
+            background: var(--surface-muted);
+            border: 1px solid var(--border-muted);
+            border-radius: 12px;
+            display: grid;
+            gap: 10px;
+            grid-template-columns: auto 1fr;
+            padding: 10px 12px;
+        }
+
+        .today-safety-icon {
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            font-size: 1.35rem;
+            height: 42px;
+            justify-content: center;
+            width: 42px;
+        }
+
+        .today-safety-copy {
+            min-width: 0;
+        }
+
+        .today-safety-title {
+            color: var(--heading);
+            display: block;
+            font-size: 1rem;
+            font-weight: 920;
+            line-height: 1.2;
+        }
+
+        .today-safety-subtitle {
+            color: var(--text-secondary);
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 780;
+            line-height: 1.3;
+            margin-top: 2px;
+        }
+
+        .today-reason-details {
+            background: var(--surface-muted);
+            border: 1px solid var(--border-muted);
+            border-radius: 10px;
+            padding: 0;
+        }
+
+        .today-reason-details > summary {
+            align-items: center;
+            color: var(--heading);
+            cursor: pointer;
+            display: flex;
+            font-size: 0.88rem;
+            font-weight: 850;
+            justify-content: space-between;
+            list-style: none;
+            min-height: 44px;
+            padding: 8px 10px;
+        }
+
+        .today-reason-details > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .today-reason-details > summary::after {
+            color: var(--text-light);
+            content: "▼";
+            font-size: 0.72rem;
+            margin-left: 8px;
+        }
+
+        .today-reason-details[open] > summary::after {
+            content: "▲";
+        }
+
+        .today-reason-body {
+            display: grid;
+            gap: 6px;
+            padding: 0 10px 10px;
+        }
+
+        .today-compact-row {
             display: grid;
             gap: 8px;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        .today-quick-item {
+        .today-compact-item {
             background: var(--surface-muted);
             border: 1px solid var(--border-muted);
             border-radius: 10px;
             min-width: 0;
-            padding: 9px 8px;
+            padding: 8px;
         }
 
-        .today-quick-label {
+        .today-compact-label {
             color: var(--text-light);
             display: block;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 850;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
-        .today-quick-value {
+        .today-compact-value {
             color: var(--heading);
             display: block;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 900;
             line-height: 1.25;
+        }
+
+        .today-compact-subvalue {
+            color: var(--text-secondary);
+            display: block;
+            font-size: 0.74rem;
+            font-weight: 780;
+            line-height: 1.25;
+            margin-top: 2px;
         }
 
         .today-kcal-row {
@@ -967,21 +1064,40 @@
             color: var(--text-secondary);
             display: flex;
             flex-wrap: wrap;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
             font-weight: 850;
-            gap: 8px;
+            gap: 6px;
         }
 
         .today-kcal-row span {
             background: var(--surface-muted);
             border-radius: 999px;
-            padding: 6px 10px;
+            padding: 5px 9px;
         }
 
         .today-card-actions {
             display: grid;
             gap: 8px;
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        }
+
+        @media (max-width: 359px) {
+            .today-card-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cta-primary-action-btn.mode-modified,
+        .cta-primary-action-btn.mode-recovery {
+            background: #f59e0b;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+        }
+
+        .cta-primary-action-btn.mode-stop {
+            background: var(--surface-muted);
+            border: 1px solid #ef4444;
+            box-shadow: none;
+            color: #b91c1c;
         }
 
         .today-adjust-button {
@@ -1021,9 +1137,9 @@
 
         .today-safety-line {
             color: var(--text-secondary);
-            font-size: 0.92rem;
+            font-size: 0.82rem;
             font-weight: 720;
-            line-height: 1.45;
+            line-height: 1.36;
             margin: 0;
         }
 
@@ -2197,31 +2313,37 @@
                 </div>
                 <p class="today-section-label">今天做什麼</p>
                 <p class="today-main-task" id="hero-action">正在生成今日任務...</p>
-                <div class="today-quick-grid" aria-label="今日摘要">
-                    <div class="today-quick-item">
-                        <span class="today-quick-label">安全狀態</span>
-                        <span class="today-quick-value" id="hero-status">判斷中</span>
+                <div class="today-safety-visual" id="hero-status-card" aria-label="安全狀態">
+                    <span class="today-safety-icon" id="hero-safety-icon" aria-hidden="true">🟢</span>
+                    <span class="today-safety-copy">
+                        <span class="today-safety-title" id="hero-status">判斷中</span>
+                        <span class="today-safety-subtitle" id="hero-safety-subtitle">依照今天狀態產生建議</span>
+                    </span>
+                </div>
+                <div class="today-compact-row" aria-label="今日摘要">
+                    <div class="today-compact-item">
+                        <span class="today-compact-label">本週完成</span>
+                        <span class="today-compact-value" id="hero-week-compact">0 / 7 天</span>
                     </div>
-                    <div class="today-quick-item">
-                        <span class="today-quick-label">本週完成</span>
-                        <span class="today-quick-value" id="hero-week-compact">0 / 7</span>
-                    </div>
-                    <div class="today-quick-item">
-                        <span class="today-quick-label">目前體重</span>
-                        <span class="today-quick-value"><span id="hero-weight-main">74.0</span> kg</span>
+                    <div class="today-compact-item">
+                        <span class="today-compact-label">目前體重</span>
+                        <span class="today-compact-value"><span id="hero-weight-main">74.0</span> kg</span>
+                        <span class="today-compact-subvalue" id="hero-weight-goal">距目標 1.5 kg</span>
                     </div>
                 </div>
                 <div class="today-kcal-row" aria-label="建議與實際消耗">
                     <span id="hero-recommended-kcal">建議：-- kcal</span>
                     <span id="hero-actual-kcal">實際：尚未記錄</span>
                 </div>
-                <p class="today-section-label">為什麼</p>
-                <p class="today-reason-line" id="hero-reason">正在判斷建議原因。</p>
-                <p class="today-safety-line" id="hero-status-card">
-                    <span id="hero-daily-tip">正在讀取安全提示。</span>
-                </p>
+                <details class="today-reason-details" id="hero-reason-details">
+                    <summary id="hero-reason-summary">查看原因</summary>
+                    <div class="today-reason-body">
+                        <p class="today-reason-line" id="hero-reason">正在判斷建議原因。</p>
+                        <p class="today-safety-line"><span id="hero-daily-tip">正在讀取安全提示。</span></p>
+                    </div>
+                </details>
                 <div class="today-card-actions">
-                    <button class="cta-primary-action-btn" type="button" id="start-today-btn">完成今日任務</button>
+                    <button class="cta-primary-action-btn" type="button" id="start-today-btn">開始訓練</button>
                     <button class="today-adjust-button" type="button" id="adjust-today-btn">調整今日訓練</button>
                 </div>
                 <input class="hidden" type="checkbox" id="today-diet-check" aria-label="完成今日飲食任務">
@@ -2937,18 +3059,14 @@
         const startBtn = document.getElementById('start-today-btn');
         if (startBtn) {
             startBtn.addEventListener('click', function() {
-                completeTodayTask();
+                runHeroAction(this.dataset.action || 'plan');
             });
         }
 
         const adjustBtn = document.getElementById('adjust-today-btn');
         if (adjustBtn) {
             adjustBtn.addEventListener('click', function() {
-                const section = document.getElementById('today-adjustments-section');
-                if (section) {
-                    section.open = true;
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                runHeroAction(this.dataset.action || 'adjust');
             });
         }
 
@@ -3507,8 +3625,54 @@
         updateAiCoach();
     }
 
+    function getTrafficLightView(safetyMode) {
+        if (safetyMode.mode === 'stop') {
+            return {
+                icon: '⛔',
+                title: '停止｜今天不要訓練',
+                badge: '⛔ 停止｜今天不要訓練',
+                subtitle: '先查看原因，不要開始訓練'
+            };
+        }
+        if (safetyMode.mode === 'recovery') {
+            return {
+                icon: '🔴',
+                title: '紅燈｜恢復模式',
+                badge: '🔴 紅燈｜恢復模式',
+                subtitle: '只做溫和活動或休息'
+            };
+        }
+        if (safetyMode.mode === 'modified') {
+            return {
+                icon: '🟡',
+                title: '黃燈｜最低有效劑量',
+                badge: '🟡 黃燈｜最低有效劑量',
+                subtitle: '降低強度，短版完成即可'
+            };
+        }
+        return {
+            icon: '🟢',
+            title: '綠燈｜完整訓練',
+            badge: '🟢 綠燈｜完整訓練',
+            subtitle: '可以做今天建議量'
+        };
+    }
+
+    function getHeroCtaConfig(safetyMode) {
+        if (safetyMode.mode === 'stop') {
+            return { primary: '查看原因', primaryAction: 'reason', secondary: '', secondaryAction: '' };
+        }
+        if (safetyMode.mode === 'recovery') {
+            return { primary: '進入恢復模式', primaryAction: 'plan', secondary: '查看原因', secondaryAction: 'reason' };
+        }
+        if (safetyMode.mode === 'modified') {
+            return { primary: '調整今日訓練', primaryAction: 'adjust', secondary: '查看建議', secondaryAction: 'plan' };
+        }
+        return { primary: '開始訓練', primaryAction: 'plan', secondary: '調整今日訓練', secondaryAction: 'adjust' };
+    }
+
     function getStatusBadgeText(safetyMode) {
-        return safetyMode.label;
+        return getTrafficLightView(safetyMode).badge;
     }
 
     function getCompactWorkoutFocus(recommended) {
@@ -3525,6 +3689,36 @@
         return row.diet || row.note || '先完成最小行動，不需要把今天變成完美的一天。';
     }
 
+    function openTodayAdjustments() {
+        const section = document.getElementById('today-adjustments-section');
+        if (!section) return;
+        section.open = true;
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function openHeroReason() {
+        const details = document.getElementById('hero-reason-details');
+        if (!details) return;
+        details.open = true;
+        details.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function openTodayPlan() {
+        switchTab('tab-plan', document.getElementById('tab-plan-btn'));
+    }
+
+    function runHeroAction(action) {
+        if (action === 'reason') {
+            openHeroReason();
+            return;
+        }
+        if (action === 'adjust') {
+            openTodayAdjustments();
+            return;
+        }
+        openTodayPlan();
+    }
+
     function updateHeroDashboard() {
         const dayNum = getCurrentDayNumber();
         const row = rawData[dayNum - 1] || rawData[0];
@@ -3533,10 +3727,14 @@
         const heroReason = document.getElementById('hero-reason');
         const heroStatus = document.getElementById('hero-status');
         const heroStatusCard = document.getElementById('hero-status-card');
+        const heroSafetyIcon = document.getElementById('hero-safety-icon');
+        const heroSafetySubtitle = document.getElementById('hero-safety-subtitle');
+        const heroReasonDetails = document.getElementById('hero-reason-details');
         const heroWeek = document.getElementById('hero-week-progress');
         const heroWeekCompact = document.getElementById('hero-week-compact');
         const heroStreak = document.getElementById('hero-streak');
         const heroWeight = document.getElementById('hero-weight-main');
+        const heroWeightGoal = document.getElementById('hero-weight-goal');
         const planCurrentWeight = document.getElementById('plan-current-weight');
         const homeStartWeight = document.getElementById('home-start-weight');
         const homeTargetWeight = document.getElementById('home-target-weight');
@@ -3555,6 +3753,7 @@
         const heroDailyTip = document.getElementById('hero-daily-tip');
         const heroNotice = document.getElementById('hero-safety-notice');
         const startTodayBtn = document.getElementById('start-today-btn');
+        const adjustTodayBtn = document.getElementById('adjust-today-btn');
         const heroRecommendedKcal = document.getElementById('hero-recommended-kcal');
         const heroActualKcal = document.getElementById('hero-actual-kcal');
         const weekStart = Math.floor((dayNum - 1) / 7) * 7 + 1;
@@ -3567,10 +3766,17 @@
         const persona = personaProfiles[getActivePersonaKey()] || personaProfiles.office;
         const actualEntry = getActualEntry(dayNum);
         const actualKcal = getActualKcal(dayNum);
+        const trafficLight = getTrafficLightView(recommended.safetyMode);
+        const ctaConfig = getHeroCtaConfig(recommended.safetyMode);
+        const targetInput = document.getElementById('target-weight');
+        const hasTargetWeight = targetInput && targetInput.value !== '' && Number.isFinite(weights.target);
+        const distanceToTarget = Math.abs(weights.current - weights.target);
 
         if (heroAction) heroAction.textContent = getCompactWorkoutFocus(recommended);
         if (heroReason) heroReason.textContent = (recommended.reason || '原因：依照今天的時間、疼痛、疲勞與睡眠狀態產生。').replace(/^原因：/, '');
-        if (heroStatus) heroStatus.textContent = recommended.safetyMode.label;
+        if (heroStatus) heroStatus.textContent = trafficLight.title;
+        if (heroSafetyIcon) heroSafetyIcon.textContent = trafficLight.icon;
+        if (heroSafetySubtitle) heroSafetySubtitle.textContent = trafficLight.subtitle;
         if (heroDailyTip) heroDailyTip.textContent = recommended.safetyMode.message;
         if (homeCurrentDay) homeCurrentDay.textContent = `Day ${dayNum}`;
         if (todayDietTask) todayDietTask.textContent = row.diet;
@@ -3579,15 +3785,15 @@
         if (todayMoveCheck) todayMoveCheck.checked = checkedDays.includes(dayNum);
         if (heroStatusShort) heroStatusShort.textContent = getStatusBadgeText(recommended.safetyMode);
         if (startTodayBtn) {
-            if (recommended.safetyMode.mode === 'stop') {
-                startTodayBtn.textContent = '今天先停止訓練';
-            } else if (recommended.safetyMode.mode === 'recovery') {
-                startTodayBtn.textContent = '完成恢復任務';
-            } else if (recommended.safetyMode.mode === 'modified') {
-                startTodayBtn.textContent = '完成短版任務';
-            } else {
-                startTodayBtn.textContent = '完成今日任務';
-            }
+            startTodayBtn.textContent = ctaConfig.primary;
+            startTodayBtn.dataset.action = ctaConfig.primaryAction;
+            startTodayBtn.classList.remove('mode-normal', 'mode-modified', 'mode-recovery', 'mode-stop');
+            startTodayBtn.classList.add(`mode-${recommended.safetyMode.mode}`);
+        }
+        if (adjustTodayBtn) {
+            adjustTodayBtn.textContent = ctaConfig.secondary;
+            adjustTodayBtn.dataset.action = ctaConfig.secondaryAction;
+            adjustTodayBtn.classList.toggle('hidden', !ctaConfig.secondary);
         }
         if (heroRecommendedKcal) heroRecommendedKcal.textContent = `建議：${recommended.estimatedKcal} kcal`;
         if (heroActualKcal) heroActualKcal.textContent = actualEntry.mode === 'none'
@@ -3599,9 +3805,15 @@
             heroStatusCard.classList.add(`status-${recommended.safetyMode.status}`);
         }
         if (heroWeek) heroWeek.textContent = `本週 ${weekDone} / ${weekEnd - weekStart + 1}`;
-        if (heroWeekCompact) heroWeekCompact.textContent = `${weekDone}/${weekEnd - weekStart + 1}`;
+        if (heroWeekCompact) heroWeekCompact.textContent = `${weekDone} / ${weekEnd - weekStart + 1} 天`;
         if (heroStreak) heroStreak.textContent = `${getCurrentStreak()} 天連續`;
         if (heroWeight) heroWeight.textContent = weights.current.toFixed(1);
+        if (heroWeightGoal) {
+            heroWeightGoal.textContent = hasTargetWeight
+                ? (distanceToTarget <= 0.05 ? '已達目標' : `距目標 ${distanceToTarget.toFixed(1)} kg`)
+                : '';
+            heroWeightGoal.classList.toggle('hidden', !hasTargetWeight);
+        }
         if (planCurrentWeight) planCurrentWeight.textContent = weights.current.toFixed(1);
         if (homeStartWeight) homeStartWeight.textContent = `${weights.start.toFixed(1)}kg`;
         if (homeTargetWeight) homeTargetWeight.textContent = `${weights.target.toFixed(1)}kg`;
@@ -3616,6 +3828,13 @@
         if (heroNotice) {
             heroNotice.classList.add('hidden');
             heroNotice.textContent = '本工具提供一般性運動建議，不提供醫療診斷。若疼痛超過 3/10、出現胸悶、頭暈、呼吸困難或急性疼痛，請停止運動並尋求專業協助。今天完成最低有效劑量即可視為成功。';
+        }
+        if (heroReasonDetails) {
+            const previousMode = heroReasonDetails.dataset.mode;
+            heroReasonDetails.dataset.mode = recommended.safetyMode.mode;
+            if (previousMode && previousMode !== recommended.safetyMode.mode) {
+                heroReasonDetails.open = false;
+            }
         }
     }
 
