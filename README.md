@@ -21,14 +21,32 @@
 
 ```text
 2.5kg/
-├── index.html           # GitHub Pages 部署入口
-├── README.md            # 專案說明與部署指南
-├── DATA-STRUCTURE.md    # 開發者資料結構說明
-├── .nojekyll            # GitHub Pages 靜態檔案直出
-└── .gitignore           # 忽略本機備份與 macOS 暫存檔
+├── index.html                       # GitHub Pages 部署入口
+├── README.md                        # 專案說明與部署指南
+├── DATA-STRUCTURE.md                # 開發者資料結構說明
+├── AGENTS.md                        # AI 工作流與安全邊界
+├── .github/
+│   ├── ai-automation.yml            # repo-owned scheduled automation contract
+│   └── pull_request_template.md     # PR 檢查表
+├── .nojekyll                        # GitHub Pages 靜態檔案直出
+└── .gitignore                       # 忽略本機備份與 macOS 暫存檔
 ```
 
 本機保留的 `archived/` 與 `index_v*.html` 是版本快照，不會被提交或部署。
+
+## AI workflow / automation
+
+AI-assisted work must read repo-tracked workflow files before issue selection, PR review, or GitHub mutation:
+
+- `AGENTS.md`
+- `.github/ai-automation.yml`
+- `.github/pull_request_template.md`
+- `README.md`
+- `DATA-STRUCTURE.md`
+
+Scheduled automation must verify the repo identity is exactly `f8qtn9kycq-crypto/2.5kg` before mutation. If the local remote, queried GitHub repo, or repo-tracked product instructions do not match, stop with `repo-mismatch blocker`.
+
+This repo keeps an explicit human merge gate. Do not auto-merge.
 
 ## GitHub Pages 部署
 
@@ -38,7 +56,7 @@
 2. 提交變更：
 
 ```bash
-git add index.html README.md DATA-STRUCTURE.md .gitignore .nojekyll
+git add index.html README.md DATA-STRUCTURE.md AGENTS.md .github/ai-automation.yml .github/pull_request_template.md .gitignore .nojekyll
 git commit -m "Prepare GitHub Pages deployment"
 git push origin main
 ```
