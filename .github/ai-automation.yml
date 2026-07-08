@@ -1,0 +1,204 @@
+# Repo-owned automation contract for f8qtn9kycq-crypto/2.5kg.
+# Scheduled runners must read this file before choosing work or mutating GitHub.
+version: 1
+
+repository:
+  full_name: f8qtn9kycq-crypto/2.5kg
+  default_branch: main
+  product: 2.5kg
+  expected_remotes:
+    - https://github.com/f8qtn9kycq-crypto/2.5kg.git
+    - git@github.com:f8qtn9kycq-crypto/2.5kg.git
+
+product_boundary:
+  description: Static GitHub Pages web app for sustainable 60-day lifestyle weight loss.
+  stack:
+    - HTML
+    - CSS
+    - Vanilla JavaScript
+    - localStorage
+    - GitHub Pages
+  no_build_step: true
+  public_url: https://f8qtn9kycq-crypto.github.io/2.5kg/
+  safety_positioning:
+    - general lifestyle and health behavior support only
+    - not a medical diagnosis or treatment tool
+    - preserve Active Aging safety defaults
+    - avoid extreme dieting, heavy calorie counting, and high-impact exercise defaults
+
+source_of_truth:
+  required_before_work:
+    - AGENTS.md
+    - .github/pull_request_template.md
+    - .github/ai-automation.yml
+    - README.md
+    - DATA-STRUCTURE.md
+  supporting_docs: []
+
+preflight:
+  required_before_github_mutation:
+    - local_git_remote_matches_repository_full_name
+    - github_repo_query_matches_repository_full_name
+    - repo_tracked_instructions_match_product
+    - default_branch_is_synced_before_branch_creation
+  mismatch_behavior: repo-mismatch blocker
+  missing_contract_behavior: stop_without_mutation
+  stale_or_ambiguous_context_behavior: prefer_repo_tracked_files
+
+execution:
+  max_units_per_run: 1
+  allowed_chain:
+    - issue implementation
+    - pull request creation or update
+    - ChatGPT pull request review when required
+    - verdict retrieval
+    - gate-based action on verdict
+  disallowed_by_default:
+    - bulk-triggering Codex
+    - broad unrelated rewrites of index.html
+    - direct commits to main
+    - automatic merge without explicit human approval
+    - changing safety or medical-positioning rules unless explicitly scoped
+
+selection:
+  issue_order:
+    priority: [P0, P1, P2]
+    status: [Ready for Codex, Backlog]
+    risk_tier: [Tier 0, Tier 1, Tier 2, Tier 3]
+    tie_breaker: oldest_first
+  pr_order:
+    priority: [P0, P1, P2]
+    status: [PR Review, Review, Ready to Merge]
+    risk_tier: [Tier 0, Tier 1, Tier 2, Tier 3]
+    tie_breaker: oldest_first
+  readiness_required_fields:
+    - goal_or_user_problem
+    - scope
+    - priority
+    - risk_tier
+    - ai_owner_codex_or_equivalent
+    - safety_constraints
+    - acceptance_criteria
+    - qa_or_validation_requirements
+    - codex_trigger_or_implementation_contract
+
+validation:
+  default:
+    - confirm GitHub Pages static app still has root index.html
+    - confirm no build step is required unless package/config is introduced
+  if_runtime_html_css_or_js_change:
+    - run local static preview when possible: python3 -m http.server 5177
+    - verify index.html loads without console-breaking syntax errors
+    - verify mobile layout at 320px and 375px when UI changes
+    - verify key tabs and primary CTAs still work
+    - verify localStorage compatibility for existing keys in README.md and DATA-STRUCTURE.md
+  if_safety_or_recommendation_change:
+    - verify pain level and pain flags still adjust recommendations conservatively
+    - verify warning flags direct user away from exercise and toward professional advice
+    - verify Active Aging defaults avoid high-impact recommendations
+    - verify no diagnosis, cure, medical certainty, or extreme diet claims were introduced
+  docs_only:
+    - confirm no runtime app behavior changed
+    - confirm index.html was not changed
+    - confirm GitHub Pages deployment behavior was not changed
+
+risk_tiers:
+  Tier 0:
+    description: docs, templates, workflow instructions, or static metadata with no runtime behavior change
+    review_routing:
+      codex_review: optional
+      claude_review: not_required_unless_findings_conflict
+      chatgpt_pm_synthesis: not_required_unless_findings_conflict
+    auto_merge_eligible: false
+  Tier 1:
+    description: copy, low-risk CSS, i18n wording, layout polish, or non-safety UI changes
+    review_routing:
+      codex_review: recommended
+      claude_review: not_required_unless_safety_or_storage_risk_appears
+      chatgpt_pm_synthesis: optional_for_conflicting_findings
+    auto_merge_eligible: false
+  Tier 2:
+    description: localStorage, tab flow, onboarding, state behavior, deployment routing, or recommendation behavior
+    review_routing:
+      codex_review: required
+      claude_review: recommended
+      chatgpt_pm_synthesis: recommended_for_conflicting_findings_or_merge_gate
+    auto_merge_eligible: false
+  Tier 3:
+    description: safety rules, medical positioning, data migration, security, analytics/privacy, or large architecture changes
+    review_routing:
+      codex_review: required
+      claude_review: required
+      chatgpt_pm_synthesis: required_before_merge
+    auto_merge_eligible: false
+
+auto_merge:
+  allowed: false
+  reason: Repository auto-merge is disabled and this static health/fitness app should keep an explicit human merge gate.
+
+control_plane:
+  labels:
+    ready_for_implementation:
+      - codex-ready
+    review_required:
+      - review-required
+      - chatgpt-review-required
+      - claude-review-required
+    automation:
+      - blocked
+      - repo-mismatch
+    priority:
+      - priority:P0
+      - priority:P1
+      - priority:P2
+    risk:
+      - risk:tier-0
+      - risk:tier-1
+      - risk:tier-2
+      - risk:tier-3
+  project_fields:
+    status:
+      backlog: Backlog
+      ready_for_codex: Ready for Codex
+      in_progress: In Progress
+      review: Review
+      ready_to_merge: Ready to Merge
+      done: Done
+    priority:
+      - P0
+      - P1
+      - P2
+    risk_tier:
+      - Tier 0
+      - Tier 1
+      - Tier 2
+      - Tier 3
+
+boundaries:
+  do_not_touch_without_explicit_scope:
+    - index.html broad rewrites
+    - localStorage key names or migration behavior
+    - pain flags and pain level safety behavior
+    - warning flag behavior
+    - Active Aging safety defaults
+    - medical disclaimer and non-medical positioning
+    - GitHub Pages deployment path
+    - privacy posture of local-only data
+  stop_conditions:
+    - repo-mismatch blocker
+    - missing required workflow contract
+    - unclear selected issue scope
+    - validation failure
+    - GitHub Pages deployment ambiguity
+    - localStorage compatibility ambiguity
+    - safety or medical-positioning ambiguity above selected risk tier
+
+reporting:
+  required_output:
+    - verdict
+    - selected unit of work
+    - files changed or inspected
+    - validation evidence
+    - review verdicts retrieved
+    - merge or stop reason
+    - next recommended action
