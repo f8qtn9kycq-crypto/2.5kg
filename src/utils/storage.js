@@ -13,7 +13,8 @@ export const STORAGE_KEYS = {
   coachQuestion: 'phone_diet_coach_question',
   actualWorkouts: 'phone_diet_actual_workouts',
   cycleHistory: 'phone_diet_cycle_history',
-  currentCycleFocus: 'phone_diet_current_cycle_focus'
+  currentCycleFocus: 'phone_diet_current_cycle_focus',
+  weightHistory: 'phone_diet_weight_history'
 };
 
 export const SLEEP_VALUES = {
@@ -95,6 +96,54 @@ function safeGetString(key, fallback = '') {
   }
 }
 
+function getTodayISODate(now = new Date()) {
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function normalizeWeightHistory(history) {
+  if (!Array.isArray(history)) return [];
+
+  return history
+    .map(entry => ({
+      date: typeof entry?.date === 'string' ? entry.date.slice(0, 10) : '',
+      weight: Number(entry?.weight)
+    }))
+    .filter(entry => /^\d{4}-\d{2}-\d{2}$/.test(entry.date) && Number.isFinite(entry.weight) && entry.weight > 0)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export function getWeightHistory() {
+  return normalizeWeightHistory(safeGetJSON(STORAGE_KEYS.weightHistory, []));
+}
+
+export function recordTodayWeight(weight, options = {}) {
+  const parsedWeight = Number(weight);
+  if (!Number.isFinite(parsedWeight) || parsedWeight <= 0) return null;
+
+  const date = typeof options.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(options.date)
+    ? options.date
+    : getTodayISODate(options.now);
+  const existingHistory = Array.isArray(options.history)
+    ? options.history
+    : safeGetJSON(STORAGE_KEYS.weightHistory, []);
+  const withoutToday = normalizeWeightHistory(existingHistory).filter(entry => entry.date !== date);
+  const nextHistory = [
+    ...withoutToday,
+    { date, weight: parsedWeight }
+  ]
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(-90);
+
+  if (!Array.isArray(options.history)) {
+    safeSetJSON(STORAGE_KEYS.weightHistory, nextHistory);
+  }
+
+  return nextHistory;
+}
+
 export function normalizeStoredSleep(value, fallback = SLEEP_VALUES.between5and7) {
   const normalized = typeof value === 'string' ? value : String(value ?? '');
   return ALLOWED_SLEEP_VALUES.has(normalized) ? normalized : fallback;
@@ -118,7 +167,8 @@ export function getAppState() {
     },
     actualWorkouts: safeGetJSON(STORAGE_KEYS.actualWorkouts, {}),
     cycleHistory: safeGetJSON(STORAGE_KEYS.cycleHistory, []),
-    currentCycleFocus: safeGetString(STORAGE_KEYS.currentCycleFocus, '')
+    currentCycleFocus: safeGetString(STORAGE_KEYS.currentCycleFocus, ''),
+    weightHistory: getWeightHistory()
   };
 }
 
@@ -161,6 +211,8 @@ export default {
   safeGetNumber,
   safeSetNumber,
   normalizeStoredSleep,
+  getWeightHistory,
+  recordTodayWeight,
   getAppState,
   savePersonalization
 };

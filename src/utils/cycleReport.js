@@ -84,6 +84,152 @@ function suggestNextFocus(classification, completionRate, appState) {
   return 'nutrition_anchor_and_low_impact_training';
 }
 
+function uniquePlanDays(checkedDays) {
+  if (!Array.isArray(checkedDays)) return [];
+
+  return [...new Set(
+    checkedDays
+      .map(day => Number(day))
+      .filter(day => Number.isInteger(day) && day >= 1 && day <= 60)
+  )].sort((a, b) => a - b);
+}
+
+function inferCurrentPlanDay(days, currentDay) {
+  if (Number.isInteger(Number(currentDay)) && Number(currentDay) >= 1) {
+    return Math.min(Number(currentDay), 60);
+  }
+
+  if (days.length === 0) return 1;
+  return Math.min(Math.max(days[days.length - 1] + 1, 1), 60);
+}
+
+function getWeeklyFeedback(count) {
+  if (count <= 2) return '這週先以 3 天完成為目標';
+  if (count <= 4) return '節奏建立中，維持最低有效劑量';
+  if (count <= 6) return '穩定執行，維持目前節奏';
+  return '完成度很高，下週注意恢復';
+}
+
+function formatDelta(delta) {
+  if (delta === null || delta === undefined) return '累積資料中';
+  if (delta > 0) return `比上週 +${delta} 天`;
+  if (delta < 0) return `比上週 ${delta} 天`;
+  return '和上週一樣';
+}
+
+export function getWeeklyCompletionInsight(checkedDays = [], currentDay) {
+  const days = uniquePlanDays(checkedDays);
+  const planDay = inferCurrentPlanDay(days, currentDay);
+  const weekStart = Math.floor((planDay - 1) / 7) * 7 + 1;
+  const weekEnd = Math.min(weekStart + 6, 60);
+  const previousWeekStart = weekStart - 7;
+  const previousWeekEnd = weekStart - 1;
+  const currentWeekCount = days.filter(day => day >= weekStart && day <= weekEnd).length;
+  const previousWeekCount = previousWeekStart >= 1
+    ? days.filter(day => day >= previousWeekStart && day <= previousWeekEnd).length
+    : 0;
+  const hasEnoughData = days.length >= 3;
+  const delta = hasEnoughData && previousWeekStart >= 1
+    ? currentWeekCount - previousWeekCount
+    : null;
+
+  return {
+    currentDay: planDay,
+    weekStart,
+    weekEnd,
+    currentWeekCount,
+    previousWeekCount,
+    delta,
+    hasEnoughData,
+    summaryText: `本週完成 ${currentWeekCount} / ${weekEnd - weekStart + 1} 天`,
+    deltaText: hasEnoughData ? formatDelta(delta) : `累積資料中，完成 3 天後會顯示週趨勢`,
+    feedback: getWeeklyFeedback(currentWeekCount)
+  };
+}
+
+function normalizeWeightHistory(history = []) {
+  if (!Array.isArray(history)) return [];
+
+  return history
+    .map(entry => ({
+      date: typeof entry?.date === 'string' ? entry.date.slice(0, 10) : '',
+      weight: Number(entry?.weight)
+    }))
+    .filter(entry => /^\d{4}-\d{2}-\d{2}$/.test(entry.date) && Number.isFinite(entry.weight) && entry.weight > 0)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function daysBetween(startDate, endDate) {
+  return Math.round((endDate - startDate) / 86400000);
+}
+
+function getChangeForWindow(history, days) {
+  if (history.length < 2) return null;
+
+  const latest = history[history.length - 1];
+  const latestDate = new Date(`${latest.date}T00:00:00Z`);
+  const baseline = [...history]
+    .reverse()
+    .find(entry => daysBetween(new Date(`${entry.date}T00:00:00Z`), latestDate) >= days);
+
+  if (!baseline) return null;
+  return Number((latest.weight - baseline.weight).toFixed(1));
+}
+
+function formatWeightChange(change) {
+  if (change === null || change === undefined) return '資料累積中';
+  if (change > 0) return `+${change.toFixed(1)} kg`;
+  if (change < 0) return `${change.toFixed(1)} kg`;
+  return '0.0 kg';
+}
+
+export function getWeightTrendInsight(weightHistory = []) {
+  const history = normalizeWeightHistory(weightHistory);
+  const sevenDayChange = getChangeForWindow(history, 7);
+  const fourteenDayChange = getChangeForWindow(history, 14);
+  const hasEnoughData = sevenDayChange !== null || fourteenDayChange !== null;
+
+  return {
+    history,
+    hasEnoughData,
+    sevenDayChange,
+    fourteenDayChange,
+    sevenDayText: formatWeightChange(sevenDayChange),
+    fourteenDayText: formatWeightChange(fourteenDayChange),
+    summaryText: hasEnoughData
+      ? `7天 ${formatWeightChange(sevenDayChange)}｜14天 ${formatWeightChange(fourteenDayChange)}`
+      : '資料累積中'
+  };
+}
+
+export function getBehaviorFeedback({ weeklyCompletion = {}, weightTrend = {} } = {}) {
+  const currentWeekCount = Number(weeklyCompletion.currentWeekCount ?? weeklyCompletion.completedDays ?? 0);
+  const sevenDayChange = Number.isFinite(Number(weightTrend.sevenDayChange))
+    ? Number(weightTrend.sevenDayChange)
+    : null;
+  const fourteenDayChange = Number.isFinite(Number(weightTrend.fourteenDayChange))
+    ? Number(weightTrend.fourteenDayChange)
+    : null;
+  const availableTrend = sevenDayChange ?? fourteenDayChange;
+
+  if (currentWeekCount <= 2) {
+    return '完成率低：下週先以 3 天完成為目標。';
+  }
+  if (availableTrend !== null && availableTrend <= -1.2) {
+    return '體重下降太快：確認蛋白質與恢復是否足夠。';
+  }
+  if (currentWeekCount >= 5 && availableTrend !== null && availableTrend < -0.1) {
+    return '執行率高，體重穩定下降：維持目前節奏。';
+  }
+  if (currentWeekCount >= 5 && (availableTrend === null || Math.abs(availableTrend) <= 0.1)) {
+    return '完成率高但體重無變化：優先檢查週末外食與酒精。';
+  }
+  if (currentWeekCount <= 4) {
+    return '節奏建立中：維持最低有效劑量。';
+  }
+  return '維持目前節奏。';
+}
+
 export function generateCycleReport(appState = {}) {
   const startWeight = toNumber(appState.startWeight, null);
   const currentWeight = toNumber(appState.currentWeight, null);
@@ -120,5 +266,8 @@ export function generateCycleReport(appState = {}) {
 }
 
 export default {
-  generateCycleReport
+  generateCycleReport,
+  getWeeklyCompletionInsight,
+  getWeightTrendInsight,
+  getBehaviorFeedback
 };
