@@ -188,7 +188,11 @@ test('recordTodayWeight updates today weight if already exists', () => {
 
 test('recordTodayWeight uses the local calendar date', () => {
   const store = installLocalStorage();
-  const localLateNight = new Date('2026-06-12T00:30:00+08:00');
+  const localLateNight = {
+    getFullYear: () => 2026,
+    getMonth: () => 5,
+    getDate: () => 12
+  };
 
   const history = recordTodayWeight(64.2, { now: localLateNight });
 
