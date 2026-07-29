@@ -96,8 +96,11 @@ function safeGetString(key, fallback = '') {
   }
 }
 
-function getTodayISODate() {
-  return new Date().toISOString().slice(0, 10);
+function getTodayISODate(now = new Date()) {
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 function normalizeWeightHistory(history) {
@@ -122,7 +125,7 @@ export function recordTodayWeight(weight, options = {}) {
 
   const date = typeof options.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(options.date)
     ? options.date
-    : getTodayISODate();
+    : getTodayISODate(options.now);
   const existingHistory = Array.isArray(options.history)
     ? options.history
     : safeGetJSON(STORAGE_KEYS.weightHistory, []);

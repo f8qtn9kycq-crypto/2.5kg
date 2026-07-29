@@ -186,6 +186,16 @@ test('recordTodayWeight updates today weight if already exists', () => {
   assert.deepEqual(history, [{ date: '2026-06-12', weight: 64 }]);
 });
 
+test('recordTodayWeight uses the local calendar date', () => {
+  const store = installLocalStorage();
+  const localLateNight = new Date('2026-06-12T00:30:00+08:00');
+
+  const history = recordTodayWeight(64.2, { now: localLateNight });
+
+  assert.deepEqual(history, [{ date: '2026-06-12', weight: 64.2 }]);
+  assert.deepEqual(JSON.parse(store.get(STORAGE_KEYS.weightHistory)), history);
+});
+
 test('recordTodayWeight keeps max 90 entries', () => {
   const oldHistory = Array.from({ length: 95 }, (_, index) => ({
     date: `2026-03-${String(index + 1).padStart(2, '0')}`,
