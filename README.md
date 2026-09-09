@@ -56,10 +56,14 @@ This repo keeps an explicit human merge gate. Do not auto-merge.
 2. 提交變更：
 
 ```bash
-git add index.html README.md DATA-STRUCTURE.md AGENTS.md .github/ai-automation.yml .github/pull_request_template.md .gitignore .nojekyll
+git switch -c codex/scoped-change
+# 僅加入本次變更檔案；以下以 index.html 為例
+git add index.html
 git commit -m "Prepare GitHub Pages deployment"
-git push origin main
+git push -u origin codex/scoped-change
 ```
+
+先建立 PR 並通過測試與人工合併門檻，再檢查部署設定。
 
 3. 到 GitHub repo：
    - `Settings` -> `Pages`
