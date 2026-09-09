@@ -2,4 +2,4 @@
 archived/
 index_v*.html
 *.log
-
+node_modules/
