@@ -38,17 +38,25 @@ What user problem this addresses:
 - [ ] localStorage compatibility considered when data/state changed
 - [ ] GitHub Pages deployment path considered
 
+## Draft / Ready semantics
+
+- [ ] Draft is used only while implementation or required evidence for this PR is incomplete
+- [ ] Missing manual walkthrough, physical-device evidence, or human review does not by itself require Draft unless the changed behavior or acceptance criteria explicitly require it
+- [ ] A completed PR may be Ready for review while explicit merge approval is still pending
+
 ## AI review routing
 
 - [ ] Codex review needed
 - [ ] Claude review needed only for Tier 2+ or conflicting findings
 - [ ] ChatGPT PM synthesis needed only if findings conflict or PR is high-risk
+- [ ] Human review is a targeted gate only when safety, medical positioning, privacy/data risk, or explicit acceptance criteria require it
 
 ## Merge readiness
 
 - [ ] No P0
 - [ ] P1 either fixed or explicitly deferred
 - [ ] Acceptance criteria met
+- [ ] Required targeted review evidence is complete or explicitly deferred
 - [ ] Explicit human merge approval retained
 
 ## Post-merge cleanup
